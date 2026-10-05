@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Exit reasons. payroll_deadline_rule points at a catalog code; the
+             number of days lives in a signed-off statutory version, so these
+             rows carry no dates. permits_recovery and gratuity_eligible are the
+             two behaviours that must never be inferred at runtime. -->
+
+        <record id="reason_resignation" model="hrms.fnf.reason">
+            <field name="name">Resignation</field>
+            <field name="sequence">10</field>
+            <field name="code">resignation</field>
+            <field name="requires_notice" eval="True"/>
+            <field name="gratuity_eligible" eval="True"/>
+            <field name="permits_recovery" eval="True"/>
+            <field name="payroll_deadline_rule">IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS</field>
+            <field name="notice">Wages for the period worked must be paid within the statutory period from the last working day. Any shortfall against the notice period may be recovered, but only against a documented and lawful basis.</field>
+        </record>
+
+        <record id="reason_termination" model="hrms.fnf.reason">
+            <field name="name">Termination</field>
+            <field name="sequence">20</field>
+            <field name="code">termination</field>
+            <field name="requires_notice" eval="False"/>
+            <field name="gratuity_eligible" eval="True"/>
+            <field name="permits_recovery" eval="True"/>
+            <field name="payroll_deadline_rule">IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS</field>
+            <field name="notice">Notice pay applies where the termination is not for misconduct under the applicable standing orders. Gratuity eligibility depends on completed service and the configured threshold.</field>
+        </record>
+
+        <record id="reason_retrenchment" model="hrms.fnf.reason">
+            <field name="name">Retrenchment</field>
+            <field name="sequence">30</field>
+            <field name="code">retrenchment</field>
+            <field name="requires_notice" eval="False"/>
+            <field name="gratuity_eligible" eval="True"/>
+            <field name="permits_recovery" eval="True"/>
+            <field name="payroll_deadline_rule">IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS</field>
+            <field name="notice">Retrenchment compensation and the notice under the applicable standing orders are payable in addition to the final settlement. The worker re-skilling fund contribution is a separate statutory obligation.</field>
+        </record>
+
+        <record id="reason_retirement" model="hrms.fnf.reason">
+            <field name="name">Retirement</field>
+            <field name="sequence">40</field>
+            <field name="code">retirement</field>
+            <field name="requires_notice" eval="False"/>
+            <field name="gratuity_eligible" eval="True"/>
+            <field name="permits_recovery" eval="True"/>
+            <field name="payroll_deadline_rule">IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS</field>
+        </record>
+
+        <record id="reason_death" model="hrms.fnf.reason">
+            <field name="name">Death / disablement</field>
+            <field name="sequence">50</field>
+            <field name="code">death</field>
+            <field name="requires_notice" eval="False"/>
+            <field name="gratuity_eligible" eval="False"/>
+            <field name="permits_recovery" eval="False"/>
+            <field name="payroll_deadline_rule">IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS</field>
+            <field name="notice">Gratuity is payable to the nominee where the employee dies in service. No recovery may be taken from the estate for this reason.</field>
+        </record>
+
+        <record id="reason_fixed_term" model="hrms.fnf.reason">
+            <field name="name">Fixed-term contract expiry</field>
+            <field name="sequence">60</field>
+            <field name="code">fixed_term_expiry</field>
+            <field name="requires_notice" eval="False"/>
+            <field name="gratuity_eligible" eval="True"/>
+            <field name="permits_recovery" eval="True"/>
+            <field name="payroll_deadline_rule">IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS</field>
+            <field name="notice">Pro-rata gratuity is payable to a fixed-term employee on expiry of the term after the configured minimum service.</field>
+        </record>
+
+    </data>
+</odoo>

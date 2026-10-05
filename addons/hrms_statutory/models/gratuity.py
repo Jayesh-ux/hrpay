@@ -369,3 +369,18 @@ def _json(payload):
     import json
 
     return json.dumps(payload, indent=2, sort_keys=True, default=str)
+
+class HrEmployee(models.Model):
+    """Service periods live on the employee so gratuity survives a contract change."""
+
+    _inherit = "hr.employee"
+
+    hrms_gratuity_service_period_ids = fields.One2many(
+        "hrms.gratuity.service.period",
+        "employee_id",
+        string="Service periods",
+        help="Spells of continuous service. Multiple rows where service was "
+        "broken and restarted, or where successive fixed-term contracts ran. "
+        "Uncheck 'recognised' to exclude a spell from eligibility without "
+        "deleting the record.",
+    )

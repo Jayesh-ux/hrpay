@@ -186,6 +186,12 @@ class HrDepartment(models.Model):
         help="Labour Welfare Fund is levied only by some States. Drives the LWF "
         "rule and the F&F/LWF remittance decision.",
     )
+    hrms_rostered = fields.Boolean(
+        default=False,
+        help="This establishment runs published rosters. Payroll for a rostered "
+        "establishment cannot be computed while an employee has no roster "
+        "assignments, because their hours are then unknown.",
+    )
 
 
 class ResCompany(models.Model):

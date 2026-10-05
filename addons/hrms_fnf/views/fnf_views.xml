@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_hrms_fnf_case_list" model="ir.ui.view">
+            <field name="name">hrms.fnf.case.list</field>
+            <field name="model">hrms.fnf.case</field>
+            <field name="arch" type="xml">
+                <list string="Final Settlements" decoration-danger="overdue == True"
+                      decoration-muted="separation_state == 'paid'">
+                    <field name="name"/>
+                    <field name="employee_id"/>
+                    <field name="reason_id"/>
+                    <field name="last_working_day"/>
+                    <field name="separation_state" widget="badge"
+                           decoration-success="separation_state == 'paid'"
+                           decoration-info="separation_state == 'approved'"/>
+                    <field name="net_payable" widget="monetary" sum="Total"/>
+                    <field name="payable_by"/>
+                    <field name="days_remaining" optional="show"/>
+                    <field name="overdue" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_hrms_fnf_case_form" model="ir.ui.view">
+            <field name="name">hrms.fnf.case.form</field>
+            <field name="model">hrms.fnf.case</field>
+            <field name="arch" type="xml">
+                <form string="Final Settlement">
+                    <header>
+                        <button name="action_calculate" string="Calculate"
+                                type="object" class="btn-primary"
+                                invisible="separation_state not in ('draft','under_calculation','disputed')"/>
+                        <button name="action_acknowledge" string="Mark acknowledged"
+                                type="object"
+                                invisible="separation_state != 'calculated'"/>
+                        <button name="action_approve" string="Approve payment"
+                                type="object" class="btn-primary"
+                                groups="hrms_core_ext.group_hrms_finance_approver"
+                                invisible="separation_state not in ('calculated','employee_acknowledged')"/>
+                        <button name="action_mark_paid" string="Mark paid"
+                                type="object" class="btn-primary"
+                                groups="hrms_core_ext.group_hrms_finance_approver"
+                                invisible="separation_state != 'approved'"/>
+                        <button name="action_raise_dispute" string="Raise dispute"
+                                type="object"
+                                invisible="separation_state in ('draft','paid')"/>
+                        <field name="separation_state" widget="statusbar"
+                               statusbar_visible="draft,calculated,employee_acknowledged,approved,paid"/>
+                    </header>
+                    <sheet>
+                        <div class="alert alert-danger" role="alert"
+                             invisible="not overdue">
+                            Statutory payment deadline passed on
+                            <field name="payable_by" class="oe_inline"/>
+                            (<field name="days_remaining" class="oe_inline"/> days ago).
+                            Record the reason for the delay.
+                        </div>
+                        <div class="alert alert-warning" role="alert"
+                             invisible="not payable_by or overdue or separation_state == 'paid'">
+                            Due by <field name="payable_by" class="oe_inline"/>.
+                            <field name="days_remaining" class="oe_inline"/> day(s) remaining.
+                        </div>
+                        <div class="alert alert-info" role="alert"
+                             invisible="not is_negative_settlement">
+                            This settlement is negative: the employee owes
+                            <field name="net_payable" class="oe_inline"/>.
+                            Recovery requires a lawful basis recorded against the
+                            exit reason.
+                        </div>
+
+                        <group>
+                            <group string="Employee and exit">
+                                <field name="employee_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="reason_id"/>
+                                <field name="last_working_day"/>
+                                <field name="resignation_date" invisible="not reason_id.requires_notice"/>
+                            </group>
+                            <group string="Statutory deadline">
+                                <field name="payable_by"/>
+                                <field name="deadline_rule_code"/>
+                                <field name="overdue"/>
+                                <field name="days_remaining"/>
+                            </group>
+                        </group>
+
+                        <group string="Notice" invisible="not reason_id.requires_notice">
+                            <field name="notice_period_days"/>
+                            <field name="notice_served_days"/>
+                            <field name="notice_shortfall_days"/>
+                        </group>
+
+                        <group string="Amounts">
+                            <group>
+                                <field name="gross_payable" widget="monetary"/>
+                                <field name="total_deductions" widget="monetary"/>
+                            </group>
+                            <group>
+                                <field name="net_payable" widget="monetary" class="oe_inline"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Statement" name="statement">
+                                <div class="text-muted" invisible="not statement_json">
+                                    Frozen at calculation time. Inputs are locked
+                                    because the employee has seen these figures.
+                                </div>
+                                <field name="statement_json" readonly="1" nolabel="1"
+                                       invisible="not statement_json"/>
+                                <group class="mt-3" invisible="not statement_checksum">
+                                    <field name="statement_checksum"/>
+                                    <field name="rule_versions_json" readonly="1"/>
+                                    <field name="prepared_by_id"/>
+                                </group>
+                            </page>
+                            <page string="Approval trail" name="trail">
+                                <group>
+                                    <field name="acknowledged_by_id"/>
+                                    <field name="acknowledged_at"/>
+                                    <field name="approved_by_id"/>
+                                    <field name="approved_at"/>
+                                    <field name="paid_by_id"/>
+                                    <field name="paid_at"/>
+                                    <field name="payment_reference"/>
+                                </group>
+                                <group string="Dispute">
+                                    <field name="dispute_reason" readonly="1"/>
+                                    <field name="dispute_raised_at" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hrms_fnf_case_search" model="ir.ui.view">
+            <field name="name">hrms.fnf.case.search</field>
+            <field name="model">hrms.fnf.case</field>
+            <field name="arch" type="xml">
+                <search string="Final Settlements">
+                    <field name="employee_id"/>
+                    <field name="reason_id"/>
+                    <filter name="filter_open" string="Open"
+                            domain="[('separation_state','not in',('paid',))]"/>
+                    <filter name="filter_overdue" string="Overdue"
+                            domain="[('overdue','=',True)]"/>
+                    <separator/>
+                    <filter name="filter_negative" string="Negative settlement"
+                            domain="[('is_negative_settlement','=',True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_state" string="State"
+                                context="{'group_by': 'separation_state'}"/>
+                        <filter name="group_reason" string="Exit reason"
+                                context="{'group_by': 'reason_id'}"/>
+                        <filter name="group_month" string="Last working day"
+                                context="{'group_by': 'last_working_day'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_hrms_fnf_case" model="ir.actions.act_window">
+            <field name="name">Final Settlements</field>
+            <field name="res_model">hrms.fnf.case</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_hrms_fnf_case_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No final settlements yet</p>
+                <p>Open a case when an employee's last working day is confirmed.
+                   The statutory payment clock runs from that date, not from the
+                   day the case is created.</p>
+            </field>
+        </record>
+
+        <menuitem id="menu_hrms_fnf_case"
+                  name="Final Settlements"
+                  parent="hr_payroll.menu_hr_payroll_root"
+                  action="action_hrms_fnf_case"
+                  groups="hrms_core_ext.group_hrms_payroll_admin"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fnf_reason_payroll,hrms.fnf.reason payroll,model_hrms_fnf_reason,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_fnf_reason_auditor,hrms.fnf.reason auditor,model_hrms_fnf_reason,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_fnf_case_payroll,hrms.fnf.case payroll,model_hrms_fnf_case,hrms_core_ext.group_hrms_payroll_admin,1,1,1,0
+access_fnf_case_finance,hrms.fnf.case finance approver,model_hrms_fnf_case,hrms_core_ext.group_hrms_finance_approver,1,1,1,0
+access_fnf_case_auditor,hrms.fnf.case auditor,model_hrms_fnf_case,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_fnf_case_hr_manager,hrms.fnf.case hr manager,model_hrms_fnf_case,hr.group_hr_manager,1,0,0,0
+access_fnf_line_payroll,hrms.fnf.line payroll,model_hrms_fnf_line,hrms_core_ext.group_hrms_payroll_admin,1,1,1,0
+access_fnf_line_auditor,hrms.fnf.line auditor,model_hrms_fnf_line,hrms_core_ext.group_hrms_auditor,1,0,0,0

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payroll_run_payroll,hrms.payroll.run payroll,model_hrms_payroll_run,hrms_core_ext.group_hrms_payroll_admin,1,1,1,0
+access_payroll_run_finance,hrms.payroll.run finance,model_hrms_payroll_run,hrms_core_ext.group_hrms_finance_approver,1,1,1,0
+access_payroll_run_auditor,hrms.payroll.run auditor,model_hrms_payroll_run,hrms_core_ext.group_hrms_auditor,1,0,0,0

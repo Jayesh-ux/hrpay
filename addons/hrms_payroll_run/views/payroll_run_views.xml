@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="view_hrms_payroll_run_list" model="ir.ui.view">
+            <field name="name">hrms.payroll.run.list</field>
+            <field name="model">hrms.payroll.run</field>
+            <field name="arch" type="xml">
+                <list string="Payroll Runs" decoration-danger="state == 'cancelled'"
+                      decoration-muted="state == 'locked'">
+                    <field name="name"/>
+                    <field name="establishment_id"/>
+                    <field name="period_start"/>
+                    <field name="period_end"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state == 'locked'"
+                           decoration-info="state == 'approved'"/>
+                    <field name="employee_count"/>
+                    <field name="slip_count"/>
+                    <field name="gross_total" widget="monetary" sum="Gross"/>
+                    <field name="net_total" widget="monetary" sum="Net"/>
+                    <field name="ai_flags_count" widget="badge"
+                           decoration-danger="ai_flags_count > 0"
+                           invisible="ai_flags_count == 0"/>
+                    <field name="currency_id" column_invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="view_hrms_payroll_run_form" model="ir.ui.view">
+            <field name="name">hrms.payroll.run.form</field>
+            <field name="model">hrms.payroll.run</field>
+            <field name="arch" type="xml">
+                <form string="Payroll Run">
+                    <header>
+                        <button name="action_compute" string="Compute" type="object"
+                                class="btn-primary" invisible="state != 'draft'"/>
+                        <button name="action_review" string="Record review" type="object"
+                                class="btn-primary" invisible="state != 'computed'"/>
+                        <button name="action_approve" string="Approve"
+                                type="object" class="btn-primary"
+                                groups="hrms_core_ext.group_hrms_finance_approver"
+                                invisible="state != 'reviewed'"/>
+                        <button name="action_lock" string="Lock period" type="object"
+                                class="btn-primary"
+                                groups="hrms_core_ext.group_hrms_finance_approver"
+                                invisible="state != 'approved'"/>
+                        <button name="action_cancel" string="Cancel" type="object"
+                                invisible="state in ('locked','cancelled')"/>
+                        <field name="state" widget="statusbar"
+                               statusbar_visible="draft,computed,reviewed,approved,locked"/>
+                    </header>
+                    <sheet>
+                        <div class="alert alert-danger" role="alert"
+                             invisible="not blocking_issues">
+                            <strong>This run cannot proceed:</strong>
+                            <field name="blocking_issues" nolabel="1" readonly="1"
+                                   class="text-break"/>
+                        </div>
+                        <div class="alert alert-warning" role="alert"
+                             invisible="state not in ('computed','reviewed') or ai_flags_count == 0">
+                            <field name="ai_flags_count" class="oe_inline"/> advisory
+                            anomaly flag(s) raised. They do not block the run, but a
+                            reviewer must record a judgement before approval.
+                        </div>
+
+                        <group>
+                            <group string="Scope">
+                                <field name="company_id" groups="base.group_multi_company"/>
+                                <field name="establishment_id"/>
+                                <field name="period_start"/>
+                                <field name="period_end"/>
+                                <field name="period_lock_id"/>
+                            </group>
+                            <group string="Totals">
+                                <field name="employee_count"/>
+                                <field name="slip_count"/>
+                                <field name="gross_total" widget="monetary"/>
+                                <field name="net_total" widget="monetary"/>
+                                <field name="currency_id" invisible="1"/>
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Integrity" name="integrity">
+                                <div class="text-muted">
+                                    These hashes are the evidence that the figures
+                                    did not change after approval.
+                                </div>
+                                <group>
+                                    <group string="Results">
+                                        <field name="result_checksum"/>
+                                    </group>
+                                    <group string="Inputs">
+                                        <field name="input_checksum"/>
+                                    </group>
+                                </group>
+                                <group string="Statutory coverage" colspan="2">
+                                    <field name="coverage_json" readonly="1"
+                                           nolabel="1"/>
+                                </group>
+                                <group string="Rule versions in force" colspan="2">
+                                    <field name="rule_versions_json" readonly="1"
+                                           nolabel="1"/>
+                                </group>
+                            </page>
+                            <page string="Anomaly flags" name="flags">
+                                <div class="text-muted">
+                                    Advisory only. Generated by the AI layer and
+                                    never blocking, because a scoring function is
+                                    not an authority on a payroll question.
+                                </div>
+                                <group>
+                                    <field name="ai_flags_count"/>
+                                    <field name="ai_flags_acknowledged"/>
+                                </group>
+                                <field name="ai_flags_json" readonly="1" nolabel="1"/>
+                            </page>
+                            <page string="Approval trail" name="trail">
+                                <group>
+                                    <field name="computed_by_id"/>
+                                    <field name="computed_at"/>
+                                    <field name="reviewed_by_id"/>
+                                    <field name="reviewed_at"/>
+                                    <field name="review_note" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="approved_by_id"/>
+                                    <field name="approved_at"/>
+                                    <field name="locked_by_id"/>
+                                    <field name="locked_at"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <chatter/>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_hrms_payroll_run_search" model="ir.ui.view">
+            <field name="name">hrms.payroll.run.search</field>
+            <field name="model">hrms.payroll.run</field>
+            <field name="arch" type="xml">
+                <search string="Payroll Runs">
+                    <field name="establishment_id"/>
+                    <field name="name"/>
+                    <filter name="filter_open" string="In progress"
+                            domain="[('state','not in',('locked','cancelled'))]"/>
+                    <filter name="filter_flagged" string="Has anomaly flags"
+                            domain="[('ai_flags_count','&gt;',0)]"/>
+                    <separator/>
+                    <filter name="filter_period" string="This period"
+                            domain="[('period_end','&gt;=',context_today().strftime('%Y-%m-01'))]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_state" string="State"
+                                context="{'group_by': 'state'}"/>
+                        <filter name="group_est" string="Establishment"
+                                context="{'group_by': 'establishment_id'}"/>
+                        <filter name="group_end" string="Period end"
+                                context="{'group_by': 'period_end'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_hrms_payroll_run" model="ir.actions.act_window">
+            <field name="name">Payroll Runs</field>
+            <field name="res_model">hrms.payroll.run</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_hrms_payroll_run_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">No payroll run yet</p>
+                <p>Open a run per establishment per month. Statutory rules are
+                   resolved per establishment, so a single combined run would have
+                   to apply one State's rules to every establishment.</p>
+            </field>
+        </record>
+
+        <menuitem id="menu_hrms_payroll_run"
+                  name="Payroll Runs"
+                  parent="hr_payroll.menu_hr_payroll_root"
+                  action="action_hrms_payroll_run"
+                  groups="hrms_core_ext.group_hrms_payroll_admin,hrms_core_ext.group_hrms_finance_approver"/>
+
+    </data>
+</odoo>

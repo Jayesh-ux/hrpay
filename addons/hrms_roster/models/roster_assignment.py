@@ -389,6 +389,7 @@ class RosterPeriod(models.Model):
     )
     assignment_count = fields.Integer(compute="_compute_assignment_count")
 
+    @api.depends("assignment_ids")
     def _compute_assignment_count(self):
         counts = self.env["hr.roster.assignment"]._read_group(
             [("roster_period_id", "in", self.ids)],
