@@ -130,6 +130,11 @@ class StatutoryCatalog(models.AbstractModel):
         return created
 
     @api.model
+    def catalog_codes(self):
+        """Every code the catalog expects, so callers need not import this file."""
+        return [code for code, *_ in RULE_CATALOG]
+
+    @api.model
     def coverage_report(self):
         """Which codes have a signed-off, currently-effective version?"""
         ctx = self.env["hrms.statutory.context"]

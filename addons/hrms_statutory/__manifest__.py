@@ -6,6 +6,8 @@
     "version": "18.0.1.0.0",
     "category": "Human Resources",
     "license": "LGPL-3",
+    "post_init_hook": "post_init_hook",
+    "uninstall_hook": "uninstall_hook",
     "author": "hrpay",
     "depends": [
         "hrms_core_ext",
