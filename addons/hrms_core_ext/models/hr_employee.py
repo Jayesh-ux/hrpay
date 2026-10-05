@@ -116,6 +116,25 @@ class HrEmployee(models.Model):
     )
     hrms_ytd_taxable = fields.Float(string="YTD taxable salary", digits=(16, 2))
     hrms_tds_ytd = fields.Float(string="YTD TDS deducted", digits=(16, 2))
+    hrms_current_month_pay = fields.Float(
+        string="Current month taxable pay",
+        digits=(16, 2),
+        help="The RECURRING monthly taxable pay for the period being processed: "
+        "basic pay and fixed allowances, excluding one-off components such as a "
+        "bonus, arrears or a reimbursement. TDS projects the months ahead as "
+        "this figure times the months remaining, so passing a month's total "
+        "including a bonus would project that bonus across the rest of the "
+        "financial year and over-deduct by that much for every month left.",
+    )
+    hrms_tds_scheduled_future_pay = fields.Float(
+        string="Scheduled future taxable pay",
+        digits=(16, 2),
+        help="Known TOTAL taxable pay for the remaining months of the financial "
+        "year combined, not a monthly figure. Used instead of projecting the "
+        "current month's pay when an approved increment letter or a bonus "
+        "schedule fixes what is coming. Leave at zero to project by the current "
+        "month's recurring pay.",
+    )
     hrms_pt_ytd = fields.Float(string="YTD professional tax", digits=(16, 2))
     hrms_pf_ytd = fields.Float(string="YTD PF (EPS/EPF)", digits=(16, 2))
     hrms_esi_ytd = fields.Float(string="YTD ESI", digits=(16, 2))

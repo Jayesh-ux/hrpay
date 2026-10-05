@@ -17,6 +17,7 @@ Note on reference resolution:
 import ast
 import csv
 import pathlib
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -104,6 +105,18 @@ def load_order(manifests, addons):
     return order
 
 
+def statutory_codes():
+    """Every code in RULE_CATALOG, read from the module rather than duplicated."""
+    catalog = ADDONS / "hrms_statutory" / "models" / "catalog.py"
+    tree = ast.parse(catalog.read_text())
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Assign) and getattr(
+            node.targets[0], "id", ""
+        ) == "RULE_CATALOG":
+            return [row[0] for row in ast.literal_eval(node.value)]
+    raise RuntimeError(f"RULE_CATALOG not found in {catalog}")
+
+
 def main():
     manifests = load_manifests()
     addons = set(manifests)
@@ -174,18 +187,62 @@ def main():
         external = [d for d in manifests[name].get("depends", []) if d not in addons]
         print(f"  {name:20} external: {', '.join(external) or '-'}")
 
-    tests = sorted(ADDONS.glob("*/tests/test_*.py"))
-    total = 0
-    for path in tests:
+    # The statutory register must cover the catalog exactly. The register used to
+    # carry 30 descriptive keys against 44 real codes, so 14 codes had no
+    # research row and the mismatched keys could not be loaded without hand
+    # editing. The code is the contract, so a divergence in either direction is
+    # an error.
+    register = ROOT / "docs" / "compliance" / "statutory-config-register.md"
+    if not register.exists():
+        errors.append(f"{register}: missing; the statutory register must exist")
+    else:
+        text = register.read_text()
+        rows = re.findall(r"^\|\s*\d+\s*\|\s*`(IN\.[A-Z0-9_.]+)`", text, re.M)
+        codes = sorted(set(rows))
+        catalog = sorted(set(statutory_codes()))
+        if len(rows) != len(codes):
+            errors.append(
+                f"{register}: {len(rows)} rows but {len(codes)} unique codes; "
+                "a code is listed twice"
+            )
+        for missing in sorted(set(catalog) - set(codes)):
+            errors.append(f"{register}: catalog code {missing} has no register row")
+        for extra in sorted(set(codes) - set(catalog)):
+            errors.append(
+                f"{register}: {extra} is not in RULE_CATALOG; the code is what runs"
+            )
+
+    # Count per addon, not per file. An addon with two test files used to print
+    # two rows for the same addon, which made the per-addon totals ambiguous:
+    # hrms_statutory appeared as 13 and 30 separately rather than 43, and the
+    # only unambiguous number was the grand total. Now each addon gets exactly
+    # one row, and the files behind it are listed so nothing is hidden.
+    per_addon: dict[str, int] = {}
+    files_per_addon: dict[str, list[str]] = {}
+    for path in sorted(ADDONS.glob("*/tests/test_*.py")):
         count = sum(
             1
             for node in ast.walk(ast.parse(path.read_text()))
             if isinstance(node, ast.FunctionDef) and node.name.startswith("test_")
         )
-        total += count
-        print(f"  {addon_of(path):20} {count:3} authored tests (not executed)")
+        addon = addon_of(path)
+        per_addon[addon] = per_addon.get(addon, 0) + count
+        files_per_addon.setdefault(addon, []).append(path.name)
 
-    print(f"\n{len(errors)} error(s), {total} authored test(s)")
+    total = sum(per_addon.values())
+    for name in sorted(per_addon):
+        files = ", ".join(files_per_addon[name])
+        plural = "" if len(files_per_addon[name]) == 1 else "s"
+        print(
+            f"  {name:20} {per_addon[name]:3} authored tests, not executed "
+            f"({len(files_per_addon[name])} file{plural}: {files})"
+        )
+    untested = [n for n in order if n not in per_addon]
+    for name in untested:
+        print(f"  {name:20}   0 authored tests, not executed")
+
+    print(f"\n{len(errors)} error(s), {total} authored test(s) across {len(addons)} addons")
+    print("These have never been executed: no Odoo instance exists on this host.")
     for err in errors:
         print("  ERROR  ", err)
     return 1 if errors else 0

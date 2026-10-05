@@ -33,10 +33,18 @@ oca: ## Fetch pinned OCA dependency modules into $(OCA_DIR)
 	@mkdir -p $(OCA_DIR)
 	@bash ops/fetch_deps.sh $(OCA_DIR)
 
+# `pin` deliberately does not generate versions/lock.txt. A lock that the build
+# rewrites is not a lock: fetching a moving branch and recording whatever it
+# returned is exactly the drift the lock exists to prevent, and it would let a
+# dependency change enter a commit unreviewed. To move a pin, edit the file by
+# hand, run `make oca` to prove the new revision resolves, and review the diff.
 .PHONY: pin
-pin: oca ## Record resolved upstream SHAs for reproducibility
-	@cat $(OCA_DIR)/*.sha > versions/lock.txt
-	@echo "Wrote versions/lock.txt"
+pin: ## Verify every pinned revision resolves, then show the module inventory
+	@bash ops/fetch_deps.sh $(OCA_DIR)
+	@echo
+	@echo "Pinned revisions verified. versions/lock.txt was NOT modified."
+	@echo "To move a pin, edit versions/lock.txt yourself and re-run this target."
+	@cat $(OCA_DIR)/*.modules
 
 .PHONY: up
 up: env ## Start the dev stack (Odoo + PostgreSQL)
@@ -102,8 +110,9 @@ test-odoo: ## One command: install all addons in order, run tests, write a repor
 	./ops/run_odoo_tests.sh
 
 .PHONY: test-standalone
-test-standalone: ## Run the Odoo-free solver constraint tests (no stack needed)
+test-standalone: ## Run the Odoo-free tests (solver + TDS arithmetic); no stack needed
 	python3 tests/standalone/test_solver_constraints.py
+	python3 tests/standalone/test_tds_arithmetic_DEV.py
 
 # The integration, AI and standalone roster-solver services are Phase 3/4 and are
 # not built yet. The roster solver that exists is inside hrms_roster and is

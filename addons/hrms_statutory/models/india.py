@@ -17,6 +17,8 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+from . import tds_projection as _tds_projection
+
 _logger = logging.getLogger(__name__)
 
 
@@ -261,6 +263,27 @@ class IndiaStatutoryEngine(models.AbstractModel):
         Both the old and new regime slabs come from config (IN.TDS.SLABS.OLD /
         IN.TDS.SLABS.NEW). Mid-year regime change is supported because the
         employee may change once before 31 March.
+
+        The arithmetic lives in ``tds_projection.py`` and is projected as:
+        income so far this financial year, plus the current month's pay times
+        the months that follow it. It is deliberately not a run-rate average --
+        see that module's docstring for why a mid-year joiner, a salary revision
+        and a bonus month each break one.
+
+        Two defects in the previous inline implementation, both found by reading
+        rather than by a test because the logic had no test coverage:
+
+        1. It annualised with ``taxable_ytd * 12`` where ``taxable_ytd`` was
+           already year-to-date income. In month 6 that overstated annual income
+           sixfold and pushed the employee into the top slab, applying the
+           highest rate to all of their income.
+        2. It computed ``target_ytd = (total_annual / 12) * 12``, which is
+           arithmetically ``total_annual`` -- the division and re-multiplication
+           cancelled, so the intended monthly spread never happened and the whole
+           annual liability was withheld in month 1.
+
+        Marginal relief and rebate remain a CA sign-off item; both are applied to
+        the total tax, not per slab. See ``docs/compliance/CA-SIGNOFF-REQUEST.md``.
         """
         company = employee.company_id
         state = employee.hrms_state_code or company.state_id.code or ""
@@ -281,77 +304,54 @@ class IndiaStatutoryEngine(models.AbstractModel):
                 f"config before processing payroll."
             )
 
-        ytd = ytd if ytd is not None else _ytd_taxable(employee, period_end)
-        # Standard deduction / regime-specific deduction from config.
-        deduction = float(employee.hrms_tds_deduction or 0.0) or float(slabs.get("standard_deduction", 0.0))
-        taxable_ytd = max(ytd - deduction, 0.0)
+        income_to_date = ytd if ytd is not None else _ytd_taxable(employee, period_end)
+        # Annual deduction: standard deduction for the regime, or the employee's
+        # declared exemptions/deductions where those are higher.
+        deduction = float(
+            employee.hrms_tds_deduction or 0.0
+        ) or float(slabs.get("standard_deduction", 0.0))
 
-        slabs_list = slabs.get("slabs", [])
-        cess_pct = float(slabs.get("cess_pct", 0.0))
-        surcharge = slabs.get("surcharge") or []
-
-        annual_taxable = taxable_ytd * 12  # annualise for slab selection
-        matched = None
-        for slab in slabs_list:
-            lo = slab.get("from")
-            hi = slab.get("to")
-            if (lo is None or annual_taxable >= lo) and (hi is None or annual_taxable <= hi):
-                matched = slab
-                break
-        if not matched:
-            raise UserError(
-                f"TDS: no slab matches annualised taxable income {annual_taxable} "
-                f"under the {regime} regime. The slab table is incomplete."
-            )
-
-        rate = float(matched.get("rate_pct", 0.0))
-        annual_tax = taxable_ytd * (rate / 100.0)
-
-        # Marginal relief caps the tax at the top band where the rate jumps.
-        # The relief amount is config, not code, because it changes with
-        # notifications.
-        relief_amount = matched.get("marginal_relief_amount")
-        if relief_amount is not None:
-            annual_tax = min(annual_tax, float(relief_amount))
-
-        # Surcharge at high incomes (config-driven thresholds).
-        surcharge_amount = 0.0
-        for band in surcharge:
-            if annual_taxable >= band.get("threshold", 0):
-                surcharge_amount = annual_tax * (band.get("pct", 0.0) / 100.0)
-        annual_tax += surcharge_amount
-
-        cess = annual_tax * (cess_pct / 100.0)
-        total_annual = annual_tax + cess
-
-        # TDS is on a cumulative/averaging basis, not per-month slabs.
+        fy_start = company.hrms_fiscal_year_start_month or _tds_projection.IN_FY_START_MONTH
+        months_elapsed, months_remaining = _tds_projection.financial_year_position(
+            period_end, fy_start
+        )
         ytd_deducted = float(employee.hrms_tds_ytd or 0.0)
-        target_ytd = (total_annual / 12.0) * 12  # full-year liability
-        month_number = period_end.month
-        should_have = target_ytd * (month_number / 12.0)
-        recoverable = max(round(should_have - ytd_deducted, 2), 0.0)
-        non_recoverable = 0.0
-        if ytd_deducted > should_have:
-            non_recoverable = round(ytd_deducted - should_have, 2)
+
+        try:
+            recurring_pay, pay_basis = _recurring_monthly_pay(employee, income_to_date)
+            recoverable, non_recoverable, detail = _tds_projection.compute_tds_arithmetic(
+                income_to_date=income_to_date,
+                # This is the per-month figure for months not yet paid, not a
+                # run rate for annualising income so far. See the helper for why
+                # the order of preference matters.
+                current_month_pay=recurring_pay,
+                months_elapsed=months_elapsed,
+                months_remaining=months_remaining,
+                ytd_deducted=ytd_deducted,
+                annual_deduction=deduction,
+                slabs=slabs.get("slabs", []),
+                cess_pct=float(slabs.get("cess_pct", 0.0)),
+                surcharge_bands=slabs.get("surcharge") or [],
+                relief=slabs.get("marginal_relief"),
+                rebate=slabs.get("rebate"),
+                scheduled_future_pay=employee.hrms_tds_scheduled_future_pay or None,
+                pay_basis=pay_basis,
+            )
+        except ValueError as exc:
+            # An incomplete slab table is a configuration fault, not a data
+            # fault. Refusing is the whole point: a guessed rate would produce a
+            # plausible payslip with a wrong TDS number on it.
+            raise UserError(
+                f"TDS for {employee.display_name} as at {period_end} cannot be "
+                f"computed: {exc} Configure IN.TDS.SLABS.{regime.upper()} with a "
+                f"complete slab table before processing payroll."
+            ) from exc
 
         return {
             "tds_regime": regime,
             "tds_recoverable": recoverable,
             "tds_non_recoverable": non_recoverable,
-            "tds_detail": _json(
-                {
-                    "regime": regime,
-                    "annualised_taxable": annual_taxable,
-                    "matched_slab": matched,
-                    "deduction_applied": deduction,
-                    "annual_tax": round(total_annual, 2),
-                    "cess_pct": cess_pct,
-                    "surcharge": surcharge_amount,
-                    "ytd_deducted_before": ytd_deducted,
-                    "month_number": month_number,
-                    "method": "cumulative",
-                }
-            ),
+            "tds_detail": _json({"regime": regime, **detail}),
         }
 
     # -- orchestration ------------------------------------------------------
@@ -409,17 +409,64 @@ class IndiaStatutoryEngine(models.AbstractModel):
 
 
 def _ytd_taxable(employee, period_end):
-    """Year-to-date taxable salary, preferring an explicit stored figure."""
-    ytd = getattr(employee, "hrms_ytd_taxable", None)
-    if ytd:
-        return float(ytd)
-    # Fall back to contract monthly * elapsed months. A real deployment supplies
-    # this from payslips; this is a best-effort default and is flagged.
+    """Taxable income received this financial year, up to the current month.
+
+    Prefers the stored figure a payroll run writes back after each period. The
+    contract fallback multiplies by *service* months inside the FY rather than
+    by FY months elapsed, because an employee who joined in September has one
+    payslip of income-so-far in September, not six. Counting FY months here
+    overstated a mid-year joiner's income by five months of salary and
+    over-deducted TDS from their very first payslip.
+    """
+    stored = getattr(employee, "hrms_ytd_taxable", None)
+    if stored:
+        return float(stored)
     contract = employee.contract_id
-    if contract and contract.wage:
-        months = period_end.month
-        return float(contract.wage) * months
-    return 0.0
+    monthly = float(contract.wage) if contract and contract.wage else 0.0
+    if not monthly:
+        return 0.0
+    fy_start = (
+        employee.company_id.hrms_fiscal_year_start_month
+        or _tds_projection.IN_FY_START_MONTH
+    )
+    service_months = _tds_projection.service_months_in_fy(
+        period_end, getattr(employee, "joining_date", None), fy_start
+    )
+    if service_months <= 0:
+        return 0.0
+    return round(monthly * service_months, 2)
+
+
+def _recurring_monthly_pay(employee, income_to_date):
+    """The recurring monthly pay to project forward, and where it came from.
+
+    ``project_annual_income`` multiplies this figure by the months ahead, so it
+    must exclude one-off components. A bonus sitting in it would be projected
+    across the rest of the year and over-deducted once per remaining month.
+
+    Preference order:
+
+    1. ``hrms_current_month_pay`` -- the payroll run's own figure for the period
+       being processed. Trusted first because it is the only source that sees
+       this month's actual composition.
+    2. The contract wage -- recurring by definition, and it already reflects a
+       revision that takes effect mid-year.
+    3. The average of income so far. This last resort includes one-off pay, so
+       it is flagged in ``tds_detail`` as ``ytd-average``: a reviewer can see the
+       number was best-effort rather than a clean recurring figure.
+
+    Returns ``(amount, basis)``.
+    """
+    explicit = float(getattr(employee, "hrms_current_month_pay", 0.0) or 0.0)
+    if explicit > 0:
+        return explicit, "explicit-field"
+
+    contract = employee.contract_id
+    wage = float(contract.wage) if contract and contract.wage else 0.0
+    if wage > 0:
+        return wage, "contract-wage"
+
+    return round(float(income_to_date or 0.0), 2), "ytd-average"
 
 
 def _json(payload):

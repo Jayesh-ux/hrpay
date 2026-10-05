@@ -1,0 +1,58 @@
+# Locked upstream dependency revisions.
+#
+# WHY THIS FILE EXISTS
+# --------------------
+# A branch name is not a version. Fetching `18.0` gives you whatever the branch
+# head happens to be that afternoon, so the same code produces different payroll
+# numbers on different days and an upstream commit becomes indistinguishable
+# from our own bug. Every repo below is pinned to an exact commit.
+#
+# `ops/fetch_deps.sh` checks out these SHAs, not the branch, and fails if what it
+# finds on disk does not match. To move a pin deliberately, edit the SHA here and
+# re-run `make oca`; never re-pin as a side effect of a failing build.
+#
+# Recorded 2026-10-05 by cloning each repository and reading the module
+# __manifest__.py at the pinned commit.
+#
+# FORMAT
+# ------
+#   repo | ref | sha | module=version:license,module=version:license
+#
+# The licence of every module is recorded because the project prohibits Odoo
+# Enterprise code outright (versions/pinned.env ODOO_EE_ABSENT), and the only
+# reliable way to notice an OPL/EE module appearing in an otherwise LGPL/AGPL
+# repository is to check the manifest rather than trust the repository's name.
+
+# ─── Open HRMS: the payroll modules ───────────────────────────────────────────
+#
+# hr_payroll_community and hr_payroll_account_community live here, NOT in
+# OCA/payroll. An earlier version of ops/fetch_deps.sh cloned OCA/payroll for
+# them; that repository contains payroll, payroll_account and
+# payroll_contract_advantages and none of the _community modules, so the fetch
+# appeared to succeed and the install then failed on a missing dependency.
+# The branch's last commit is titled "Initial Commit" (versions/pinned.env
+# OPENHRMS_REPO_LAST_COMMIT) and warrants review at Gate 1A.
+CybroOdoo/OpenHRMS | 18.0 | 22456b933336e6a8afa60a2d787de3fb2253d9ff | hr_payroll_community=18.0.1.0.0:LGPL-3,hr_payroll_account_community=18.0.1.0.0:LGPL-3
+
+# ─── OCA helpdesk: ticket model and type ──────────────────────────────────────
+#
+# Only two modules are depended on: helpdesk_mgmt for the helpdesk.ticket model
+# and helpdesk_type for helpdesk.ticket.type. Upstream renamed
+# helpdesk_mgmt_type -> helpdesk_type and helpdesk_mgmt_team -> helpdesk_motive
+# during the 18.0 cycle; the earlier manifest dependencies on the old names would
+# not resolve. See docs/adr/0009-oca-helpdesk-dependency-minimisation.md for why
+# the SLA, business-hours and CSAT modules are no longer depended on.
+#
+# helpdesk_motive is deliberately NOT fetched. It exists only to make the rename
+# visible, and ADR-0009 rejects unused dependencies on the grounds that they are
+# an untested upstream surface this project neither controls nor exercises. If a
+# future requirement needs it, add it to this line at that point.
+OCA/helpdesk | 18.0 | 461aa27bd18d855eb48b1ef7a7ff400e2757fe85 | helpdesk_mgmt=18.0.1.18.0:AGPL-3,helpdesk_type=18.0.1.2.1:AGPL-3
+
+# ─── Deliberately absent ──────────────────────────────────────────────────────
+#
+# OCA/payroll         -- wrong repository for our modules; see above.
+# OCA/hr              -- nothing depends on it. Kept in versions/pinned.env for
+#                        completeness; do not fetch until something needs it.
+# CybroOdoo ent_*    -- OPL-1, Odoo Enterprise only. fetch_deps.sh refuses any
+#                        checkout containing an ent_* module.

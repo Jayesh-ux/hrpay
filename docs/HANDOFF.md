@@ -15,8 +15,8 @@ in this repo is *authored and statically checked, never run*.
 What that means practically:
 
 - 101 Odoo test functions exist. Zero have been executed.
-- 14 standalone solver tests exist. **These have been executed**, because they
-  need no Odoo — see §4.
+- 59 standalone tests exist (14 solver + 45 TDS arithmetic). **These have been
+  executed**, because they need no Odoo — see §4.
 - The static checkers (`make check-static`) prove internal consistency: manifests
   resolve, XML references exist, no addon references a module that loads later,
   and every field named in a view exists on the model. They say nothing about
@@ -41,9 +41,11 @@ Six Odoo addons under `addons/`, in dependency order. This order is verified by
 
 Also present:
 
-- 8 ADRs (`docs/adr/`), including ADR-0008 on why the solver is a greedy
-  heuristic and what would trigger a CP-SAT rewrite.
-- Phase 0 go/no-go, statutory config register, version manifest.
+- 9 ADRs (`docs/adr/`), including ADR-0008 on why the solver is a greedy
+  heuristic and what would trigger a CP-SAT rewrite, and ADR-0009 on trimming the
+  OCA helpdesk dependencies.
+- Phase 0 go/no-go, statutory config register (all 44 codes keyed to the catalog),
+  `versions/lock.txt` (exact upstream SHAs), and the CA sign-off request.
 - Dev stack: `docker-compose.yml` (Odoo 18 CE + PostgreSQL 16), `ops/`.
 - Static checkers: `tools/check_addons.py`, `tools/check_views.py`.
 
@@ -60,7 +62,8 @@ Read this list before assuming anything works.
 | Docker stack | never started; the image internals the entrypoint depends on are assumptions |
 | `make test-odoo` end to end | never run |
 | Encryption key rotation | implemented, never exercised |
-| TDS annualisation / cumulative deduction | **written and never reviewed even by reading it closely.** See §5. |
+| TDS projection and monthly split | rewritten, 45 standalone tests pass, **developer-derived expected values only**. The Odoo path (reading config off an employee, writing back YTD) is untested. See §5. |
+| Statutory register alignment | all 44 codes now have a register row; values remain unvalidated |
 
 The Docker entrypoint (`ops/odoo-entrypoint.sh`) deliberately derives the core
 addons path from the installed Odoo package rather than hardcoding it, because
@@ -72,9 +75,8 @@ container start, that file is the first place to look.
 
 Only two things, and they are worth separating clearly.
 
-**Executed: 14 standalone solver tests.**
-`python3 tests/standalone/test_solver_constraints.py` (or `make test-standalone`)
-runs with no dependencies. It re-implements the solver's constraint arithmetic
+**Executed: 59 standalone tests (14 solver + 45 TDS).**
+`make test-standalone` runs both files with no dependencies. It re-implements the solver's constraint arithmetic
 with plain dataclasses and checks it. It found two real problems:
 
 1. A 16-hour default `rest_after_hours` on a 09:00–18:00 shift made consecutive
@@ -89,6 +91,18 @@ drift. `test_mirror_is_in_sync_with_the_odoo_solver` parses `solver.py` and
 fails if a default, a blocking reason or a constraint disappears. That guard was
 tested by deliberately changing a default and watching it fail. If you change
 the solver, run this suite.
+
+**Executed: 45 TDS arithmetic tests.**
+`python3 tests/standalone/test_tds_arithmetic_DEV.py` imports the real production
+module `addons/hrms_statutory/models/tds_projection.py` — not a copy — and walks
+whole financial years month by month for both regimes: mid-year joiners, salary
+revisions, bonuses, month 1/6/12 positions, surcharge, cess, rebate and relief. A
+structural guard fails if anyone reintroduces a multiplication of income-so-far by
+anything but 1, which is the original annualisation defect; that guard was verified
+by injecting `income_to_date * 12` and watching the suite go red.
+
+These tests are **developer-derived**. They prove the code matches our reading of
+the rules. They do not prove the reading is right.
 
 **Executed: static cross-reference checks.** `make check-static` currently
 reports 0 errors: every manifest data file exists, every XML reference resolves
@@ -107,42 +121,60 @@ Ordered by how much they should worry you.
 
 ### Blocking
 
-1. **TDS annualisation and cumulative deduction has never been reviewed.** The
-   code exists in `addons/hrms_statutory/models/india.py`. Correct cumulative
-   TDS across a year is the single most error-prone thing in this codebase, and
-   it was written and never re-read. Treat as unverified code.
-2. **No F&F golden files exist.** `make golden` is a stub. Nothing has been
+1. **TDS slab tables, relief and rebate are unvalidated.** The projection
+   arithmetic is now separated into `tds_projection.py`, tested by 45 standalone
+   tests, and the two defects it shipped with (annualising YTD income by ×12, and
+   a dividing-then-multiplying step that cancelled and withheld the whole year's
+   tax in month 1) are fixed and guarded against. **Every expected number in the
+   tests is our own reading of the rules.** Marginal relief's cap rate, whether
+   relief is recomputed, and the order of relief versus rebate are all unresolved.
+   See `docs/compliance/CA-SIGNOFF-REQUEST.md` §3.2.
+2. **The TDS inputs are not written by anything.** `hrms_ytd_taxable`,
+   `hrms_tds_ytd`, `hrms_current_month_pay` and
+   `hrms_tds_scheduled_future_pay` have no writer yet, so payroll falls back to
+   the contract wage and the joining date. That fallback is now joining-date aware
+   (a mid-year joiner is not credited with months they were not here), but the
+   write-back that should own these figures is not built.
+3. **No F&F golden files exist.** `make golden` is a stub. Nothing has been
    compared against a payroll professional's hand calculation. The F&F arithmetic
    is entirely unvalidated against an authority.
-3. **No statutory value is configured or validated.** By design — all 44 catalog
+4. **No statutory value is configured or validated.** By design — all 44 catalog
    codes are skeletons. No payroll can actually be processed. This is correct
    behaviour, not a bug, but it means "the platform computes payroll" is not yet a
    true statement.
-4. **The roster solver does not enforce statutory overtime caps.** Its limits
+5. **The roster solver does not enforce statutory overtime caps.** Its limits
    come from `hrms.roster.solver.setting`, which a manager fills in. If a
    statutory limit is stricter, the payroll-time statutory engine is what catches
    it, not the solver. Documented in ADR-0008; not yet fixed.
 
 ### Non-blocking but known
 
-5. The solver is greedy and does not backtrack, so it can decline an assignment
+6. The solver is greedy and does not backtrack, so it can decline an assignment
    a different arrangement would have allowed (ADR-0008).
-6. `hrms_helpdesk` is the thinnest addon (261 lines) and the least reviewed.
-7. `addons/hrms_api/` and `addons/hrms_expense/` exist on disk as empty
+7. `hrms_helpdesk` is the thinnest addon (261 lines) and the least reviewed.
+8. `addons/hrms_api/` and `addons/hrms_expense/` exist on disk as empty
    placeholder directories. They are untracked by git and contain nothing. The
    old Makefile referenced them by name, which is why they are mentioned here.
-8. `ops/compliance_report.py` is not written, so `make compliance-report` and
+9. `ops/compliance_report.py` is not written, so `make compliance-report` and
    `make compliance-block` fail loudly. The interim gate is
    `ops/check_statutory_gate.py`, run by `make test-odoo`.
-9. Several Makefile targets are deliberate loud failures (`test-e2e`,
+10. Several Makefile targets are deliberate loud failures (`test-e2e`,
    `test-load`, `golden`, `scan`, `zap-scan`, `k8s-build`, `dr-drill`, `backup`,
    `compliance-report`, `compliance-block`). They are unimplemented, not broken.
-10. OCA dependencies are fetched at the `18.0` branch, not pinned by SHA.
-    `ops/fetch_deps.sh` writes `.oca/*.sha` and `make pin` collects them into
-    `versions/lock.txt`, but **`versions/lock.txt` does not exist yet**. Until it
-    does, a test failure upstream is not reproducible.
-11. D6 — per-establishment legal basis — is formally unapproved. The
+11. Dependencies are now pinned by exact SHA in `versions/lock.txt` and verified
+    on every fetch, so this one is *closed* — see §6 Step 1. Note the two
+    corrections: payroll modules come from **CybroOdoo/OpenHRMS**, not
+    OCA/payroll, and OCA/helpdesk 18.0 uses **`helpdesk_type`** for
+    `helpdesk.ticket.type`. The earlier manifest depended on
+    `helpdesk_mgmt_type`, which does not exist on that branch.
+12. **OpenHRMS ships an Enterprise module on the same branch.** `ent_uae_wps_report`
+    (OPL-1) sits next to the LGPL payroll modules. `fetch_deps.sh` uses a sparse
+    checkout limited to the locked module directories, so it is never fetched. If
+    anyone widens that sparse set, the script stops on it.
+13. D6 — per-establishment legal basis — is formally unapproved. The
     implementation exists; the approval does not.
+14. The CA request is drafted (`docs/compliance/CA-SIGNOFF-REQUEST.md`) but **has
+    not been sent**. Nothing statutory can be configured until it comes back.
 
 ## 6. First steps on the new machine
 
@@ -160,8 +192,8 @@ make env          # creates .env from .env.example — EDIT the passwords
 make test-standalone
 ```
 
-`make test-standalone` should print 14 passing tests and needs no Docker. If it
-does not, the repository is broken before Odoo is even involved, and that is the
+`make test-standalone` should print 14 and 45 passing tests and needs no Docker. If
+it does not, the repository is broken before Odoo is even involved, and that is the
 cheapest possible failure to diagnose.
 
 ### Step 1 — dependencies
@@ -170,14 +202,19 @@ cheapest possible failure to diagnose.
 make oca
 ```
 
-Clones OCA/payroll and OCA/helpdesk at `18.0` into `.oca/`. It fails if any
-expected module directory is missing (catching an upstream rename) and it
-**refuses to continue if any Odoo Enterprise module directory is present**.
-Record the SHAs:
+Clones **CybroOdoo/OpenHRMS** and **OCA/helpdesk** into `.oca/`, each checked out at
+the exact SHA in `versions/lock.txt` — not the branch head. It fails if a module
+directory is missing (catching an upstream rename), if a module's version or
+licence differs from the lock, or if any Odoo Enterprise module is present.
 
 ```bash
-make pin          # writes versions/lock.txt — commit this
+make pin          # re-verifies every pin and prints the module inventory
 ```
+
+`make pin` deliberately does **not** rewrite `versions/lock.txt`. A lock the build
+regenerates is not a lock: it would let an upstream change enter a commit
+unreviewed. To move a pin, edit the file by hand, run `make pin`, and review the
+diff.
 
 ### Step 2 — static checks
 
@@ -203,7 +240,8 @@ Expect this to fail. The most likely first failures, in order of probability:
 
 1. Container start: the entrypoint cannot locate the core addons directory.
 2. Install: an Odoo 18 field or API differs from what the code assumes.
-3. Install: an OCA module name or dependency differs from `versions/pinned.env`.
+3. Install: a dependency of an OCA module we pin differs on this machine (the
+   pins are verified at fetch time, but transitive dependencies are not pinned).
 4. Tests: assertions that encode a wrong assumption about Odoo behaviour.
 
 Useful while debugging:
