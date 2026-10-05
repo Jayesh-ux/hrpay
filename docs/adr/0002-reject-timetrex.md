@@ -1,6 +1,6 @@
 # ADR-0002 — Reject TimeTrex Community Edition; adopt an LGPL payroll engine in Odoo
 
-- **Status:** Proposed (Phase 0, awaiting sign-off)
+- **Status:** ✅ **Accepted** (Phase 0 sign-off, 2026-10-05)
 - **Date:** 2026-10-05
 
 ## Context
@@ -40,3 +40,20 @@ engine, with all Indian statutory rules implemented by us as effective-dated con
   Community module provides it, and the brief's own "never hardcode statutory rates" rule
   required an owned effective-dated rules layer regardless.
 - Deprioritised: scheduling and job costing from TimeTrex.
+
+### Amendment — D5 accepted 2026-10-05
+
+Because the `hr_payroll_community` `18.0` branch's last commit is an "Initial Commit", the
+engine is **not yet trusted**. A mandatory blocking bake-off (Gate 1A) runs before any Phase 1
+work commits to it:
+
+1. One golden-file employee — mid-period salary change, LOP, one absence — hand-computed by a
+   payroll specialist and matching to the paisa.
+2. Retro edit in an **open** period recomputes correctly.
+3. Retro edit in a **locked** period is rejected (proves `payroll_period_lock`).
+4. A salary rule referencing both a contribution-register field and an effective-dated config table.
+5. `hr_payroll_account_community` posts a payslip journal to Community `account` with GST
+   analytic lines.
+
+If any of 1–4 fails, fall back to an independent Python calculation service as calculation
+system of record, storing immutable payslip snapshots in Odoo. Decide at Gate 1A, not later.

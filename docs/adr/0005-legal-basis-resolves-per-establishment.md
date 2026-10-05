@@ -1,6 +1,6 @@
 # ADR-0005 — Applicable law resolves per establishment, not globally
 
-- **Status:** Proposed (Phase 0, awaiting sign-off — Decision D6)
+- **Status:** 🟡 Proposed — Decision D6 still OPEN, not yet signed off
 - **Date:** 2026-10-05
 
 ## Context

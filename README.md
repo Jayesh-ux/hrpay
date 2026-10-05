@@ -10,7 +10,8 @@ No platform code has been written. Phase 0 was a validation spike.
 | Phase | Scope | Status |
 |---|---|---|
 | **0** | Validation spike + go/no-go | ✅ **Complete** — [report](docs/phase0/go-no-go.md) |
-| 1 | Core loop: schema, integration service, RBAC | ⛔ Blocked pending 6 decisions |
+| **1A** | Payroll engine bake-off | 🟡 Next. Blocked on build host (no Docker, 11 GB disk here) |
+| 1 | Core loop: schema, integration service, RBAC | ⛔ Blocked on Gate 1A + D6 |
 | 2 | AI management layer | ⛔ Blocked |
 | 3A | Full & final settlement engine | ⛔ Blocked |
 | 3B | Tax-linked travel & expense engine | ⛔ Blocked |
@@ -18,7 +19,13 @@ No platform code has been written. Phase 0 was a validation spike.
 | 3D | Complex shift auto-rostering | ⛔ Blocked |
 | 4 | Recruitment, bots, surveys, org chart, succession, UAE/US payroll | ⛔ Blocked |
 
-## Verdict: CONDITIONAL GO — the target stack is not buildable as specified
+## Verdict: CONDITIONAL GO — approved 2026-10-05 (D1, D3, D5); D6 open
+
+**Decisions signed off:** D1 drop TimeTrex · D2 pin Odoo 18.0 · D3 Invoicing-only accounting ·
+D5 Gate 1A bake-off. **Still open:** D6 per-establishment legal basis (affects Phase 1 schema),
+D4 goals/OKR (Phase 4, no schema impact).
+
+The target stack is not buildable as specified:
 
 Phase 0 changed the architecture in three ways:
 
@@ -81,14 +88,14 @@ Form 16, gratuity, LWF), then UAE (WPS, EOSB), then US (federal/state).
 
 ## Decisions pending sign-off
 
-| ID | Decision |
-|---|---|
-| D1 | Drop TimeTrex; adopt `hr_payroll_community` in Odoo |
-| D2 | Accept Odoo 18.0 as the pinned version |
-| D3 | Accounting scope on Community: accept Invoicing-only for Phase 1 |
-| D4 | Goals/OKR has no Community module — build custom in Phase 4, or drop |
-| D5 | Run the payroll engine bake-off (Gate 1A) before committing |
-| D6 | Adopt per-establishment legal-basis resolution |
+| ID | Decision | Outcome |
+|---|---|---|
+| D1 | Drop TimeTrex; adopt `hr_payroll_community` in Odoo | ✅ approved |
+| D2 | Accept Odoo 18.0 as the pinned version | ✅ accepted |
+| D3 | Accounting scope on Community: accept Invoicing-only for Phase 1 | ✅ approved |
+| D4 | Goals/OKR has no Community module — build custom in Phase 4, or drop | 🟡 open, low stakes |
+| D5 | Run the payroll engine bake-off (Gate 1A) before committing | ✅ approved |
+| D6 | Adopt per-establishment legal-basis resolution | 🟡 **open — blocks Phase 1 schema** |
 
 ## Architecture decision records
 

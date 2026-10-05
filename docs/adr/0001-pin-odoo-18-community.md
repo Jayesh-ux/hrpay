@@ -1,6 +1,6 @@
 # ADR-0001 — Pin Odoo 18.0 Community Edition as the platform core
 
-- **Status:** Proposed (Phase 0, awaiting sign-off)
+- **Status:** ✅ **Accepted** (Phase 0 sign-off, 2026-10-05)
 - **Date:** 2026-10-05
 
 ## Context

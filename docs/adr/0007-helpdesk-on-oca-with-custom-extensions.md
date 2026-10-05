@@ -1,6 +1,6 @@
 # ADR-0007 — Build the helpdesk on OCA helpdesk_mgmt; extend rather than replace
 
-- **Status:** Proposed (Phase 0, awaiting sign-off)
+- **Status:** ✅ **Accepted** (Phase 0 sign-off, 2026-10-05) — required by the brief; no standalone signature required
 - **Date:** 2026-10-05
 
 ## Context

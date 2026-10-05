@@ -1,6 +1,6 @@
 # ADR-0006 — Every payroll and F&F calculation is an immutable, versioned record
 
-- **Status:** Proposed (Phase 0, awaiting sign-off)
+- **Status:** ✅ **Accepted** (Phase 0 sign-off, 2026-10-05) — required by the brief; no standalone signature required
 - **Date:** 2026-10-05
 
 ## Context

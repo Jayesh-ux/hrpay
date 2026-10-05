@@ -1,6 +1,6 @@
 # ADR-0003 — All Indian statutory payroll rules are bespoke, effective-dated, and sign-off gated
 
-- **Status:** Proposed (Phase 0, awaiting sign-off)
+- **Status:** ✅ **Accepted** (Phase 0 sign-off, 2026-10-05) — follows from D1; no standalone signature required
 - **Date:** 2026-10-05
 
 ## Context

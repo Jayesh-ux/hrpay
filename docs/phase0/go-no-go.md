@@ -1,6 +1,6 @@
 # Phase 0 — Validation Spike: Go/No-Go Note
 
-- **Status:** CONDITIONAL GO — do not start Phase 1 until the four blocking decisions below are signed off
+- **Status:** CONDITIONAL GO — **D1, D3, D5 approved 2026-10-05.** D2 resolved by implication (ADR-0001 accepted). **D6 still open.** Phase 1 remains blocked pending Gate 1A.
 - **Date:** 2026-10-05
 - **Scope:** Validation only. No platform code written.
 - **Method:** Every claim marked ✅ was verified directly against the upstream git/PyPI/site of record on 2026-10-05, not inferred from marketing pages. Claims marked ⚠️ are unverified research that **requires sign-off by a qualified Indian payroll/tax professional** before it enters configuration.
@@ -274,14 +274,14 @@ Consequences for the design:
 
 ## 7. Decisions requiring your sign-off
 
-| ID | Decision | Recommendation |
-|---|---|---|
-| **D1** | **Drop TimeTrex.** Adopt `hr_payroll_community` (LGPL-3) as the payroll engine in Odoo; integration service bridges Odoo ⇄ Roster ⇄ AI only. | **Approve.** Not optional — CE is unobtainable and has no India tax support. |
-| **D2** | **Accept Odoo 18.0** as the pinned version (not 17.0, not 19.0). | **Approve.** Only version where OCA helpdesk is actively maintained. |
-| **D3** | **Accounting scope on Community.** Choose: **(a)** accept CE Invoicing — journal entries + GST work, GL close/reconciliation is manual or external; **(b)** license Odoo Enterprise for `account_accountant` (breaks the no-Enterprise rule, adds cost); **(c)** build GL reporting/reconciliation on top of CE `account` + OCA `mis_builder` (⚠️ `OCA/mis_builder` 18.0 last commit 2026-08-11 — usable but not fast-moving; `OCA/account-financial-report` has no 18.0 branch). | **(a) for Phase 1**, with GL reporting deferred. Revisit before 3B needs GST reconciliation at scale. |
-| **D4** | **Goals/OKR has no Community module.** Build custom in Phase 4, or drop from initial scope. | Defer to Phase 4, build custom. |
-| **D5** | **Gate 1A bake-off** before committing to the payroll engine (§3.3). | **Approve.** The engine's 18.0 branch is one "Initial Commit" old; this is the correct place to de-risk. |
-| **D6** | **Per-establishment legal-basis model** (§6.3) — a significant addition to the Phase 1 schema. | **Approve.** Without it we cannot correctly compute F&F or gratuity for a multi-State India footprint post-Codes. |
+| ID | Decision | Recommendation | Outcome |
+|---|---|---|---|
+| **D1** | **Drop TimeTrex.** Adopt `hr_payroll_community` (LGPL-3) as the payroll engine in Odoo; integration service bridges Odoo ⇄ Roster ⇄ AI only. | Approve. Not optional — CE is unobtainable and has no India tax support. | ✅ **APPROVED 2026-10-05** → ADR-0002 |
+| **D2** | **Accept Odoo 18.0** as the pinned version (not 17.0, not 19.0). | Approve. Only version where OCA helpdesk is actively maintained. | ✅ **Accepted** — every manifest in `versions/pinned.env` is verified at 18.0, so this is load-bearing → ADR-0001 |
+| **D3** | **Accounting scope on Community.** Choose: **(a)** accept CE Invoicing — journal entries + GST work, GL close/reconciliation is manual or external; **(b)** license Odoo Enterprise for `account_accountant`; **(c)** build GL reporting on CE `account` + OCA `mis_builder`. | (a) for Phase 1; revisit before 3B needs GST reconciliation at scale. | ✅ **APPROVED 2026-10-05** → ADR-0004 |
+| **D4** | **Goals/OKR has no Community module.** Build custom in Phase 4, or drop from initial scope. | Defer to Phase 4, build custom. | 🟡 **OPEN** — low stakes, no schema impact. Not queried. |
+| **D5** | **Gate 1A bake-off** before committing to the payroll engine (§3.3). | Approve. The engine's 18.0 branch is one "Initial Commit" old. | ✅ **APPROVED 2026-10-05** → ADR-0002 amendment |
+| **D6** | **Per-establishment legal-basis model** (§6.3) — a significant addition to the Phase 1 schema. | Approve. Without it we cannot correctly compute F&F or gratuity for a multi-State India footprint post-Codes. | 🟡 **OPEN — needs sign-off. Affects Phase 1 schema.** → ADR-0005 |
 
 ---
 

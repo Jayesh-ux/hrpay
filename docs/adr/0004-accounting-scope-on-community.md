@@ -1,6 +1,6 @@
 # ADR-0004 — Constrain accounting scope on Odoo Community
 
-- **Status:** Proposed (Phase 0, awaiting sign-off — Decision D3)
+- **Status:** ✅ **Accepted** (Phase 0 sign-off, 2026-10-05)
 - **Date:** 2026-10-05
 
 ## Context
