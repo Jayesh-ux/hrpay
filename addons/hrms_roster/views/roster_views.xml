@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+      Roster UI. Publishing is a one-way button and is deliberately separate from
+      confirming: confirm says "this is what was agreed", publish says "this is
+      the reference every attendance and overtime decision is judged against".
+    -->
+
+    <menuitem id="menu_hrms_roster_root"
+        name="Rostering"
+        parent="hr.menu_hr_root"
+        sequence="35"/>
+
+    <menuitem id="menu_hrms_roster_config"
+        name="Roster configuration"
+        parent="menu_hrms_roster_root"
+        sequence="90"
+        groups="hrms_core_ext.group_hrms_roster_manager"/>
+
+    <menuitem id="menu_hrms_roster_period"
+        name="Roster periods"
+        parent="menu_hrms_roster_root"
+        action="action_hr_roster_period"
+        sequence="10"/>
+
+    <menuitem id="menu_hrms_roster_assignment"
+        name="Assignments"
+        parent="menu_hrms_roster_root"
+        action="action_hr_roster_assignment"
+        sequence="20"/>
+
+    <record id="view_hr_roster_shift_list" model="ir.ui.view">
+        <field name="name">hr.roster.shift.list</field>
+        <field name="model">hr.roster.shift</field>
+        <field name="arch" type="xml">
+            <list string="Shifts">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="start_time" widget="float_time"/>
+                <field name="end_time" widget="float_time"/>
+                <field name="overnight"/>
+                <field name="break_minutes"/>
+                <field name="duration_hours"/>
+                <field name="rest_after_hours"/>
+                <field name="weekly_ot_threshold"/>
+                <field name="is_night_shift"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_roster_shift_form" model="ir.ui.view">
+        <field name="name">hr.roster.shift.form</field>
+        <field name="model">hr.roster.shift</field>
+        <field name="arch" type="xml">
+            <form string="Shift">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1><field name="name" placeholder="General shift"/></h1>
+                    </div>
+                    <group>
+                        <group string="Times">
+                            <field name="start_time" widget="float_time"/>
+                            <field name="end_time" widget="float_time"/>
+                            <field name="overnight"/>
+                            <field name="break_minutes"/>
+                            <field name="duration_hours"/>
+                            <field name="is_night_shift"/>
+                        </group>
+                        <group string="Limits">
+                            <field name="rest_after_hours"/>
+                            <field name="weekly_ot_threshold"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <p class="text-muted">
+                        Paid hours exclude the paid break. The overtime threshold
+                        recorded here is a shift attribute for preview only; the
+                        authoritative weekly threshold comes from a signed-off
+                        statutory code at payroll time.
+                    </p>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_roster_shift" model="ir.actions.act_window">
+        <field name="name">Shifts</field>
+        <field name="res_model">hr.roster.shift</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No shifts defined.</p>
+            <p>Define the shift patterns this establishment actually works.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hrms_roster_shift"
+        name="Shifts"
+        parent="menu_hrms_roster_config"
+        action="action_hr_roster_shift"
+        sequence="1"/>
+
+    <record id="view_hr_roster_demand_list" model="ir.ui.view">
+        <field name="name">hr.roster.demand.list</field>
+        <field name="model">hr.roster.demand</field>
+        <field name="arch" type="xml">
+            <list string="Staffing demand" editable="bottom">
+                <field name="establishment_id"/>
+                <field name="weekday"/>
+                <field name="shift_id"/>
+                <field name="required_headcount"/>
+                <field name="required_skill_ids" widget="many2many_tags"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hr_roster_demand" model="ir.actions.act_window">
+        <field name="name">Staffing demand</field>
+        <field name="res_model">hr.roster.demand</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No staffing demand configured.</p>
+            <p>
+                Set the headcount required per weekday and shift. The solver fills
+                this demand curve, and reports anything it cannot cover.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hrms_roster_demand"
+        name="Staffing demand"
+        parent="menu_hrms_roster_config"
+        action="action_hr_roster_demand"
+        sequence="5"/>
+
+    <record id="view_hr_roster_assignment_list" model="ir.ui.view">
+        <field name="name">hr.roster.assignment.list</field>
+        <field name="model">hr.roster.assignment</field>
+        <field name="arch" type="xml">
+            <list string="Roster assignments" create="false">
+                <field name="employee_id"/>
+                <field name="shift_id"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="paid_hours"/>
+                <field name="overtime_hours"/>
+                <field name="state" widget="badge"/>
+                <field name="checksum" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_roster_assignment_form" model="ir.ui.view">
+        <field name="name">hr.roster.assignment.form</field>
+        <field name="model">hr.roster.assignment</field>
+        <field name="arch" type="xml">
+            <form string="Assignment" create="false">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="contract_id"/>
+                            <field name="shift_id"/>
+                            <field name="roster_period_id"/>
+                        </group>
+                        <group>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="span_of_duty_hours"/>
+                            <field name="paid_hours"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Actual" name="actual">
+                            <group>
+                                <field name="actual_hours"/>
+                                <field name="overtime_hours"/>
+                                <field name="approved_overtime_hours"/>
+                                <field name="overtime_approved_by_id"/>
+                                <field name="overtime_approved_at"/>
+                                <field name="overtime_rejection_reason"/>
+                            </group>
+                        </page>
+                        <page string="Swap request" name="swap">
+                            <group>
+                                <field name="swap_requested_by_id"/>
+                                <field name="swap_with_employee_id"/>
+                                <field name="swap_approved_by_id"/>
+                                <field name="swap_note"/>
+                            </group>
+                        </page>
+                        <page string="Integrity" name="integrity">
+                            <group>
+                                <field name="checksum" readonly="1"/>
+                                <field name="note"/>
+                            </group>
+                            <p class="text-muted">
+                                The checksum is recomputed on every validation. If
+                                it no longer matches, the shift or overtime has
+                                changed since publication and payroll must refuse it.
+                            </p>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_roster_assignment" model="ir.actions.act_window">
+        <field name="name">Assignments</field>
+        <field name="res_model">hr.roster.assignment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '!=', 'relieved')]</field>
+        <field name="context">{'search_default_filter_published': 1}</field>
+    </record>
+
+    <record id="view_hr_roster_assignment_search" model="ir.ui.view">
+        <field name="name">hr.roster.assignment.search</field>
+        <field name="model">hr.roster.assignment</field>
+        <field name="arch" type="xml">
+            <search string="Assignments">
+                <field name="employee_id"/>
+                <field name="shift_id"/>
+                <field name="roster_period_id"/>
+                <filter name="filter_published" string="Published only" domain="[('state','in',('confirmed','published'))]"/>
+                <filter name="filter_unrostered" string="Needs approval" domain="[('state','=','draft')]"/>
+                <filter name="filter_overtime" string="With overtime" domain="[('overtime_hours','&gt;',0)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_employee" string="Employee" context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_shift" string="Shift" context="{'group_by': 'shift_id'}"/>
+                    <filter name="group_period" string="Period" context="{'group_by': 'roster_period_id'}"/>
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_hr_roster_period_list" model="ir.ui.view">
+        <field name="name">hr.roster.period.list</field>
+        <field name="model">hr.roster.period</field>
+        <field name="arch" type="xml">
+            <list string="Roster periods">
+                <field name="name"/>
+                <field name="establishment_id"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="assignment_count"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_roster_period_form" model="ir.ui.view">
+        <field name="name">hr.roster.period.form</field>
+        <field name="model">hr.roster.period</field>
+        <field name="arch" type="xml">
+            <form string="Roster period">
+                <header>
+                    <button name="action_publish" type="object" string="Publish"
+                            class="btn-primary" invisible="state != 'draft'"
+                            confirm="Publishing fixes this roster as the reference for attendance and overtime. Later changes will fail the integrity check. Continue?"/>
+                    <button name="action_lock" type="object" string="Lock for payroll"
+                            class="btn-primary" invisible="state != 'published'"
+                            confirm="Locking prevents any further change and is required before payroll can be run. Continue?"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Roster period"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="establishment_id"/>
+                            <field name="company_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="assignment_count"/>
+                        </group>
+                        <group string="Publication and lock">
+                            <field name="published_at" readonly="1"/>
+                            <field name="published_by_id" readonly="1"/>
+                            <field name="locked_at" readonly="1"/>
+                            <field name="locked_by_id" readonly="1"/>
+                            <field name="hrms_payroll_period_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Assignments" name="assignments">
+                            <field name="assignment_ids" readonly="1">
+                                <list>
+                                    <field name="employee_id"/>
+                                    <field name="shift_id"/>
+                                    <field name="start_datetime"/>
+                                    <field name="end_datetime"/>
+                                    <field name="paid_hours"/>
+                                    <field name="state" widget="badge"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Lock and integrity" name="integrity">
+                            <group>
+                                <field name="checksum" readonly="1"/>
+                                <field name="lock_note"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hr_roster_period_search" model="ir.ui.view">
+        <field name="name">hr.roster.period.search</field>
+        <field name="model">hr.roster.period</field>
+        <field name="arch" type="xml">
+            <search string="Roster periods">
+                <field name="name"/>
+                <field name="establishment_id"/>
+                <filter name="filter_draft" string="Draft" domain="[('state','=','draft')]"/>
+                <filter name="filter_locked" string="Locked" domain="[('state','=','locked')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_estab" string="Establishment" context="{'group_by': 'establishment_id'}"/>
+                    <filter name="group_state" string="State" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hr_roster_period" model="ir.actions.act_window">
+        <field name="name">Roster periods</field>
+        <field name="res_model">hr.roster.period</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -2,19 +2,34 @@
 <odoo>
     <data noupdate="1">
 
+    <!--
+      Negative settlements are money owed back to the business, so they are the
+      most sensitive figure on the record: an employee sees their own, nobody
+      sees another employee's without payroll or audit rights. Declared here
+      because this addon owns the model; hrms_core_ext loads before us, so a
+      reference from there would not resolve.
+    -->
+    <record id="rule_hrms_fnf_case_negative" model="ir.rule">
+        <field name="name">F&amp;F: negative settlements restricted</field>
+        <field name="model_id" ref="model_hrms_fnf_case"/>
+        <field name="domain_force">['|', ('is_negative_settlement', '=', False), ('employee_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+
         <!-- A settlement amount is money leaving the business, so approval is
              separated from preparation. HR prepares and acknowledges; Finance
              approves; payment needs a second person. -->
         <record id="rule_fnf_case_prepare" model="ir.rule">
             <field name="name">F&amp;F: payroll may prepare, finance approves</field>
-            <field name="model_id" ref="hrms_fnf.model_hrms_fnf_case"/>
+            <field name="model_id" ref="model_hrms_fnf_case"/>
             <field name="domain_force">[('separation_state', 'in', ('draft', 'under_calculation', 'calculated', 'disputed'))]</field>
             <field name="groups" eval="[(4, ref('hrms_core_ext.group_hrms_payroll_admin'))]"/>
         </record>
 
         <record id="rule_fnf_case_own_employee" model="ir.rule">
             <field name="name">F&amp;F: employee sees only their own case</field>
-            <field name="model_id" ref="hrms_fnf.model_hrms_fnf_case"/>
+            <field name="model_id" ref="model_hrms_fnf_case"/>
             <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         </record>
@@ -24,7 +39,7 @@
              negative balance is the state most likely to be quietly absorbed. -->
         <record id="rule_fnf_case_negative" model="ir.rule">
             <field name="name">F&amp;F: negative settlements visible to finance and HR only</field>
-            <field name="model_id" ref="hrms_fnf.model_hrms_fnf_case"/>
+            <field name="model_id" ref="model_hrms_fnf_case"/>
             <field name="domain_force">['|', ('is_negative_settlement', '=', False), ('employee_id.user_id', '=', user.id)]</field>
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         </record>

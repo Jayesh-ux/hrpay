@@ -290,9 +290,14 @@ class RosterShift(models.Model):
     )
     duration_hours = fields.Float(compute="_compute_duration", store=True, digits=(8, 4))
     rest_after_hours = fields.Float(
-        default=16.0, digits=(8, 2),
-        help="Minimum rest before the next shift. Used by the rostering solver "
-        "and to flag back-to-back night shifts.",
+        default=12.0, digits=(8, 2),
+        help="Minimum rest after this shift before the next one begins, measured "
+        "from the end of paid work. 12 hours suits ordinary day shifts; night "
+        "shifts should carry a higher figure, which is why it is per shift "
+        "rather than global. A value of 16 on a 09:00-18:00 shift would make "
+        "consecutive day shifts impossible, because the next start would have to "
+        "be 10:00 or later. Sustained daily working is controlled by the "
+        "contractual weekly hour ceiling, not by inflating this figure.",
     )
     break_minutes = fields.Integer(
         default=30,

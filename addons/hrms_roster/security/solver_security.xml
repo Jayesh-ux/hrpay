@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+      Solver permissions follow the same segregation of duties as the rest of the
+      platform: a manager may run the solver and apply a proposal, but may not
+      confirm or publish the resulting roster. That split exists because a
+      published roster is the reference every attendance and overtime decision is
+      judged against; if the same person who generated it also signs it off, the
+      review is worthless.
+    -->
+
+    <record id="module_category_hrms_roster_solver" model="ir.module.category">
+        <field name="name">HRMS Roster Solver</field>
+        <field name="description">Run the staffing solver and review its proposals.</field>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="group_hrms_roster_solver_user" model="res.groups">
+        <field name="name">Roster Solver: propose</field>
+        <field name="category_id" ref="module_category_hrms_roster_solver"/>
+        <field name="comment">Run the solver and create draft assignments from a proposal.</field>
+    </record>
+
+    <record id="group_hrms_roster_solver_manager" model="res.groups">
+        <field name="name">Roster Solver: manage</field>
+        <field name="category_id" ref="module_category_hrms_roster_solver"/>
+        <field name="comment">Configure solver limits and run the solver for the whole establishment.</field>
+    </record>
+
+    <record id="group_hrms_roster_solver_user" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_hrms_roster_solver_manager'))]"/>
+    </record>
+
+    <!--
+      Availability is employee-owned fact: an employee states when they cannot
+      work, and a manager records it. Only a manager may declare someone
+      unavailable without their agreement, so that action is separate.
+    -->
+    <record id="rule_hrms_roster_availability_employee" model="ir.rule">
+        <field name="name">Availability: employee sees own</field>
+        <field name="model_id" ref="model_hrms_roster_availability"/>
+        <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="rule_hrms_roster_availability_manager" model="ir.rule">
+        <field name="name">Availability: managers see the establishment</field>
+        <field name="model_id" ref="model_hrms_roster_availability"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('group_hrms_roster_solver_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Solver results are read-only once written: a proposal is evidence of what
+         the solver decided at a point in time. Rewriting it would make the
+         unfilled list meaningless, so the ACL below grants read only and the
+         model marks its fields readonly. -->
+    <record id="rule_hrms_roster_solver_result_read" model="ir.rule">
+        <field name="name">Solver result: read for the establishment</field>
+        <field name="model_id" ref="model_hrms_roster_solver_result"/>
+        <field name="domain_force">[('establishment_id.hrms_is_establishment', '=', True)]</field>
+        <field name="groups" eval="[(4, ref('group_hrms_roster_solver_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+</odoo>

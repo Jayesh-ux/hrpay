@@ -16,6 +16,9 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/solver_security.xml",
+        "views/roster_views.xml",
+        "views/solver_views.xml",
     ],
     "installable": True,
     "application": False,

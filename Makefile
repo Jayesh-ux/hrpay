@@ -88,14 +88,14 @@ restore: require_confirm ## DESTROY: drop and recreate the Odoo database from a 
 install-addons: ## Install our addons into the Odoo database
 	$(COMPOSE) --env-file $(ENV_FILE) exec odoo \
 	  odoo -d $${ODOO_DB:-hrpay} \
-	  -i hrms_core_ext,hrms_statutory,hrms_api,hrms_fnf,hrms_expense,hrms_helpdesk,hrms_roster \
+	  -i hrms_core_ext,hrms_statutory,hrms_roster,hrms_fnf,hrms_helpdesk,hrms_payroll_run \
 	  --stop-after-init --without-demo=all
 
 .PHONY: update-addons
 update-addons: ## Upgrade our addons
 	$(COMPOSE) --env-file $(ENV_FILE) exec odoo \
 	  odoo -d $${ODOO_DB:-hrpay} \
-	  -u hrms_core_ext,hrms_statutory,hrms_api,hrms_fnf,hrms_expense,hrms_helpdesk,hrms_roster \
+	  -u hrms_core_ext,hrms_statutory,hrms_roster,hrms_fnf,hrms_helpdesk,hrms_payroll_run \
 	  --stop-after-init
 
 # ─── Tests ───────────────────────────────────────────────────────────────────
@@ -130,10 +130,16 @@ golden: ## Regenerate F&F golden files (requires explicit justification)
 
 # ─── Quality ─────────────────────────────────────────────────────────────────
 
+.PHONY: check-static
+check-static: ## Cross-reference addons and views without an Odoo instance
+	python3 tools/check_addons.py
+	python3 tools/check_views.py
+
 .PHONY: lint
 lint: ## Lint everything
 	ruff check services/ ops/
 	pre-commit run --all-files
+	$(MAKE) check-static
 
 .PHONY: typecheck
 typecheck: ## Static type check services

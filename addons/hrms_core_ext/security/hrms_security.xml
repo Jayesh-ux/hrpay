@@ -62,13 +62,10 @@
              definition (groups= on the *_enc fields). -->
 
 
-        <!-- Negative settlements: only Payroll Admin and Auditor may see. -->
-        <record id="rule_fnf_case_negative" model="ir.rule">
-            <field name="name">F&amp;F: negative settlements restricted</field>
-            <field name="model_id" ref="hrms_fnf.model_hrms_fnf_case"/>
-            <field name="domain_force">['|', ('is_negative_settlement', '=', False), ('employee_id.user_id', '=', user.id)]</field>
-            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
-        </record>
+        <!-- The rule restricting negative final settlements lives in
+             hrms_fnf/security/hrms_fnf_security.xml: hrms_core_ext is loaded
+             first, so a reference to hrms_fnf.model_hrms_fnf_case here would
+             resolve to nothing at install time. -->
 
     </data>
 </odoo>

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+      The solver UI is built around the unfilled list, not the proposal. A roster
+      generator that shows only the roster it managed to build invites the reader
+      to assume the gap is not there.
+    -->
+
+    <record id="view_hrms_roster_solver_setting_list" model="ir.ui.view">
+        <field name="name">hrms.roster.solver.setting.list</field>
+        <field name="model">hrms.roster.solver.setting</field>
+        <field name="arch" type="xml">
+            <list string="Solver settings">
+                <field name="establishment_id"/>
+                <field name="company_id"/>
+                <field name="max_days_per_week"/>
+                <field name="max_weekly_hours"/>
+                <field name="min_rest_hours_between_shifts"/>
+                <field name="max_consecutive_days"/>
+                <field name="honour_preferences"/>
+                <field name="prefer_skill_match"/>
+                <field name="night_shift_rotation"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hrms_roster_solver_setting_form" model="ir.ui.view">
+        <field name="name">hrms.roster.solver.setting.form</field>
+        <field name="model">hrms.roster.solver.setting</field>
+        <field name="arch" type="xml">
+            <form string="Solver settings">
+                <sheet>
+                    <group>
+                        <group string="Establishment">
+                            <field name="name" readonly="1"/>
+                            <field name="establishment_id"/>
+                            <field name="company_id"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Unfilled demand">
+                            <field name="unresolved_demand_strategy"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Working time limits">
+                            <field name="max_days_per_week"/>
+                            <field name="max_weekly_hours"/>
+                            <field name="min_rest_hours_between_shifts"/>
+                            <field name="max_consecutive_days"/>
+                        </group>
+                        <group string="Preferences (never override cover or a hard limit)">
+                            <field name="honour_preferences"/>
+                            <field name="prefer_skill_match"/>
+                            <field name="night_shift_rotation"/>
+                        </group>
+                    </group>
+                </sheet>
+                <p class="text-muted">
+                    These limits come from the establishment's own contract, standing
+                    orders and policy, which is why they are configured rather than
+                    assumed. Statutory overtime and day limits are separate and are
+                    resolved from signed-off statutory codes; they are not entered
+                    here.
+                </p>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hrms_roster_solver_setting" model="ir.actions.act_window">
+        <field name="name">Solver settings</field>
+        <field name="res_model">hrms.roster.solver.setting</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('active', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No solver settings yet.</p>
+            <p>
+                Configure one per establishment before running the solver. Weekly
+                hour ceilings, rest windows and day limits are contractual, so the
+                solver refuses to guess them.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hrms_roster_solver_setting"
+        name="Solver settings"
+        parent="hrms_roster.menu_hrms_roster_config"
+        action="action_hrms_roster_solver_setting"
+        groups="hrms_roster.group_hrms_roster_solver_manager"
+        sequence="20"/>
+
+    <record id="view_hrms_roster_availability_list" model="ir.ui.view">
+        <field name="name">hrms.roster.availability.list</field>
+        <field name="model">hrms.roster.availability</field>
+        <field name="arch" type="xml">
+            <list string="Availability" editable="bottom">
+                <field name="employee_id"/>
+                <field name="kind"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="source"/>
+                <field name="source_leave_id"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hrms_roster_availability_form" model="ir.ui.view">
+        <field name="name">hrms.roster.availability.form</field>
+        <field name="model">hrms.roster.availability</field>
+        <field name="arch" type="xml">
+            <form string="Availability">
+                <sheet>
+                    <group>
+                        <field name="employee_id"/>
+                        <field name="kind"/>
+                        <field name="source"/>
+                        <field name="source_leave_id" readonly="1"/>
+                    </group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <field name="note" placeholder="Reason"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hrms_roster_availability" model="ir.actions.act_window">
+        <field name="name">Availability</field>
+        <field name="res_model">hrms.roster.availability</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No availability recorded.</p>
+            <p>
+                Availability the solver does not know about is not assumed to be
+                available. Record leave, study leave and other commitments so the
+                solver can rule people out in advance rather than rostering them
+                and discovering the clash later.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hrms_roster_availability"
+        name="Availability"
+        parent="hrms_roster.menu_hrms_roster_config"
+        action="action_hrms_roster_availability"
+        sequence="10"/>
+
+    <record id="view_hrms_roster_solver_result_form" model="ir.ui.view">
+        <field name="name">hrms.roster.solver.result.form</field>
+        <field name="model">hrms.roster.solver.result</field>
+        <field name="arch" type="xml">
+            <form string="Solver proposal" create="false" edit="false">
+                <header>
+                    <button name="action_apply" type="object" string="Apply as draft assignments"
+                            class="btn-primary"
+                            invisible="applied"
+                            confirm="This writes the proposal as DRAFT assignments. It does not confirm or publish them. Continue?"
+                            groups="hrms_roster.group_hrms_roster_solver_user"/>
+                    <field name="applied" readonly="1"/>
+                    <field name="applied_at" readonly="1" invisible="not applied"/>
+                    <field name="applied_by_id" readonly="1" invisible="not applied"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert" invisible="not unfilled_json">
+                        <p>
+                            <strong>This proposal leaves demand uncovered.</strong>
+                            It cannot be applied automatically. Read the unfilled
+                            list below, then either widen the pool or assign the
+                            remaining slots by hand.
+                        </p>
+                    </div>
+                    <group>
+                        <field name="roster_period_id" readonly="1"/>
+                        <field name="establishment_id" readonly="1"/>
+                        <field name="setting_id" readonly="1"/>
+                        <field name="created_by_id" readonly="1"/>
+                        <field name="created_at" readonly="1"/>
+                        <field name="assignment_count" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Unfilled demand" name="unfilled">
+                            <field name="unfilled_json" readonly="1" nolabel="1"/>
+                        </page>
+                        <page string="Proposed assignments" name="proposal">
+                            <field name="proposal_json" readonly="1" nolabel="1"/>
+                        </page>
+                        <page string="Summary" name="stats">
+                            <field name="stats_json" readonly="1" nolabel="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hrms_roster_solver_result_list" model="ir.ui.view">
+        <field name="name">hrms.roster.solver.result.list</field>
+        <field name="model">hrms.roster.solver.result</field>
+        <field name="arch" type="xml">
+            <list string="Solver proposals" create="false" edit="false">
+                <field name="created_at"/>
+                <field name="roster_period_id"/>
+                <field name="establishment_id"/>
+                <field name="assignment_count"/>
+                <field name="applied"/>
+                <field name="applied_by_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_hrms_roster_solver_result" model="ir.actions.act_window">
+        <field name="name">Solver proposals</field>
+        <field name="res_model">hrms.roster.solver.result</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <menuitem id="menu_hrms_roster_solver_result"
+        name="Solver proposals"
+        parent="hrms_roster.menu_hrms_roster_config"
+        action="action_hrms_roster_solver_result"
+        sequence="30"/>
+
+    <!--
+      The run button sits on the roster period, so the solver is invoked against a
+      named draft period rather than a global "regenerate everything" action. The
+      reload after running keeps the proposal count visible without a wizard.
+    -->
+    <record id="view_hr_roster_period_form_solver" model="ir.ui.view">
+        <field name="name">hr.roster.period.form.solver</field>
+        <field name="model">hr.roster.period</field>
+        <field name="inherit_id" ref="hrms_roster.view_hr_roster_period_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(action_hrms_roster_solver_result)d" type="action"
+                        string="View solver proposals"
+                        groups="hrms_roster.group_hrms_roster_solver_user"
+                        invisible="state != 'draft'"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

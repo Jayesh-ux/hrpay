@@ -8,3 +8,10 @@ access_roster_assignment_manager,hr.roster.assignment manager,model_hr_roster_as
 access_roster_assignment_employee_own,hr.roster.assignment own,model_hr_roster_assignment,hr.group_hr_user,1,1,0,0
 access_roster_assignment_payroll,hr.roster.assignment payroll,model_hr_roster_assignment,hrms_core_ext.group_hrms_payroll_admin,1,1,0,0
 access_roster_demand_manager,hr.roster.demand manager,model_hr_roster_demand,hrms_core_ext.group_hrms_roster_manager,1,1,1,1
+access_roster_demand_employee,hr.roster.demand employee,model_hr_roster_demand,hr.group_hr_user,1,0,0,0
+access_roster_solver_setting_manager,hrms.roster.solver.setting manager,model_hrms_roster_solver_setting,hrms_roster.group_hrms_roster_solver_manager,1,1,1,1
+access_roster_solver_setting_employee,hrms.roster.solver.setting employee,model_hrms_roster_solver_setting,hr.group_hr_user,1,0,0,0
+access_roster_availability_employee,hrms.roster.availability own,model_hrms_roster_availability,base.group_user,1,1,1,1
+access_roster_availability_manager,hrms.roster.availability manager,model_hrms_roster_availability,hrms_roster.group_hrms_roster_solver_manager,1,1,1,1
+access_roster_solver_result_read,hrms.roster.solver.result read,model_hrms_roster_solver_result,hrms_roster.group_hrms_roster_solver_user,1,0,0,0
+access_roster_solver_result_create,hrms.roster.solver.result create,model_hrms_roster_solver_result,hrms_roster.group_hrms_roster_solver_user,0,0,1,0
