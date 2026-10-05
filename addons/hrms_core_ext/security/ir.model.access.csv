@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hrms_audit_log_user,hrms.audit.log user,model_hrms_audit_log,base.group_user,1,0,0,0
+access_hrms_audit_log_hr_admin,hrms.audit.log hr admin,model_hrms_audit_log,hr.group_hr_manager,1,0,0,0
+access_hrms_audit_log_auditor,hrms.audit.log auditor,model_hrms_audit_log,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_hrms_sync_log_user,hrms integration.sync.log read,model_integration_sync_log,hrms_core_ext.group_hrms_payroll_admin,1,0,0,0
+access_hrms_sync_log_service,hrms integration.sync.log service,model_integration_sync_log,hrms_core_ext.group_hrms_ai_service,1,1,1,0
+access_payroll_period_lock_admin,payroll.period.lock admin,model_payroll_period_lock,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_payroll_period_lock_auditor,payroll.period.lock auditor,model_payroll_period_lock,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_hr_employee_sync_service,hr.employee sync service,hr.model_hr_employee,hrms_core_ext.group_hrms_ai_service,1,0,0,0
+access_hr_employee_sync_payroll,hr.employee sync payroll,hr.model_hr_employee,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1

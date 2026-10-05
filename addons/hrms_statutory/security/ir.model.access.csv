@@ -1,0 +1,21 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_statutory_rule_admin,hrms.statutory.rule admin,model_hrms_statutory_rule,hrms_core_ext.group_hrms_statutory_admin,1,1,1,1
+access_statutory_rule_payroll,hrms.statutory.rule payroll admin,model_hrms_statutory_rule,hrms_core_ext.group_hrms_payroll_admin,1,0,0,0
+access_statutory_rule_auditor,hrms.statutory.rule auditor,model_hrms_statutory_rule,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_statutory_version_admin,hrms.statutory.rule.version admin,model_hrms_statutory_rule_version,hrms_core_ext.group_hrms_statutory_admin,1,1,1,1
+access_statutory_version_auditor,hrms.statutory.rule.version auditor,model_hrms_statutory_rule_version,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_legal_basis_admin,hrms.legal.basis admin,model_hrms_legal_basis,hrms_core_ext.group_hrms_statutory_admin,1,1,1,1
+access_legal_basis_hr,hrms.legal.basis hr,model_hrms_legal_basis,hr.group_hr_user,1,0,0,0
+access_legal_basis_auditor,hrms.legal.basis auditor,model_hrms_legal_basis,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_wages_composition_payroll,hrms.wages.composition payroll,model_hrms_wages_composition,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_wages_composition_hr,hrms.wages.composition hr,model_hrms_wages_composition,hr.group_hr_manager,1,0,0,0
+access_wages_composition_auditor,hrms.wages.composition auditor,model_hrms_wages_composition,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_india_result_payroll,hrms.india.statutory.result payroll,model_hrms_india_statutory_result,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_india_result_auditor,hrms.india.statutory.result auditor,model_hrms_india_statutory_result,hrms_core_ext.group_hrms_auditor,1,0,0,0
+access_component_nature_hr,hr.salary.component.nature hr,model_hr_salary_component_nature,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_component_nature_hr_manager,hr.salary.component.nature hr manager,model_hr_salary_component_nature,hr.group_hr_manager,1,0,0,0
+access_gratuity_period_hr,hrms.gratuity.service.period hr,model_hrms_gratuity_service_period,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_gratuity_period_hr_manager,hrms.gratuity.service.period hr manager,model_hrms_gratuity_service_period,hr.group_hr_manager,1,1,1,1
+access_gratuity_result_payroll,hrms.gratuity.result payroll,model_hrms_gratuity_result,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_gratuity_result_hr,hrms.gratuity.result hr,model_hrms_gratuity_result,hr.group_hr_manager,1,0,0,0
+access_gratuity_result_auditor,hrms.gratuity.result auditor,model_hrms_gratuity_result,hrms_core_ext.group_hrms_auditor,1,0,0,0

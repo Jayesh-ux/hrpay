@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- The statutory deadline fields are deliberately invisible to agents.
+             They are shown read-only on the internal form so a manager can see
+             the clock, and absent from the agent portal where someone might be
+             tempted to edit it. -->
+        <record id="view_helpdesk_ticket_form_hrms" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.form.hrms</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_ticket_form"/>
+            <field name="arch" type="xml">
+                <field name="team_id" position="after">
+                    <field name="hrms_employee_id" readonly="states_draft_only"/>
+                    <field name="hrms_employee_department_id"/>
+                    <field name="hrms_confidential" invisible="not hrms_confidential"/>
+                    <field name="hrms_days_to_deadline"
+                           invisible="not hrms_statutory_deadline"/>
+                    <field name="hrms_breached" invisible="not hrms_statutory_deadline"/>
+                </field>
+                <field name="stage_id" position="after">
+                    <field name="hrms_statutory_deadline" groups="hrms_core_ext.group_hrms_payroll_admin"/>
+                    <field name="hrms_deadline_code" groups="hrms_core_ext.group_hrms_payroll_admin"/>
+                    <field name="hrms_ai_triage" groups="hrms_core_ext.group_hrms_ai_service"/>
+                    <field name="hrms_ai_confidence" groups="hrms_core_ext.group_hrms_ai_service"/>
+                    <field name="hrms_ai_reviewed_by_id" groups="hrms_core_ext.group_hrms_payroll_admin"/>
+                    <field name="hrms_ai_accepted" groups="hrms_core_ext.group_hrms_payroll_admin"/>
+                    <field name="hrms_ai_review_note" groups="hrms_core_ext.group_hrms_payroll_admin"/>
+                    <field name="hrms_escalation_note"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_helpdesk_ticket_search_hrms" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.search.hrms</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_ticket_search"/>
+            <field name="arch" type="xml">
+                <field name="stage_id" position="after">
+                    <field name="hrms_employee_id"/>
+                    <filter name="hrms_statutory_breached" string="Statutory deadline breached"
+                            domain="[('hrms_breached','=',True)]"/>
+                    <filter name="hrms_confidential" string="Confidential"
+                            domain="[('hrms_confidential','=',True)]"/>
+                    <separator/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>

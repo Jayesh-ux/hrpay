@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Categories exist so that a statutory clock attaches to the right
+             kind of case. The hrms_statutory_code points at the catalog entry
+             that will carry the signed-off deadline; until that version is
+             configured the deadline is simply absent and the ordinary SLA
+             applies, which is visible rather than silently wrong. -->
+
+        <record id="ticket_type_grievance" model="helpdesk.ticket.type">
+            <field name="name">Workplace Grievance</field>
+            <field name="sequence">10</field>
+            <field name="hrms_statutory_code">IN.GRIEVANCE.RESPONSE_DEADLINE_DAYS</field>
+            <field name="hrms_confidential_by_default" eval="True"/>
+            <field name="hrms_employee_required" eval="True"/>
+            <field name="hrms_statutory_retention_months">36</field>
+        </record>
+
+        <record id="ticket_type_posh" model="helpdesk.ticket.type">
+            <field name="name">POSH Complaint</field>
+            <field name="sequence">5</field>
+            <field name="hrms_statutory_code">IN.POSH.INTERNAL_COMMITTEE_DEADLINE_DAYS</field>
+            <field name="hrms_confidential_by_default" eval="True"/>
+            <field name="hrms_employee_required" eval="False"/>
+            <field name="hrms_statutory_retention_months">60</field>
+        </record>
+
+        <record id="ticket_type_pf_claim" model="helpdesk.ticket.type">
+            <field name="name">PF Claim / Grievance</field>
+            <field name="sequence">20</field>
+            <field name="hrms_statutory_code">IN.PF.CLAIM.WINDOW_DAYS</field>
+            <field name="hrms_employee_required" eval="True"/>
+            <field name="hrms_statutory_retention_months">36</field>
+        </record>
+
+        <record id="ticket_type_esi_claim" model="helpdesk.ticket.type">
+            <field name="name">ESI Claim</field>
+            <field name="sequence">21</field>
+            <field name="hrms_statutory_code">IN.ESI.CLAIM.WINDOW_DAYS</field>
+            <field name="hrms_employee_required" eval="True"/>
+            <field name="hrms_statutory_retention_months">36</field>
+        </record>
+
+        <record id="ticket_type_fnf" model="helpdesk.ticket.type">
+            <field name="name">Full and Final Settlement Query</field>
+            <field name="sequence">30</field>
+            <field name="hrms_statutory_code">IN.FNF.DISPUTE_RESPONSE_DEADLINE_DAYS</field>
+            <field name="hrms_employee_required" eval="True"/>
+            <field name="hrms_statutory_retention_months">60</field>
+        </record>
+
+        <record id="ticket_type_attendance" model="helpdesk.ticket.type">
+            <field name="name">Attendance / Roster Dispute</field>
+            <field name="sequence">40</field>
+            <field name="hrms_statutory_code">IN.WAGES.DISPUTE_RESPONSE_DEADLINE_DAYS</field>
+            <field name="hrms_employee_required" eval="True"/>
+            <field name="hrms_statutory_retention_months">36</field>
+        </record>
+
+        <record id="ticket_type_payroll_query" model="helpdesk.ticket.type">
+            <field name="name">Payslip Query</field>
+            <field name="sequence">50</field>
+            <field name="hrms_employee_required" eval="True"/>
+            <field name="hrms_statutory_retention_months">36</field>
+        </record>
+
+        <record id="ticket_type_lwf" model="helpdesk.ticket.type">
+            <field name="name">Labour Welfare Fund</field>
+            <field name="sequence">60</field>
+            <field name="hrms_statutory_code">IN.LWF.CLAIM.WINDOW_DAYS</field>
+            <field name="hrms_employee_required" eval="True"/>
+            <field name="hrms_statutory_retention_months">36</field>
+        </record>
+
+    </data>
+</odoo>

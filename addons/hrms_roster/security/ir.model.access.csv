@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_roster_period_manager,hr.roster.period manager,model_hr_roster_period,hrms_core_ext.group_hrms_roster_manager,1,1,1,1
+access_roster_period_employee,hr.roster.period employee,model_hr_roster_period,hr.group_hr_user,1,0,0,0
+access_roster_period_payroll,hr.roster.period payroll,model_hr_roster_period,hrms_core_ext.group_hrms_payroll_admin,1,0,0,0
+access_roster_shift_manager,hr.roster.shift manager,model_hr_roster_shift,hrms_core_ext.group_hrms_roster_manager,1,1,1,1
+access_roster_shift_employee,hr.roster.shift employee,model_hr_roster_shift,hr.group_hr_user,1,0,0,0
+access_roster_assignment_manager,hr.roster.assignment manager,model_hr_roster_assignment,hrms_core_ext.group_hrms_roster_manager,1,1,1,1
+access_roster_assignment_employee_own,hr.roster.assignment own,model_hr_roster_assignment,hr.group_hr_user,1,1,0,0
+access_roster_assignment_payroll,hr.roster.assignment payroll,model_hr_roster_assignment,hrms_core_ext.group_hrms_payroll_admin,1,1,0,0
+access_roster_demand_manager,hr.roster.demand manager,model_hr_roster_demand,hrms_core_ext.group_hrms_roster_manager,1,1,1,1

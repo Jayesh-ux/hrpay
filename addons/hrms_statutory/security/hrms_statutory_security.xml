@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <data>
+
+        <!-- ── Segregation of duties on statutory configuration ────────── -->
+        <!-- The Statutory Config Admin may create and edit DRAFT versions.
+             Only a Validator may move a version to validated/active. This is
+             enforced in hrms.statutory.rule.version._check_signoff, not here,
+             so it holds for XML-RPC and API callers too. -->
+
+        <record id="rule_statutory_version_validator_only" model="ir.rule">
+            <field name="name">Statutory versions: validators may change state</field>
+            <field name="model_id" ref="hrms_statutory.model_hrms_statutory_rule_version"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hrms_core_ext.group_hrms_statutory_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+    </data>
+</odoo>

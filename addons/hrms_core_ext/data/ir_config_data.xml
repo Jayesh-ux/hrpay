@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- No secret lives in this file or in the repository. The field
+             encryption key and the webhook HMAC secret are read from
+             ir.config_parameter at runtime, set from the environment
+             (FIELD_ENCRYPTION_KEY, WEBHOOK_HMAC_SECRET) during deployment.
+             Only non-secret behaviour defaults belong here. -->
+
+        <record id="param_webhook_tolerance" model="ir.config_parameter">
+            <field name="key">hrms.webhook_tolerance_seconds</field>
+            <field name="value">300</field>
+        </record>
+
+        <record id="param_audit_retention_months" model="ir.config_parameter">
+            <field name="key">hrms.audit.retention_months</field>
+            <field name="value">84</field>
+        </record>
+
+        <record id="param_payroll_lock_requires_payslips" model="ir.config_parameter">
+            <field name="key">hrms.payroll.lock.require_payslips</field>
+            <field name="value">1</field>
+        </record>
+
+        <record id="param_confirm_before_absent" model="ir.config_parameter">
+            <field name="key">hrms.roster.confirm_before_absent</field>
+            <field name="value">1</field>
+        </record>
+
+    </data>
+</odoo>
