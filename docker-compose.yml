@@ -1,0 +1,84 @@
+# Development stack: Odoo 18 CE + PostgreSQL 16.
+#
+# Deliberately minimal. Keycloak, the integration service, the AI service,
+# Prometheus and Grafana are Phase 3/4 concerns and are not here yet; the Makefile
+# targets that referenced them were narrowed to match. A dev stack that starts
+# services nobody needs trains people to ignore the logs.
+#
+# Our addons and the pinned OCA dependencies are mounted read-only. Nothing is
+# baked into the image, so the addons on disk are always the addons under test.
+#
+# Usage: docker compose up -d --wait   then   make test-odoo
+
+services:
+  postgres:
+    image: postgres:${POSTGRESQL_VERSION:-16}-alpine
+    container_name: hrpay-postgres
+    environment:
+      POSTGRES_DB: ${ODOO_DB:-hrpay}
+      POSTGRES_USER: ${ODOO_DB_USER:-odoo}
+      POSTGRES_PASSWORD: ${ODOO_DB_PASSWORD:-odoo}
+      # Odoo initialises its database from the locale; an uninitialised cluster
+      # makes the first connection fail in a way that looks like an Odoo bug.
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      # Named user, not "postgres": the superuser name depends on POSTGRES_USER.
+      test: ["CMD-SHELL", "pg_isready -U ${ODOO_DB_USER:-odoo} -d ${ODOO_DB:-hrpay}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  odoo:
+    # Odoo 18 CE only. No Enterprise image, ever: see versions/pinned.env and
+    # ADR-0001.
+    image: odoo:${ODOO_VERSION:-18.0}
+    container_name: hrpay-odoo
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      HOST: postgres
+      USER: ${ODOO_DB_USER:-odoo}
+      PASSWORD: ${ODOO_DB_PASSWORD:-odoo}
+      # Consumed by ops/odoo-entrypoint.sh.
+      HRPAY_ADDONS: /opt/hrpay/addons
+      HRPAY_OCA_ADDONS: /opt/hrpay/oca
+      PYTHONIOENCODING: utf-8
+      # Long-running installs and test suites emit a lot of output; keep it all.
+      ODOO_LOG_LEVEL: ${ODOO_LOG_LEVEL:-info}
+    volumes:
+      - ./addons:/opt/hrpay/addons:ro
+      # Created by ops/fetch_deps.sh. Absent on a fresh clone is fine: the
+      # entrypoint reports which dependency modules are missing.
+      - ./.oca:/opt/hrpay/oca:ro
+      - odoo-filestore:/var/lib/odoo/filestore
+      - ./ops/odoo.conf:/etc/odoo/odoo.conf:ro
+    ports:
+      - "${ODOO_PORT:-8069}:8069"
+      - "${ODOO_DEBUG_PORT:-8073}:8073"
+    # Entrypoint wrapper rather than the image default: the image's default
+    # addons-path handling differs between releases, so we compute the core
+    # addons path from the installed package instead of hardcoding it.
+    entrypoint: ["/opt/hrpay/ops/odoo-entrypoint.sh"]
+    command: ["odoo"]
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          curl -fsS http://localhost:8069/web/database/selector >/dev/null
+          || exit 1
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+  odoo-filestore:

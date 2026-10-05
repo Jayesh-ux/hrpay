@@ -29,24 +29,20 @@ env: ## Create .env from example (interactive; never overwrite)
 	      chmod 600 $(ENV_FILE); echo "Created $(ENV_FILE) — EDIT IT before running."; fi
 
 .PHONY: oca
-oca: ## Fetch pinned OCA repositories
+oca: ## Fetch pinned OCA dependency modules into $(OCA_DIR)
 	@mkdir -p $(OCA_DIR)
-	@bash ops/fetch_oca.sh $(OCA_DIR)
-
-.PHONY: openhrms
-openhrms: ## Fetch pinned Open HRMS repository
-	@bash ops/fetch_openhrms.sh $(OCA_DIR)
+	@bash ops/fetch_deps.sh $(OCA_DIR)
 
 .PHONY: pin
-pin: oca openhrms ## Resolve and record exact upstream SHAs to versions/lock.txt
-	@bash ops/resolve_lock.sh $(OCA_DIR)
+pin: oca ## Record resolved upstream SHAs for reproducibility
+	@cat $(OCA_DIR)/*.sha > versions/lock.txt
+	@echo "Wrote versions/lock.txt"
 
 .PHONY: up
-up: env ## Start the dev stack
-	$(COMPOSE) --env-file $(ENV_FILE) up -d
+up: env ## Start the dev stack (Odoo + PostgreSQL)
+	$(COMPOSE) --env-file $(ENV_FILE) up -d --wait
 	@echo "Odoo  → http://localhost:8069"
-	@echo "Keycloak → http://localhost:8080 (realm $(shell grep KEYCLOAK_REALM $(ENV_FILE) | cut -d= -f2))"
-	@echo "Grafana → http://localhost:3000"
+	@echo "Postgres → localhost:5432"
 
 .PHONY: down
 down: ## Stop the dev stack (keeps volumes)
@@ -102,22 +98,30 @@ update-addons: ## Upgrade our addons
 # Run on the development laptop, not in this container.
 
 .PHONY: test-odoo
-test-odoo: ## Run Odoo TransactionCase tests
+test-odoo: ## One command: install all addons in order, run tests, write a report
 	./ops/run_odoo_tests.sh
 
+.PHONY: test-standalone
+test-standalone: ## Run the Odoo-free solver constraint tests (no stack needed)
+	python3 tests/standalone/test_solver_constraints.py
+
+# The integration, AI and standalone roster-solver services are Phase 3/4 and are
+# not built yet. The roster solver that exists is inside hrms_roster and is
+# covered by test-standalone and by the Odoo suite.
 .PHONY: test-services
-test-services: ## Run integration/roster/ai service tests
-	cd services/integration && python -m pytest -q
-	cd services/roster_solver && python -m pytest -q
-	cd services/ai && python -m pytest -q
+test-services:
+	@echo "services/ is not implemented yet (Phase 3/4). Nothing to run."
+	@exit 1
 
 .PHONY: test-e2e
-test-e2e: ## Full lifecycle + RBAC matrix + workflow tests (needs a running stack)
-	./ops/run_e2e.sh
+test-e2e:
+	@echo "ops/run_e2e.sh is not written yet. Blocking for Gate 1A."
+	@exit 1
 
 .PHONY: test-load
-test-load: ## Load test at 5,000 employees (needs a running stack)
-	./ops/run_load_test.sh
+test-load:
+	@echo "ops/run_load_test.sh is not written yet. Blocking for Gate 1A."
+	@exit 1
 
 .PHONY: golden
 golden: ## Regenerate F&F golden files (requires explicit justification)
@@ -126,7 +130,8 @@ golden: ## Regenerate F&F golden files (requires explicit justification)
 	@echo "  2. The statutory config register rows used are marked validated."
 	@echo "  3. You have diffed the change and accept it."
 	@read -p "Type REGENERATE to proceed: " c; [ "$$c" = "REGENERATE" ] || exit 1
-	./ops/regenerate_golden.sh
+	@echo "ops/regenerate_golden.sh is not written yet; golden files are not in the repo."
+	@exit 1
 
 # ─── Quality ─────────────────────────────────────────────────────────────────
 
@@ -152,27 +157,38 @@ fmt: ## Auto-format
 
 .PHONY: scan
 scan: ## Dependency + secret + SAST scans
-	@bash ops/security_scan.sh
+	@echo "ops/security_scan.sh is not written yet (dependency/secret/SAST scanning)."
+	@echo "Refusing to report success for work that did not run."
+	@exit 1
 
 .PHONY: zap
 zap: ## OWASP ZAP baseline scan (needs a running stack)
-	@bash ops/zap_scan.sh
+	@echo "ops/zap_scan.sh is not written yet (the OWASP ZAP baseline scan)."
+	@echo "Refusing to report success for work that did not run."
+	@exit 1
 
 # ─── Compliance ──────────────────────────────────────────────────────────────
 
 .PHONY: compliance-report
 compliance-report: ## List statutory config rows still awaiting sign-off
-	python3 ops/compliance_report.py
+	@echo "ops/compliance_report.py is not written yet (the statutory sign-off report)."
+	@echo "Refusing to report success for work that did not run."
+	@exit 1
 
 .PHONY: compliance-block
 compliance-block: ## Fail if any rule would go live without professional sign-off
-	python3 ops/compliance_report.py --enforce && echo "All statutory rules validated."
+	@echo "ops/compliance_report.py is not written yet (the statutory sign-off report)."
+	@echo "Interim gate: ops/check_statutory_gate.py, run by ops/run_odoo_tests.sh."
+	@echo "Refusing to report success for work that did not run."
+	@exit 1
 
 # ─── Deploy ──────────────────────────────────────────────────────────────────
 
 .PHONY: k8s-build
 k8s-build: ## Build and push container images
-	@bash ops/build_images.sh
+	@echo "ops/build_images.sh is not written yet (container image builds)."
+	@echo "Refusing to report success for work that did not run."
+	@exit 1
 
 .PHONY: k8s-apply
 k8s-apply: ## Apply to the current kubectl context
@@ -182,7 +198,9 @@ k8s-apply: ## Apply to the current kubectl context
 
 .PHONY: dr-drill
 dr-drill: ## Disaster-recovery drill (restores backup into an isolated namespace)
-	@bash ops/dr_drill.sh
+	@echo "ops/dr_drill.sh is not written yet (the disaster-recovery drill)."
+	@echo "Refusing to report success for work that did not run."
+	@exit 1
 
 .PHONY: backup
 backup: ## Back up all databases

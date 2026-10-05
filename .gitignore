@@ -18,3 +18,12 @@ node_modules/
 *.log
 tmp/
 private/
+
+# ─── New dev stack (docker-compose.yml) ─────────────────────────────────────
+# The compose file mounts .oca read-only; it is fetched, never committed, and
+# pinned by SHA in versions/lock.txt instead.
+.oca/
+# Test-run logs and reports are evidence and ARE committed on purpose. The
+# blanket *.log rule above would otherwise exclude the log each report cites.
+!docs/test-runs/*.log
+!docs/test-runs/*.md

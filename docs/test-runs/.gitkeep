@@ -1,0 +1,4 @@
+# Generated run artefacts go here.
+#
+# Committed on purpose: a run report is evidence, and evidence should be
+# reviewable. Logs are committed; the filestore and database are not.
