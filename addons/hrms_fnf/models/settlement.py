@@ -28,6 +28,8 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+from . import settlement_arithmetic as _settlement
+
 _logger = logging.getLogger(__name__)
 
 # Payable-within deadline per exit type, keyed to the statutory rule code that
@@ -119,6 +121,14 @@ class SettlementCase(models.Model):
         "difference, and is only recoverable when the reason permits it.",
     )
     notice_shortfall_days = fields.Integer(compute="_compute_notice", store=True)
+    notice_recovery_cap = fields.Monetary(
+        currency_field="currency_id",
+        help="Contractual ceiling on the amount recoverable for unserved notice. "
+        "The shortfall is calculated from the daily wage; where a contract limits "
+        "recovery, or the shortfall is to be recovered in instalments, enter that "
+        "ceiling here. Left empty, the full shortfall is recoverable (subject to "
+        "the exit reason permitting recovery at all).",
+    )
 
     separation_state = fields.Selection(
         [
@@ -253,14 +263,29 @@ class SettlementCase(models.Model):
         for rec in self:
             try:
                 statement = _json_load(rec.statement_json)
-            except Exception:
-                statement = {}
-            payable = sum(l["amount"] for l in statement.get("payable_lines", []))
-            deductions = sum(abs(l["amount"]) for l in statement.get("deduction_lines", []))
-            rec.gross_payable = payable
-            rec.total_deductions = deductions
-            rec.net_payable = payable - deductions
-            rec.is_negative_settlement = rec.net_payable < 0
+            except Exception as exc:
+                # The previous code caught every exception here and carried on
+                # with an empty statement, so a corrupted or half-written
+                # statement_json showed a settlement of 0.00 with nothing wrong.
+                # A settlement figure that cannot be read is not a zero figure.
+                raise UserError(
+                    f"{rec.name}: the settlement statement cannot be read "
+                    f"({exc}). Recalculate the case. Until then the totals are not "
+                    f"shown, because a silently wrong zero is worse than no number."
+                ) from exc
+            try:
+                totals = _settlement.net_settlement(
+                    statement.get("payable_lines", []),
+                    statement.get("deduction_lines", []),
+                )
+            except ValueError as exc:
+                raise UserError(
+                    f"{rec.name}: the settlement statement does not net: {exc}"
+                ) from exc
+            rec.gross_payable = totals["gross_payable"]
+            rec.total_deductions = totals["total_deductions"]
+            rec.net_payable = totals["net_payable"]
+            rec.is_negative_settlement = totals["is_negative_settlement"]
 
     # ─── Lifecycle ──────────────────────────────────────────────────────
     def action_calculate(self):

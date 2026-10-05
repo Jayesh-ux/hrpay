@@ -110,9 +110,11 @@ test-odoo: ## One command: install all addons in order, run tests, write a repor
 	./ops/run_odoo_tests.sh
 
 .PHONY: test-standalone
-test-standalone: ## Run the Odoo-free tests (solver + TDS arithmetic); no stack needed
+test-standalone: ## Run the Odoo-free tests (solver + statutory/F&F arithmetic); no stack needed
 	python3 tests/standalone/test_solver_constraints.py
 	python3 tests/standalone/test_tds_arithmetic_DEV.py
+	python3 tests/standalone/test_statutory_arithmetic_DEV.py
+	python3 tests/standalone/test_fnf_arithmetic_DEV.py
 
 # The integration, AI and standalone roster-solver services are Phase 3/4 and are
 # not built yet. The roster solver that exists is inside hrms_roster and is

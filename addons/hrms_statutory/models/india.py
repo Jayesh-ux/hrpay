@@ -17,6 +17,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+from . import contribution_arithmetic as _contributions
 from . import tds_projection as _tds_projection
 
 _logger = logging.getLogger(__name__)
@@ -84,155 +85,168 @@ class IndiaStatutoryEngine(models.AbstractModel):
     # -- Provident Fund ---------------------------------------------------
     @api.model
     def compute_pf(self, employee, wages, period_end, ctx, composition=None):
-        """Employee PF + EPS split, with the wage ceiling applied.
+        """Employee PF + EPS split, with the wage and EPS ceilings applied.
 
-        EPS has an annual contribution cap distinct from the monthly ceiling, so
-        both are resolved from config. If YTD EPS is unknown we cannot cap
-        correctly, so the caller must supply the YTD figure or we raise.
+        The arithmetic lives in ``contribution_arithmetic.py`` and is tested
+        outside Odoo. What this method adds is the refusal: an unconfigured rate
+        or ceiling is a configuration fault, and it is raised as a ``UserError``
+        rather than turned into a zero that nobody notices.
+
+        Defects this replaced, each found by reading the inline version:
+
+        1. ``total_employer = base * (emp_rate / 100.0)`` -- the same expression
+           as the employee's. The employer's rate is now its own config code.
+        2. The annual EPS ceiling could not apply: the code documented that it
+           needed a year-to-date figure and then read ``IN.PF.EPS_ANNUAL_CAP``,
+           which held a *monthly* amount, so an employee who crossed the annual
+           ceiling kept paying EPS for the rest of the year. The code is renamed
+           to ``IN.PF.EPS_MONTHLY_CAP`` and the annual ceiling is separate, with
+           the year-to-date figure now required.
+        3. ``if vcfg.get("counted_in_employer"): total_employer += voluntary``
+           was the only thing standing between the employer and paying the
+           employee's voluntary contribution, and it depended on a key that
+           simply being absent from config. It is now required.
         """
         company = employee.company_id
         state = employee.hrms_state_code or company.state_id.code or ""
         ct = employee.contract_type or "permanent"
 
-        ceiling = ctx.get("IN.PF.WAGE_CEILING", company, state_code=state, contract_type=ct, on_date=period_end)
-        emp_rate = ctx.get("IN.PF.EMPLOYEE_RATE", company, state_code=state, contract_type=ct, on_date=period_end)
-        eps_rate = ctx.get("IN.PF.EPS_RATE", company, state_code=state, contract_type=ct, on_date=period_end)
-        eps_monthly_cap = ctx.get("IN.PF.EPS_ANNUAL_CAP", company, state_code=state, contract_type=ct, on_date=period_end)
-
-        base = min(abs(wages or 0.0), ceiling)
-        capped = abs(wages or 0.0) > ceiling
-
-        total_employee = base * (emp_rate / 100.0)
-        total_employer = base * (emp_rate / 100.0)
-
-        eps_employee = min(base * (eps_rate / 100.0), eps_monthly_cap)
-        eps_employer = eps_employee
-        epf_employee = round(total_employee - eps_employee, 2)
-        epf_employer = round(total_employer - eps_employer, 2)
-
-        voluntary = 0.0
-        voluntary_config = ctx.resolve(
-            "IN.PF.VOLUNTARY", company, state_code=state, contract_type=ct, on_date=period_end
-        )
-        vcfg = voluntary_config.value() or {}
-        if vcfg.get("enabled"):
-            cap = vcfg.get("cap")
-            voluntary = min(base * (vcfg.get("default_rate_pct", 0.0) / 100.0), cap) if cap else base * (
-                vcfg.get("default_rate_pct", 0.0) / 100.0
+        def get(code):
+            return ctx.get(
+                code, company, state_code=state, contract_type=ct, on_date=period_end
             )
-            if vcfg.get("counted_in_employee"):
-                total_employee += voluntary
-            if vcfg.get("counted_in_employer"):
-                total_employer += voluntary
 
-        return {
-            "pf_wages": round(base, 2),
-            "pf_capped": capped,
-            "wage_ceiling_applied": ceiling,
-            "pf_employee": round(total_employee, 2),
-            "pf_employer": round(total_employer, 2),
-            "pf_eps_employee": round(eps_employee, 2),
-            "pf_eps_employer": round(eps_employer, 2),
-            "pf_epf_employee": epf_employee,
-            "pf_epf_employer": epf_employer,
-            "pf_voluntary": round(voluntary, 2),
-        }
+        voluntary_config = ctx.resolve(
+            "IN.PF.VOLUNTARY", company, state_code=state, contract_type=ct,
+            on_date=period_end,
+        )
+        voluntary_cfg = voluntary_config.value() or {}
+        # ``enabled: false`` means no voluntary contribution exists, so no rate is
+        # required. Enabled, the rate and both allocation flags are required --
+        # see the note on voluntary PF in compute_pf.
+        voluntary = voluntary_cfg if voluntary_cfg.get("enabled") else None
+
+        try:
+            return _contributions.compute_pf(
+                wages=wages,
+                employee_rate_pct=get("IN.PF.EMPLOYEE_RATE"),
+                eps_rate_pct=get("IN.PF.EPS_RATE"),
+                employer_rate_pct=get("IN.PF.EMPLOYER_RATE"),
+                employer_eps_rate_pct=get("IN.PF.EMPLOYER_EPS_RATE"),
+                wage_ceiling=get("IN.PF.WAGE_CEILING"),
+                eps_monthly_cap=get("IN.PF.EPS_MONTHLY_CAP"),
+                eps_annual_ceiling=get("IN.PF.EPS_ANNUAL_CEILING"),
+                # Not ``or 0.0``: an unwritten year-to-date field is an unknown
+                # figure, and treating it as zero would let EPS run for the whole
+                # year past the annual ceiling -- the defect this batch exists to
+                # remove. Once the payroll writer populates it, a genuine month-one
+                # zero is still a refusal until the writer records that the figure
+                # is known; that is the lesser cost, and the refusal names the gap.
+                eps_ytd_before=(
+                    float(employee.hrms_pf_eps_ytd)
+                    if employee.hrms_pf_eps_ytd
+                    else None
+                ),
+                voluntary=voluntary,
+            )
+        except ValueError as exc:
+            raise UserError(
+                f"Provident fund for {employee.display_name} as at {period_end} "
+                f"cannot be computed: {exc} See docs/compliance/"
+                f"CA-SIGNOFF-REQUEST.md sections 3 and 5."
+            ) from exc
 
     # -- ESI --------------------------------------------------------------
     @api.model
     def compute_esi(self, employee, wages, period_end, ctx):
-        company = employee.company_id
-        state = employee.hrms_state_code or company.state_id.code or ""
-        ct = employee.contract_type or "permanent"
+        """Banded ESI contribution, with the statutory reading declared.
 
-        threshold = ctx.get("IN.ESI.WAGE_THRESHOLD", company, state_code=state, contract_type=ct, on_date=period_end)
-        emp_rate = ctx.get("IN.ESI.EMPLOYEE_RATE", company, state_code=state, contract_type=ct, on_date=period_end)
-        emp_rate = emp_rate / 100.0
-        er_rate = ctx.get("IN.ESI.EMPLOYER_RATE", company, state_code=state, contract_type=ct, on_date=period_end)
-        er_rate = er_rate / 100.0
-
-        # ESIC's wage threshold is expressed as a gross threshold; contribution
-        # applies to actual wages when below it.
-        gross = abs(wages or 0.0)
-        applicable = gross <= threshold
-        if applicable:
-            ee = gross * emp_rate
-            er = gross * er_rate
-        else:
-            ee = er = 0.0
-        return {
-            "esi_wages": round(gross, 2),
-            "esi_applicable": applicable,
-            "esi_employee": round(ee, 2),
-            "esi_employer": round(er, 2),
-            "esi_threshold": threshold,
-        }
-
-    # -- Professional Tax --------------------------------------------------
-    @api.model
-    def compute_pt(self, employee, taxable_salary, period_end, ctx):
-        """Multi-state PT.
-
-        PT slabs differ per State, are based on slab ranges rather than rates,
-        and some States levy none. The slab table is config JSON keyed by
-        monthly income range.
+        The previous implementation applied a flat percentage of wages and could
+        not represent a band *amount* at all, so the question of which reading
+        applies could not be put to the code. The schedule now carries its own
+        mode, and a percentage schedule has to be marked provisional before the
+        code will use it.
         """
         company = employee.company_id
         state = employee.hrms_state_code or company.state_id.code or ""
         ct = employee.contract_type or "permanent"
 
-        slabs = ctx.get_json("IN.PT.SLABS", company, state_code=state, contract_type=ct, on_date=period_end)
-        annual_cap = ctx.get("IN.PT.ANNUAL_CAP", company, state_code=state, contract_type=ct, on_date=period_end)
+        schedule = ctx.get_json(
+            "IN.ESI.CONTRIBUTION_SCHEDULE", company, state_code=state,
+            contract_type=ct, on_date=period_end,
+        )
+        try:
+            return _contributions.compute_esi(wages=wages, schedule=schedule)
+        except ValueError as exc:
+            raise UserError(
+                f"ESI for {employee.display_name} as at {period_end} cannot be "
+                f"computed: {exc} See docs/compliance/CA-SIGNOFF-REQUEST.md "
+                f"section 4.1."
+            ) from exc
+
+    # -- Professional Tax --------------------------------------------------
+    @api.model
+    def compute_pt(self, employee, taxable_salary, period_end, ctx):
+        """Per-State PT slabs, with the constitutional annual cap.
+
+        Three defects this replaced:
+
+        1. A State with no slab table returned ``{"pt_employee": 0.0}`` with the
+           reason "no PT configured for this state" and **no error**. A State that
+           genuinely levies no PT must now be configured with an explicit zero
+           band, so a missing table cannot masquerade as a correct deduction.
+        2. ``amount <= hi`` made the upper edge of every band inclusive, which was
+           never documented and is a CA request item. It is config now.
+        3. ``if annual_cap and (ytd_pt + pt_employee) > annual_cap`` treated a
+           configured cap of zero as no cap, and could not say that the cap had
+           already been reached before this month.
+        """
+        company = employee.company_id
+        state = employee.hrms_state_code or company.state_id.code or ""
+        ct = employee.contract_type or "permanent"
+
+        slabs_config = ctx.get_json(
+            "IN.PT.SLABS", company, state_code=state, contract_type=ct,
+            on_date=period_end,
+        )
+        try:
+            annual_cap = ctx.get(
+                "IN.PT.ANNUAL_CAP", company, state_code=state,
+                contract_type=ct, on_date=period_end,
+            )
+        except UserError:
+            annual_cap = None
         ytd_pt = float(employee.hrms_pt_ytd or 0.0)
 
-        amount = abs(taxable_salary or 0.0)
-        if not slabs:
-            return {
-                "pt_employee": 0.0,
-                "pt_employer": 0.0,
-                "pt_state_code": state,
-                "pt_slab_detail": _json({"reason": "no PT configured for this state"}),
-            }
-
-        matched = None
-        for slab in slabs.get("slabs", []):
-            lo = slab.get("from")
-            hi = slab.get("to")
-            if (lo is None or amount >= lo) and (hi is None or amount <= hi):
-                matched = slab
-                break
-
-        if not matched:
-            raise UserError(
-                f"Professional Tax: no slab matches {amount} for state {state} on "
-                f"{period_end}. The slab table in statutory config is incomplete. "
-                f"Every income band must be covered, including the top band."
+        slabs = slabs_config.get("slabs") if slabs_config else None
+        try:
+            result = _contributions.compute_pt(
+                monthly_income=taxable_salary,
+                slabs=slabs,
+                ytd_pt=ytd_pt,
+                annual_cap=annual_cap,
+                boundary=slabs_config.get("boundary", "inclusive"),
             )
-
-        pt_employee = float(matched.get("employee", 0.0))
-        pt_employer = float(matched.get("employer", 0.0))
-
-        # Constitutional annual cap: PT is capped per year, so stop deducting
-        # once the employee has hit it.
-        if annual_cap and (ytd_pt + pt_employee) > annual_cap:
-            pt_employee = max(0.0, annual_cap - ytd_pt)
-            capped_note = "annual cap reached"
-        else:
-            capped_note = None
+        except ValueError as exc:
+            raise UserError(
+                f"Professional Tax for {employee.display_name} as at {period_end} "
+                f"cannot be computed: {exc} Configure IN.PT.SLABS for {state} with "
+                f"a table that covers every income."
+            ) from exc
 
         return {
-            "pt_employee": round(pt_employee, 2),
-            "pt_employer": round(pt_employer, 2),
+            "pt_employee": result["pt_employee"],
+            "pt_employer": result["pt_employer"],
             "pt_state_code": state,
             "pt_slab_detail": _json(
                 {
-                    "matched_slab": matched,
-                    "taxable": amount,
+                    "matched_slab": result["matched_slab"],
                     "annual_cap": annual_cap,
                     "ytd_before": ytd_pt,
-                    "note": capped_note,
-                    "frequency": slabs.get("frequency", "monthly"),
-                    "remit_form": slabs.get("remit_form"),
+                    "note": result["annual_cap_note"],
+                    "frequency": slabs_config.get("frequency", "monthly"),
+                    "remit_form": slabs_config.get("remit_form"),
+                    "boundary": slabs_config.get("boundary", "inclusive"),
                 }
             ),
         }
@@ -376,18 +390,28 @@ class IndiaStatutoryEngine(models.AbstractModel):
             composition.contract_type or "permanent",
             period_end,
         )
-        result = self.env["hrms.india.statutory.result"].create(
+        payload = {
+            **pf,
+            **esi,
+            **pt,
+            **lwf,
+            **tds,
+        }
+        # The arithmetic modules return flags and bounds a reviewer needs (which
+        # ceiling bound, which ESI band, whether the cap already bound), but the
+        # result model has no column for them. Passing them to create() would
+        # raise; dropping them would lose the audit trail. They are recorded in
+        # the audit log entry below instead.
+        model = self.env["hrms.india.statutory.result"]
+        stored, extra = _split_payload(payload, model)
+        result = model.create(
             {
                 "employee_id": employee.id,
                 "period_start": period_start,
                 "period_end": period_end,
                 "state_code": composition.state_code,
                 "contract_type": composition.contract_type,
-                **pf,
-                **esi,
-                **pt,
-                **lwf,
-                **tds,
+                **stored,
                 "total_employee_deductions": total_ee,
                 "total_employer_contributions": total_er,
                 "rule_versions_json": _json(versions),
@@ -402,10 +426,26 @@ class IndiaStatutoryEngine(models.AbstractModel):
                 "esi_employee": esi["esi_employee"],
                 "pt_employee": pt["pt_employee"],
                 "tds": tds["tds_recoverable"],
+                "flags": extra,
             },
             note="India statutory computation",
         )
         return result
+
+
+def _split_payload(payload, model):
+    """Split a computed payload into model fields and everything else.
+
+    The pure arithmetic returns more than the result table stores, on purpose:
+    ``pf_capped``, ``esi_band_up_to``, the annual-cap notes and similar are how a
+    reviewer sees that a bound was reached. Writing them straight into ``create``
+    raises for unknown keys, and discarding them would make the audit trail lie
+    about what was applied.
+    """
+    known = set(model._fields)
+    stored = {k: v for k, v in payload.items() if k in known}
+    extra = {k: v for k, v in payload.items() if k not in known}
+    return stored, extra
 
 
 def _ytd_taxable(employee, period_end):

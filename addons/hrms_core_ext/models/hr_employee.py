@@ -137,6 +137,20 @@ class HrEmployee(models.Model):
     )
     hrms_pt_ytd = fields.Float(string="YTD professional tax", digits=(16, 2))
     hrms_pf_ytd = fields.Float(string="YTD PF (EPS/EPF)", digits=(16, 2))
+    hrms_pf_eps_ytd = fields.Float(
+        string="YTD EPS contribution this financial year",
+        digits=(16, 2),
+        help="EPS contributed to the pension fund earlier in the current "
+        "financial year, EPS alone. The EPS share only: IN.PF.EPS_ANNUAL_CEILING "
+        "applies to the EPS contribution, and hrms_pf_ytd combines EPS with EPF, so "
+        "using it here would stop EPS at the wrong point. Reset at the start of each "
+        "financial year.\n\n"
+        "NO WRITER: no payroll run writes this field yet, so it stays zero and "
+        "PF refuses to compute rather than assume month one. The annual EPS "
+        "ceiling cannot be applied correctly until write-back exists. The TDS "
+        "year-to-date fields have the same problem; see "
+        "docs/compliance/TDS-INPUT-SPEC.md.",
+    )
     hrms_esi_ytd = fields.Float(string="YTD ESI", digits=(16, 2))
 
     # ─── Gratuity service tracking ──────────────────────────────────────

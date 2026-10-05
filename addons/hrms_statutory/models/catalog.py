@@ -31,14 +31,18 @@ RULE_CATALOG = [
     # ── Provident fund ───────────────────────────────────────────────────
     ("IN.PF.WAGE_CEILING", "PF: monthly wage ceiling", "threshold", "currency", "Code on Social Security 2020 (replaced EPF Act via S.O. 5936(E) 19 Dec 2025)"),
     ("IN.PF.EMPLOYEE_RATE", "PF: employee contribution rate (%)", "rate", "percent", "Code on Social Security 2020 - PF schedule"),
+    ("IN.PF.EMPLOYER_RATE", "PF: employer contribution rate (%)", "rate", "percent", "Code on Social Security 2020 - PF schedule; employer share need not equal the employee share"),
     ("IN.PF.EPS_RATE", "PF: employee share to EPS (%)", "rate", "percent", "Code on Social Security 2020 - PF schedule"),
-    ("IN.PF.EPS_ANNUAL_CAP", "PF: EPS monthly contribution cap", "cap", "currency", "Code on Social Security 2020 - EPS cap"),
+    ("IN.PF.EMPLOYER_EPS_RATE", "PF: employer share to EPS (%)", "rate", "percent", "Code on Social Security 2020 - PF schedule; employer share need not equal the employee share"),
+    ("IN.PF.EPS_MONTHLY_CAP", "PF: EPS contribution cap for one month", "cap", "currency", "Code on Social Security 2020 - monthly EPS ceiling"),
+    ("IN.PF.EPS_ANNUAL_CEILING", "PF: EPS contribution ceiling for the financial year", "cap", "currency", "Code on Social Security 2020 - annual EPS ceiling; requires an EPS year-to-date figure to apply"),
     ("IN.PF.VOLUNTARY", "PF: voluntary contribution configuration", "json_value", "json", "Code on Social Security 2020 - voluntary PF"),
     ("IN.PF.WAGE_BASIS_RULE", "PF: wage basis rule", "json_value", "json", "Code on Social Security 2020 - definition applicable to PF"),
     # ── ESI ──────────────────────────────────────────────────────────────
     ("IN.ESI.WAGE_THRESHOLD", "ESI: monthly wage applicability threshold", "threshold", "currency", "Code on Social Security 2020 - ESI; MoLE FAQ 16 Mar 2026"),
-    ("IN.ESI.EMPLOYEE_RATE", "ESI: employee contribution rate (%)", "rate", "percent", "Code on Social Security 2020 - ESI schedule"),
-    ("IN.ESI.EMPLOYER_RATE", "ESI: employer contribution rate (%)", "rate", "percent", "Code on Social Security 2020 - ESI schedule"),
+    ("IN.ESI.EMPLOYEE_RATE", "ESI: employee contribution rate (%)", "rate", "percent", "Code on Social Security 2020 - ESI schedule (rate mode only)"),
+    ("IN.ESI.EMPLOYER_RATE", "ESI: employer contribution rate (%)", "rate", "percent", "Code on Social Security 2020 - ESI schedule (rate mode only)"),
+    ("IN.ESI.CONTRIBUTION_SCHEDULE", "ESI: banded contribution schedule with its mode and coverage ceiling", "json_value", "json", "Code on Social Security 2020 - ESI contribution schedule; mode must be declared"),
     ("IN.ESI.WAGE_BASIS_RULE", "ESI: wage basis rule", "json_value", "json", "Code on Social Security 2020 - definition applicable to ESI"),
     # ── Professional tax ─────────────────────────────────────────────────
     ("IN.PT.SLABS", "Professional Tax: slab table by state", "json_value", "json", "State professional tax enactments; Constitution Art. 276 annual cap"),
@@ -67,12 +71,14 @@ RULE_CATALOG = [
     # ── Leave ────────────────────────────────────────────────────────────
     ("IN.LEAVE.CARRY_FORWARD_DAYS", "Leave: statutory carry-forward cap (days)", "cap", "days", "Code on Wages 2019; State Shops & Establishment Acts may differ"),
     ("IN.LEAVE.ENCRASHMENT_FREQUENCY", "Leave: encashment permitted", "eligibility", "text", "Code on Wages 2019 - annual encashment"),
+    ("IN.LEAVE.ACCRUAL_DAYS_PER_YEAR", "Leave: accrual per year, by leave type code", "json_value", "json", "Code on Wages 2019; Factories Act 1948 / State Acts - accrual by category"),
     # ── F&F and exit ─────────────────────────────────────────────────────
     ("IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS", "F&F: wages payment deadline (working days from last working day, all exit types)", "deadline", "working_days", "Code on Wages 2019 - payment of wages within two working days"),
     ("IN.RESKILL.EMPLOYER_DEPOSIT_DAYS", "Worker re-skilling fund: employer deposit deadline (days after retrenchment)", "deadline", "days", "OSH Code 2020 - retrenchment contribution to worker re-skilling fund"),
     ("IN.RESKILL.DAYS_WAGES", "Worker re-skilling fund: days' last-drawn wages per retrenched worker", "formula", "days", "OSH Code 2020 - retrenchment contribution"),
     ("IN.RESKILL.DISBURSEMENT_DAYS", "Worker re-skilling fund: disbursement to worker (days)", "deadline", "days", "OSH Code 2020 - disbursement timeline"),
     ("IN.FNF.NOTICE_SHORTFILL_DAYS", "F&F: notice shortfall recovery basis (days)", "formula", "days", "Contractual; configure per company"),
+    ("IN.FNF.ENCASHMENT_WAGE_BASIS", "Leave encashment: wage basis and averaging rule", "json_value", "json", "Code on Wages 2019 - wages definition; State Acts may average over a period"),
     # ── Statutory response / claim clocks (drive helpdesk ticket deadlines) ──
     ("IN.GRIEVANCE.RESPONSE_DEADLINE_DAYS", "Grievance: days to acknowledge and respond", "deadline", "days", "Code on Industrial Relations 2020 - grievance redressal"),
     ("IN.POSH.INTERNAL_COMMITTEE_DEADLINE_DAYS", "POSH: days for the Internal Committee to complete its inquiry", "deadline", "days", "POSH Act 2013 read with the Code on Social Security 2020 - ICC timelines"),

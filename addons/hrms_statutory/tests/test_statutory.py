@@ -339,6 +339,89 @@ class TestGratuity(StatutoryRuleTestCase):
         self.assertEqual(result.completed_months, 9)
         self.assertAlmostEqual(result.gratuity_amount, 120000.0, places=2)  # 8 years
 
+    def test_remainder_of_exactly_six_months_is_not_counted_by_default(self):
+        """'Part thereof **in excess of** six months'.
+
+        The inline implementation counted a remainder of exactly six months as a
+        full year, so 5 years 6 months was paid as 6 years. The boundary is now
+        configuration, defaulting to the literal reading.
+        """
+        self._full_config()
+        employee = self.env["hr.employee"].create(
+            {"name": "Exactly Six", "join_date": date(2019, 4, 5)}
+        )
+        # As at 2026-10-05: 7 years 6 months exactly.
+        result = self.env["hrms.gratuity.engine"].compute(
+            employee, date(2026, 10, 5), "resignation", wage_basis=26000.0
+        )
+        self.assertTrue(result.eligible)
+        self.assertEqual(result.total_service_months % 12, 0)
+        self.assertEqual(result.completed_months, 0)
+        # 26000/26 = 1000/day, x 15 days x 7 years = 105,000, not 120,000.
+        self.assertAlmostEqual(result.gratuity_amount, 105000.0, places=2)
+
+    def test_the_six_month_boundary_can_be_configured_inclusive(self):
+        """The other reading of the same words, available without a code change."""
+        eligibility = self._rule("IN.GRATUITY.ELIGIBILITY", "json_value")
+        self._activate(
+            self._version(
+                eligibility,
+                js={"permanent": {"min_years": 5,
+                                  "partial_year_month_threshold": 6,
+                                  "partial_month_boundary": "inclusive"}},
+            )
+        )
+        self._activate(self._version(self._rule("IN.GRATUITY.DAYS_PER_YEAR", "formula"),
+                                    text="15"))
+        self._activate(self._version(self._rule("IN.GRATUITY.WAGES_DIVISOR", "formula"),
+                                    text="26"))
+        self._activate(self._version(self._rule("IN.GRATUITY.CEILING", "cap"), numeric=2000000))
+        self._activate(
+            self._version(self._rule("IN.GRATUITY.PAYMENT_DEADLINE_DAYS", "deadline"), numeric=30)
+        )
+        employee = self.env["hr.employee"].create(
+            {"name": "Inclusive Six", "join_date": date(2019, 4, 5)}
+        )
+        result = self.env["hrms.gratuity.engine"].compute(
+            employee, date(2026, 10, 5), "resignation", wage_basis=26000.0
+        )
+        self.assertAlmostEqual(result.gratuity_amount, 120000.0, places=2)
+
+    def test_wage_basis_refuses_ctc_when_there_is_no_payslip(self):
+        """No payslip means no wages figure, and the old CTC/12 fallback is gone."""
+        self._full_config()
+        employee = self.env["hr.employee"].create(
+            {"name": "No Payslip", "join_date": date(2010, 1, 1), "hrms_ctc": 900000.0}
+        )
+        with self.assertRaises(UserError) as caught:
+            self.env["hrms.gratuity.engine"].compute(
+                employee, date(2026, 10, 5), "resignation"
+            )
+        self.assertIn("CTC", str(caught.exception))
+
+    def test_ceiling_of_zero_is_not_treated_as_no_ceiling(self):
+        """``if ceiling and amount > ceiling`` made zero mean 'no ceiling'."""
+        eligibility = self._rule("IN.GRATUITY.ELIGIBILITY", "json_value")
+        self._activate(
+            self._version(eligibility, js={"permanent": {"min_years": 5}})
+        )
+        self._activate(self._version(self._rule("IN.GRATUITY.DAYS_PER_YEAR", "formula"),
+                                    text="15"))
+        self._activate(self._version(self._rule("IN.GRATUITY.WAGES_DIVISOR", "formula"),
+                                    text="26"))
+        self._activate(self._version(self._rule("IN.GRATUITY.CEILING", "cap"), numeric=0))
+        self._activate(
+            self._version(self._rule("IN.GRATUITY.PAYMENT_DEADLINE_DAYS", "deadline"), numeric=30)
+        )
+        employee = self.env["hr.employee"].create(
+            {"name": "Zero Ceiling", "join_date": date(2010, 1, 1)}
+        )
+        result = self.env["hrms.gratuity.engine"].compute(
+            employee, date(2026, 10, 5), "resignation", wage_basis=26000.0
+        )
+        self.assertTrue(result.ceiling_applied)
+        self.assertEqual(result.gratuity_amount, 0.0)
+
     def test_ceiling_is_applied_and_the_excess_reported(self):
         self._full_config()
         employee = self.env["hr.employee"].create(

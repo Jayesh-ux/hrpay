@@ -16,6 +16,19 @@ from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
 
 
+# JSON bodies for the fixture's ``json_value`` codes. The leave accrual and the
+# encashment wage basis did not exist as codes until 2026-10-05; without them the
+# F&F calculation refuses, which is correct behaviour but makes every other test
+# in this file fail for the wrong reason.
+_FIXTURE_JSON = {
+    "IN.GRATUITY.ELIGIBILITY":
+        '{"default": {"min_years": 5, "partial_year_month_threshold": 6}}',
+    "IN.LEAVE.CARRY_FORWARD_DAYS": '{"default": 30}',
+    "IN.LEAVE.ACCRUAL_DAYS_PER_YEAR": '{"default": {"annual_days": 18}}',
+    "IN.FNF.ENCASHMENT_WAGE_BASIS": '{"basis": "wages", "average_months": 3}',
+}
+
+
 @tagged("post_install", "-at_install", "hrms_fnf")
 class SettlementTestCase(TransactionCase):
     @classmethod
@@ -118,6 +131,8 @@ class SettlementTestCase(TransactionCase):
             ("IN.GRATUITY.CEILING", "cap", 2000000, None),
             ("IN.GRATUITY.PAYMENT_DEADLINE_DAYS", "deadline", 30, None),
             ("IN.LEAVE.CARRY_FORWARD_DAYS", "json_value", None, None),
+            ("IN.LEAVE.ACCRUAL_DAYS_PER_YEAR", "json_value", None, None),
+            ("IN.FNF.ENCASHMENT_WAGE_BASIS", "json_value", None, None),
         ]
         for code, ctype, numeric, text in specs:
             rule = Rule.create(
@@ -134,9 +149,7 @@ class SettlementTestCase(TransactionCase):
                     "effective_from": date(2020, 1, 1),
                     "numeric_value": numeric if numeric is not None else 0,
                     "text_value": text,
-                    "json_value": '{"default": {"min_years": 5, "partial_year_month_threshold": 6}}'
-                    if code == "IN.GRATUITY.ELIGIBILITY"
-                    else None,
+                    "json_value": _FIXTURE_JSON.get(code),
                     "state": "validated",
                     "source_reference": "test fixture authority",
                     "validated_by": approver.id,

@@ -12,6 +12,8 @@ import logging
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+from . import settlement_arithmetic as _settlement
+
 _logger = logging.getLogger(__name__)
 
 
@@ -230,6 +232,13 @@ def _leave_encashment(case):
     )
     monthly_wage = float(employee.contract_id.wage or 0.0)
     days_in_month = _days_in_month(case.last_working_day)
+    basis_config = ctx.get_json(
+        "IN.FNF.ENCASHMENT_WAGE_BASIS",
+        case.company_id,
+        state_code=employee.hrms_state_code,
+        contract_type=employee.contract_type,
+        on_date=case.last_working_day,
+    ) or {}
 
     for leave_type in types:
         taken = Leave.search_count(
@@ -240,7 +249,15 @@ def _leave_encashment(case):
                 ("date_from", "<=", case.last_working_day),
             ]
         )
-        allocated = _leave_allocated(case, leave_type, days_in_month)
+        allocated = _leave_allocated(case, leave_type)
+        if allocated is None:
+            detail["leave_types"].append(
+                {"leave_type": leave_type.name, "taken": taken,
+                 "note": "not an accrual-bearing leave type (neither statutory nor "
+                         "encashable) and no accrual is configured for it, so "
+                         "there is no balance to value or recover"}
+            )
+            continue
         if not allocated:
             detail["leave_types"].append(
                 {"leave_type": leave_type.name, "taken": taken,
@@ -268,16 +285,41 @@ def _leave_encashment(case):
                     f"{unused} day(s) to encash but no payroll pay code, so the "
                     "amount cannot be priced. Assign a pay code to the leave type."
                 )
-            divisor = days_in_month
             formula = leave_type.encashment_formula
-            if formula == "daily_wages":
-                daily = (employee.hrms_ctc or monthly_wage) / 365.0
-            elif formula == "average_last_m":
-                daily = _average_daily_wage(case, monthly_wage)
-            elif formula == "not_encashable":
-                daily = 0.0
-            else:  # monthly_divisor
-                daily = monthly_wage / divisor if divisor else 0.0
+            basis = basis_config.get("basis", "wages")
+            try:
+                if formula == "daily_wages":
+                    # The previous code was ``(employee.hrms_ctc or monthly_wage)
+                    # / 365.0``: CTC is not wages, and 365 is a year rather than
+                    # the divisor of a month, so the rate was roughly an order of
+                    # magnitude too low on the wrong basis.
+                    daily = _settlement.daily_wage(
+                        monthly_wage=_last_drawn_monthly_wages(case),
+                        days_in_month=days_in_month,
+                        basis=basis,
+                    )
+                elif formula == "average_last_m":
+                    daily = _settlement.daily_wage(
+                        monthly_wage=_average_monthly_wages(
+                            case, basis_config.get("average_months", 3)
+                        ),
+                        days_in_month=days_in_month,
+                        basis=basis,
+                    )
+                elif formula == "not_encashable":
+                    daily = 0.0
+                else:  # monthly_divisor
+                    daily = _settlement.daily_wage(
+                        monthly_wage=monthly_wage,
+                        days_in_month=days_in_month,
+                        basis=basis,
+                    )
+            except ValueError as exc:
+                raise UserError(
+                    f"{employee.name}: leave encashment for '{leave_type.name}' "
+                    f"cannot be priced: {exc} Configure "
+                    f"IN.FNF.ENCASHMENT_WAGE_BASIS and supply the wages figure."
+                ) from exc
             lines.append(
                 _line(
                     "leave_encashment",
@@ -293,67 +335,204 @@ def _leave_encashment(case):
                 )
             )
         if excess:
-            daily = monthly_wage / days_in_month if days_in_month else 0.0
-            if carry_forward_days and excess > float(carry_forward_days):
+            # Priced at the same rate the encashment used, so the two sides of the
+            # same leave type cannot disagree.
+            daily = 0.0
+            for line in lines:
+                if (line["line_type"] == "leave_encashment"
+                        and line["computation"].get("leave_type") == leave_type.name):
+                    daily = float(line["computation"]["daily_rate"])
+                    break
+            if not daily:
+                try:
+                    daily = _settlement.daily_wage(
+                        monthly_wage=monthly_wage,
+                        days_in_month=days_in_month,
+                        basis="wages",
+                    )
+                except ValueError as exc:
+                    raise UserError(
+                        f"{employee.name}: excess leave on '{leave_type.name}' "
+                        f"cannot be priced: {exc}"
+                    ) from exc
+            split = _settlement.encashment_for_leave(
+                unused_days=0.0,
+                daily_rate=daily,
+                excess_days=excess,
+                carry_forward_days=carry_forward_days,
+            )
+            if split["recoverable_amount"]:
+                entry["excess_note"] = (
+                    f"{excess} day(s) beyond the accrual, recovered after the "
+                    f"{carry_forward_days} day(s) carry-forward allowance"
+                )
                 lines.append(
                     _line(
                         "leave_excess",
-                        daily * excess,
+                        split["recoverable_amount"],
                         is_deduction=True,
                         rule_code="IN.LEAVE.CARRY_FORWARD_DAYS",
                         detail={
                             **entry,
                             "daily_rate": round(daily, 2),
+                            "excess_days": excess,
+                            "recoverable_days": split["recoverable_days"],
                             "note": f"{excess} day(s) beyond the accrual",
                         },
                         label=f"Excess leave: {leave_type.name} ({excess}d)",
                     )
                 )
+            else:
+                entry["excess_note"] = (
+                    f"{excess} day(s) beyond the accrual, all inside the "
+                    f"{carry_forward_days} day(s) carry-forward allowance, so "
+                    f"nothing is recovered"
+                )
     return lines, detail
 
 
-def _leave_allocated(case, leave_type, days_in_month):
-    """Days of a leave type accrued up to the last working day.
+def _leave_allocated(case, leave_type):
+    """Days of a leave type accrued by the last working day.
 
-    Deliberately not hardcoded. Statutory accrual for annual leave varies by
-    category and State; where it is not configured, the line is skipped and the
-    reason recorded rather than a 30-day default being assumed.
+    The previous implementation resolved
+    ``IN.LEAVE.ACCRUAL_DAYS.<leave type>`` -- a code that never existed in the
+    catalog -- swallowed the resulting ``UserError`` and returned ``0.0``. So
+    every leave encashment was silently zero: a statutory payment that is always
+    wrong, raises nothing, and leaves a clean payslip.
+
+    It then computed ``months * months``, having rebound ``months`` from the
+    per-month accrual to the count of service months. Eighteen months of service
+    produced **324** days of leave.
+
+    Accrual is linear: per-month accrual times months of service. Both halves come
+    from the single catalog code ``IN.LEAVE.ACCRUAL_DAYS_PER_YEAR``, keyed by
+    leave type code. A leave type with no configured accrual raises rather than
+    being valued at zero, because zero is indistinguishable from a genuine nil.
     """
     ctx = case.env["hrms.statutory.context"]
-    try:
-        value = ctx.get_json(
-            f"IN.LEAVE.ACCRUAL_DAYS.{leave_type.code or leave_type.id}",
-            case.company_id,
-            state_code=case.employee_id.hrms_state_code,
-            contract_type=case.employee_id.contract_type,
-            on_date=case.last_working_day,
+    employee = case.employee_id
+    config = ctx.get_json(
+        "IN.LEAVE.ACCRUAL_DAYS_PER_YEAR",
+        case.company_id,
+        state_code=employee.hrms_state_code,
+        contract_type=employee.contract_type,
+        on_date=case.last_working_day,
+    )
+    by_type = (config or {}).get("by_leave_type", {})
+    key = leave_type.code or str(leave_type.id)
+    entry = by_type.get(key)
+    if entry is None:
+        entry = (config or {}).get("default")
+    if entry is None:
+        # A leave type that is neither statutory nor encashable is not an
+        # accrual-bearing balance: a sick-leave or casual-leave type with no
+        # accrual rule is a legitimate configuration, and refusing the whole
+        # settlement over it would be wrong. A leave type we are going to *pay*
+        # for or *recover* is a different matter, and is refused.
+        if not (leave_type.statutory or leave_type.encashable):
+            return None
+        raise UserError(
+            f"{employee.name}: no accrual configured for leave type "
+            f"'{leave_type.name}' (code {key!r}) in IN.LEAVE.ACCRUAL_DAYS_PER_YEAR. "
+            f"It is marked statutory or encashable, so its accrual has to exist "
+            f"before it can be valued or recovered. Accrual differs by category "
+            f"and by State, so it is not guessed. See CA request section 4.4."
         )
-    except UserError:
-        return 0.0
-    if not value:
-        return 0.0
-    months = value.get("annual_days", 0) / 12.0 if value.get("annual_days") else 0
-    if value.get("monthly_days"):
-        months = float(value["monthly_days"])
-    service_months = _months(case.employee_id.hrms_service_start or case.employee_id.join_date,
-                             case.last_working_day)
-    return round(months * months, 2)
+
+    months = _months(
+        employee.hrms_service_start or employee.join_date, case.last_working_day
+    )
+    try:
+        return _settlement.accrued_leave_days(
+            annual_days=entry.get("annual_days"),
+            monthly_days=entry.get("monthly_days"),
+            months_of_service=months,
+        )
+    except ValueError as exc:
+        raise UserError(
+            f"{employee.name}: leave accrual for '{leave_type.name}' is "
+            f"unusable: {exc}"
+        ) from exc
 
 
-def _average_daily_wage(case, fallback):
-    slips = case.env["hr.payslip"].sudo().search(
+def _gross_earnings(slip):
+    """Gross earnings on one payslip: earnings only, no employer burden.
+
+    The previous code summed ``l.total for l in s.line_ids``, which added the
+    employer's PF and other contributions to the basis and netted employee
+    deductions off it.
+    """
+    lines = slip.line_ids
+    rule_model = slip.env["hr.salary.rule"]
+    if "is_employer_contribution" in rule_model._fields:
+        lines = lines - lines.filtered(
+            lambda line: line.salary_id.is_employer_contribution
+        )
+    total = sum(float(line.total or 0.0) for line in lines
+                if float(line.total or 0.0) > 0)
+    return total
+
+
+def _last_drawn_monthly_wages(case):
+    """Wages on the most recent paid payslip.
+
+    Refuses when there is none, rather than falling back to the contract wage.
+    """
+    employee = case.employee_id
+    slip = case.env["hr.payslip"].sudo().search(
         [
-            ("employee_id", "=", case.employee_id.id),
+            ("employee_id", "=", employee.id),
             ("date_from", "<=", case.last_working_day),
             ("state", "in", ("done", "paid")),
         ],
-        limit=3,
+        limit=1,
+        order="date_to desc",
+    )
+    if not slip:
+        raise ValueError(
+            f"no paid payslip for {employee.name} on or before "
+            f"{case.last_working_day}; the contract wage is refused as a wage "
+            f"basis because it is not last-drawn wages"
+        )
+    total = _gross_earnings(slip)
+    if total <= 0:
+        raise ValueError(
+            f"payslip {slip.display_name or slip.id} has no gross earnings lines"
+        )
+    return total
+
+
+def _average_monthly_wages(case, months):
+    """Average gross earnings over the last ``months`` paid payslips.
+
+    :raises ValueError: when there are no payslips. The previous version fell
+        back to the contract wage divided by the day count of the exit month, and
+        divided a three-month average by the length of one month, so the same
+        employee encashing in February was paid a daily rate 25% lower than in
+        March.
+    """
+    employee = case.employee_id
+    slips = case.env["hr.payslip"].sudo().search(
+        [
+            ("employee_id", "=", employee.id),
+            ("date_from", "<=", case.last_working_day),
+            ("state", "in", ("done", "paid")),
+        ],
+        limit=months,
         order="date_to desc",
     )
     if not slips:
-        return fallback / _days_in_month(case.last_working_day)
-    totals = [sum(l.total for l in s.line_ids) for s in slips]
-    return (sum(totals) / len(totals)) / _days_in_month(case.last_working_day)
+        raise ValueError(
+            f"no paid payslips for {employee.name} to average over {months} "
+            f"month(s); the contract wage is refused as a wage basis"
+        )
+    totals = [_gross_earnings(slip) for slip in slips]
+    if not any(totals):
+        raise ValueError(
+            f"the last {months} payslip(s) for {employee.name} have no gross "
+            f"earnings lines"
+        )
+    return sum(totals) / len(totals)
 
 
 def _gratuity(case):
@@ -362,9 +541,6 @@ def _gratuity(case):
             case.employee_id,
             case.last_working_day,
             case.reason_id.code,
-            wage_basis=float(case.employee_id.hrms_ctc or 0.0) / 12.0
-            if case.employee_id.hrms_ctc
-            else float(case.employee_id.contract_id.wage or 0.0),
         )
     except UserError as exc:
         return None, {"error": str(exc)}
@@ -406,15 +582,39 @@ def _notice_shortfall(case):
             "unlawful."
         )
         return None, detail
-    daily = float(case.employee_id.contract_id.wage or 0.0) / _days_in_month(
-        case.last_working_day
-    )
+    try:
+        recovery = _settlement.notice_shortfall_recovery(
+            shortfall_days=_settlement.notice_shortfall_days(
+                contractual_days=case.notice_period_days,
+                served_days=case.notice_served_days,
+            ),
+            daily_rate=_settlement.daily_wage(
+                monthly_wage=float(case.employee_id.contract_id.wage or 0.0),
+                days_in_month=_days_in_month(case.last_working_day),
+                basis="wages",
+            ),
+            permits_recovery=bool(case.reason_id.permits_recovery),
+            max_recoverable=(
+                case.notice_recovery_cap if case.notice_recovery_cap else None
+            ),
+        )
+    except ValueError as exc:
+        raise UserError(
+            f"{case.employee_id.name}: notice shortfall cannot be valued: {exc}"
+        ) from exc
+    detail.update(recovery["notes"] and {"notes": recovery["notes"]} or {})
+    detail["uncapped_amount"] = recovery["uncapped_amount"]
+    detail["recovery_suppressed"] = recovery["recovery_suppressed"]
+    if recovery["notes"]:
+        detail["notes"] = recovery["notes"]
+    if not recovery["recovery_amount"]:
+        return None, detail
     line = _line(
         "notice_shortfall",
-        daily * shortfall_days,
+        recovery["recovery_amount"],
         is_deduction=True,
         rule_code="IN.FNF.NOTICE_SHORTFILL_DAYS",
-        detail={**detail, "daily_rate": round(daily, 2)},
+        detail=detail,
     )
     return line, detail
 

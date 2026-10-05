@@ -28,6 +28,8 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+from . import gratuity_arithmetic as _gratuity
+
 _logger = logging.getLogger(__name__)
 
 
@@ -230,33 +232,37 @@ class GratuityEngine(models.AbstractModel):
         if wage_basis is None:
             wage_basis = self._wage_basis(employee, method, as_of_date)
 
-        # Countable service. For pro-rata (fixed-term) all months count as
-        # proportional years. Otherwise complete years plus part thereof above
-        # the threshold.
-        if pro_rata:
-            countable_years = total_months / 12.0
-            rounding_note = "pro-rata: all months counted"
-        else:
-            full_years = total_months // 12
-            remainder = total_months % 12
-            countable_years = full_years
-            if remainder > partial_month_threshold:
-                countable_years += 1
-                rounding_note = f"remainder {remainder}m exceeds {partial_month_threshold}m, counted as a full year"
-            elif remainder == partial_month_threshold and partial_month_threshold > 0:
-                countable_years += 1
-                rounding_note = f"remainder exactly {remainder}m, counted as a full year"
-            else:
-                rounding_note = f"remainder {remainder}m does not exceed {partial_month_threshold}m, not counted"
+        # Countable service and the amount itself live in gratuity_arithmetic.py,
+        # where they are tested without Odoo. Two defects came out of the inline
+        # version: a remainder of exactly six months was counted as a full year
+        # even though the statute says *in excess of* six months, and
+        # ``if ceiling and amount > ceiling`` treated a ceiling of zero as no
+        # ceiling at all. Both now raise or apply as configured.
+        boundary = params.get("partial_month_boundary", "exclusive")
+        try:
+            countable_years, rounding_note = _gratuity.countable_years(
+                total_months,
+                pro_rata=pro_rata,
+                partial_threshold_months=partial_month_threshold,
+                boundary=boundary,
+            )
+            figures = _gratuity.compute_gratuity(
+                wage_basis=wage_basis,
+                days_per_year=days_per_year,
+                countable_years_value=countable_years,
+                wages_divisor=divisor,
+                ceiling=ceiling,
+            )
+        except ValueError as exc:
+            raise UserError(
+                f"{employee.name}: gratuity cannot be computed as at {as_of_date}: "
+                f"{exc} See docs/compliance/CA-SIGNOFF-REQUEST.md section 2."
+            ) from exc
 
-        daily_wage = (wage_basis / divisor) if divisor else 0.0
-        amount = daily_wage * days_per_year * countable_years
-
-        ceiling_applied = False
-        capped = 0.0
-        if ceiling and amount > ceiling:
-            ceiling_applied = True
-            capped = amount - ceiling
+        daily_wage = figures["daily_wage"]
+        amount = figures["uncapped_amount"]
+        ceiling_applied = figures["ceiling_applied"]
+        capped = figures["excess_over_ceiling"]
 
         versions = ctx._snapshot(company, state, ct, as_of_date)
         return self.env["hrms.gratuity.result"].create(
@@ -273,7 +279,7 @@ class GratuityEngine(models.AbstractModel):
                 "wage_basis_method": method,
                 "days_per_year": days_per_year,
                 "divisor": divisor,
-                "gratuity_amount": round(min(amount, ceiling) if ceiling and ceiling_applied else amount, 2),
+                "gratuity_amount": figures["payable"],
                 "ceiling": ceiling,
                 "ceiling_applied": ceiling_applied,
                 "capped_amount": round(capped, 2),
@@ -321,26 +327,42 @@ class GratuityEngine(models.AbstractModel):
         ]
 
     def _wage_basis(self, employee, method, as_of_date):
+        """Last-drawn wages for gratuity.
+
+        Three defects in the previous version, all of which overstate or
+        misstate the basis:
+
+        1. ``sum(l.total for l in slip.line_ids)`` summed **every** payslip line,
+           so employer contributions such as the employer's PF were added to the
+           basis and employee deductions were netted off it. Only gross earnings
+           count, and employer contributions are not wages at all.
+        2. With no payslip found it fell back to ``hrms_ctc / 12``. CTC includes
+           employer PF, a gratuity accrual and insurance, none of which are
+           wages, so the gratuity was overstated by construction.
+        3. The ``seasonal`` method returned CTC outright, for the same reason.
+
+        There is no fallback now. Absence of a payslip raises, because the two
+        figures we do have (CTC and the contract wage) are both the wrong kind of
+        number and guessing between them silently is how an overpayment becomes a
+        liability. Which components are wages is CA request section 2.
+        """
+        months = 3
         if method == "average_3m":
-            months = 3
             slips = self.env["hr.payslip"].search(
                 [
                     ("employee_id", "=", employee.id),
                     ("date_from", "<=", as_of_date),
-                    ("date_to", ">=", (as_of_date - relativedelta(months=3))),
+                    ("date_to", ">=", (as_of_date - relativedelta(months=months))),
                     ("state", "in", ("done", "paid")),
                 ],
                 limit=months,
                 order="date_to desc",
             )
-            total = sum(sum(l.total for l in s.line_ids) for s in slips)
-            if slips:
-                return total / len(slips)
-            # Fall back to the contract wage with an explicit note.
-            return float(employee.contract_id.wage or 0.0)
-        if method == "seasonal":
-            return float(employee.hrms_ctc or 0.0)
-        # last_drawn
+            if not slips:
+                return self._refuse_wage_basis(employee, method, as_of_date)
+            return round(sum(self._gross_earnings(slip) for slip in slips)
+                         / len(slips), 2)
+
         slip = self.env["hr.payslip"].search(
             [
                 ("employee_id", "=", employee.id),
@@ -350,10 +372,45 @@ class GratuityEngine(models.AbstractModel):
             limit=1,
             order="date_to desc",
         )
-        if slip:
-            return sum(l.total for l in slip.line_ids)
-        return float(employee.hrms_ctc or 0.0) / 12.0 if employee.hrms_ctc else float(
-            employee.contract_id.wage or 0.0
+        if not slip:
+            return self._refuse_wage_basis(employee, method, as_of_date)
+        return self._gross_earnings(slip)
+
+    def _gross_earnings(self, slip):
+        """Gross earnings on one payslip: earnings only, no employer burden.
+
+        Payslip lines are positive for earnings and negative for deductions, so
+        ``total > 0`` separates them. Employer contributions are positive too and
+        must be excluded; whether a rule is an employer contribution is a field on
+        the salary rule in recent Odoo versions, and is checked for rather than
+        assumed, because this addon has never been loaded against a database.
+        """
+        lines = slip.line_ids
+        rule_model = self.env["hr.salary.rule"]
+        if "is_employer_contribution" in rule_model._fields:
+            excluded = lines.filtered(
+                lambda line: line.salary_id.is_employer_contribution
+            )
+            lines = lines - excluded
+        total = sum(float(line.total or 0.0) for line in lines
+                    if float(line.total or 0.0) > 0)
+        if total <= 0:
+            raise UserError(
+                f"Payslip {slip.display_name or slip.id} has no gross earnings "
+                f"lines, so last-drawn wages cannot be established. Refusing to "
+                f"substitute CTC or the contract wage for the gratuity basis; see "
+                f"docs/compliance/CA-SIGNOFF-REQUEST.md section 2."
+            )
+        return total
+
+    def _refuse_wage_basis(self, employee, method, as_of_date):
+        """No payslip means no wages figure, and this is not a recoverable gap."""
+        raise UserError(
+            f"{employee.name}: gratuity wage basis method '{method}' needs a paid "
+            f"payslip on or before {as_of_date} and there is none. CTC and the "
+            f"contract wage are both refused, because neither is statutory 'wages' "
+            f"(CTC includes employer contributions). Resolve CA request section 2 "
+            f"to know which components count, then supply a payslip."
         )
 
 
