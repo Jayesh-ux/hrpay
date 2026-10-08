@@ -335,7 +335,8 @@ make env          # creates .env from .env.example — EDIT the passwords
 make test-standalone
 ```
 
-`make test-standalone` should print 14 and 45 passing tests and needs no Docker. If
+`make test-standalone` should print **190** passing tests in four suites — 14
+solver, 45 TDS, 81 statutory (PF/ESI/PT/gratuity), 50 F&F — and needs no Docker. If
 it does not, the repository is broken before Odoo is even involved, and that is the
 cheapest possible failure to diagnose.
 

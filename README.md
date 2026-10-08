@@ -3,14 +3,18 @@
 Open-source, AI-native HR and payroll platform. Replicates the functional scope and workflows of
 enterprise HRMS products. No proprietary branding, UI assets or content is copied.
 
-## Status: Phase 0 complete — awaiting sign-off
+## Status: backend written, Odoo never run — Gate 1A pending
 
-No platform code has been written. Phase 0 was a validation spike.
+Phase 0 was a validation spike. The code that followed it is written but has never
+executed inside Odoo: the authoring host had no Docker, PostgreSQL or Odoo, so only
+the 190 Odoo-free tests have ever run (14 solver, 45 TDS, 81 statutory, 50 F&F).
+All 105 Odoo test functions, every view and the Docker stack are unexecuted.
+Read [docs/HANDOFF.md](docs/HANDOFF.md) §3 before assuming anything works.
 
 | Phase | Scope | Status |
 |---|---|---|
 | **0** | Validation spike + go/no-go | ✅ **Complete** — [report](docs/phase0/go-no-go.md) |
-| **1A** | Payroll engine bake-off | 🟡 Next. Blocked on build host (no Docker, 11 GB disk here) |
+| **1A** | Payroll engine bake-off | 🟡 Next. Code written; **needs your machine**, the authoring host had no Docker |
 | 1 | Core loop: schema, integration service, RBAC | ⛔ Blocked on Gate 1A + D6 |
 | 2 | AI management layer | ⛔ Blocked |
 | 3A | Full & final settlement engine | ⛔ Blocked |
@@ -18,6 +22,51 @@ No platform code has been written. Phase 0 was a validation spike.
 | 3C | SLA-based enterprise helpdesk | ⛔ Blocked |
 | 3D | Complex shift auto-rostering | ⛔ Blocked |
 | 4 | Recruitment, bots, surveys, org chart, succession, UAE/US payroll | ⛔ Blocked |
+
+## Quickstart
+
+Ordered. Do not skip step 1 and trust a later step — `make test-standalone` is the
+cheapest failure to diagnose. Full detail and expected failure modes are in
+[docs/HANDOFF.md](docs/HANDOFF.md) §6.
+
+Prerequisites: Docker with Compose v2, Git 2.25+, Python 3.12, and `make`.
+On Windows, do this inside **WSL2 (Ubuntu)** — the Makefile is bash and
+`make` is not installed by Git for Windows.
+
+```bash
+git clone https://github.com/Jayesh-ux/hrpay.git && cd hrpay
+
+# 1. config + the tests that need no Docker at all (expect 190 passing)
+make env               # creates .env — EDIT the passwords
+make test-standalone
+
+# 2. pinned dependencies, exact SHAs from versions/lock.txt
+make oca && make pin
+
+# 3. cross-reference addons and views (expect 0 errors / 105 authored tests)
+make check-static
+
+# 4. the real run: fresh DB, install six addons, run every test, write a report
+make test-odoo
+```
+
+**Expect `make test-odoo` to fail.** The Docker entrypoint, the Odoo field and API
+assumptions, and the 105 authored tests have never executed. Report the failure
+honestly rather than working around it; `docs/test-runs/<timestamp>.md` has a
+"Not covered by this run" section that must be answered, not left blank.
+
+To run the UI instead of tests:
+
+```bash
+make up                # Odoo → http://localhost:8069
+make install-addons    # install the six addons into the hrpay database
+make down              # stop, keeping data
+```
+
+Statutory values are intentionally **absent**: all 50 catalog codes are unvalidated
+skeletons, so PF/ESI/PT/gratuity/F&F calculations refuse to produce a number until
+each is signed off. `docs/compliance/CA-SIGNOFF-REQUEST.md` must be sent to a
+qualified professional by hand — nothing has been sent for you.
 
 ## Verdict: CONDITIONAL GO — approved 2026-10-05 (D1, D3, D5); D6 open
 
