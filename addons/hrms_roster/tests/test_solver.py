@@ -96,6 +96,7 @@ class TestRosterSolver(TransactionCase):
                 "company_id": self.company.id,
                 "wage": wage,
                 "date_start": "2020-01-01",
+                "state": "open",
             }
         )
         return employee
@@ -122,7 +123,7 @@ class TestRosterSolver(TransactionCase):
 
     # ─── Refusals ───────────────────────────────────────────────────────
     def test_solver_refuses_non_draft_period(self):
-        self.period.action_publish()
+        self.period.write({"state": "published"})
         with self.assertRaises(UserError):
             self._solve()
 
@@ -137,8 +138,7 @@ class TestRosterSolver(TransactionCase):
 
     def test_solver_refuses_when_pool_is_empty(self):
         self._demand()
-        self.period.date_from = "2030-01-07"
-        self.period.date_to = "2030-01-07"
+        self.period.write({"date_from": "2030-01-07", "date_to": "2030-01-07"})
         with self.assertRaises(UserError):
             self._solve()
 
@@ -236,9 +236,6 @@ class TestRosterSolver(TransactionCase):
         longest, run = 1, 1
         dates = sorted({p["start_datetime"][:10] for p in _loads(result.proposal_json)})
         for previous, current in zip(dates, dates[1:]):
-            gap = (
-                self.env["hr.roster.solver"].env.cr  # placeholder to keep lint quiet
-            ) and 0
             if _days_between(previous, current) == 1:
                 run += 1
                 longest = max(longest, run)
@@ -285,7 +282,10 @@ class TestRosterSolver(TransactionCase):
 
     # ─── Preference is a soft constraint ─────────────────────────────────
     def test_skill_match_outranks_stated_preference(self):
-        skill = self.env["hr.skill"].create({"name": "Forklift"})
+        skill_type = self.env["hr.skill.type"].create({"name": "Equipment"})
+        skill = self.env["hr.skill"].create(
+            {"name": "Forklift", "skill_type_id": skill_type.id}
+        )
         self._demand(headcount=1, skills=[skill.id])
         skilled = self._employee("Skilled", skills=[skill.id])
         eager = self._employee("Eager")
@@ -441,7 +441,10 @@ def _iso(datetime_text):
 
 
 def _days_between(earlier, later):
-    return (date.strptime(later, _DAY_FMT) - date.strptime(earlier, _DAY_FMT)).days
+    return (
+        datetime.strptime(later, _DAY_FMT).date()
+        - datetime.strptime(earlier, _DAY_FMT).date()
+    ).days
 
 
 def _hours_between(earlier, later):

@@ -57,6 +57,9 @@ services:
       # Created by ops/fetch_deps.sh. Absent on a fresh clone is fine: the
       # entrypoint reports which dependency modules are missing.
       - ./.oca:/opt/hrpay/oca:ro
+      # The entrypoint lives here; without this mount the container dies with
+      # 'exec: /opt/hrpay/ops/odoo-entrypoint.sh: no such file or directory'.
+      - ./ops:/opt/hrpay/ops:ro
       - odoo-filestore:/var/lib/odoo/filestore
       - ./ops/odoo.conf:/etc/odoo/odoo.conf:ro
     ports:

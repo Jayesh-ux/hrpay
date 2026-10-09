@@ -1,0 +1,49 @@
+ Volume hrpay_odoo-filestore Creating 
+ Volume hrpay_odoo-filestore Created 
+ Container hrpay-postgres Running 
+ Container hrpay-postgres Waiting 
+ Container hrpay-postgres Healthy 
+ Container hrpay-odoo-run-a6983a151cdb Creating 
+ Container hrpay-odoo-run-a6983a151cdb Created 
+[entrypoint] core addons:    /usr/lib/python3/dist-packages/odoo/addons
+[entrypoint] our addons:     /opt/hrpay/addons
+[entrypoint] oca addons:     /opt/hrpay/oca
+[entrypoint] addons path:    /usr/lib/python3/dist-packages/odoo/addons,/opt/hrpay/addons,/opt/hrpay/oca
+2026-10-08 12:41:13,004 1 INFO ? odoo: Odoo version 18.0-20260926 
+2026-10-08 12:41:13,005 1 INFO ? odoo: Using configuration file at /etc/odoo/odoo.conf 
+2026-10-08 12:41:13,005 1 INFO ? odoo: addons paths: ['/usr/lib/python3/dist-packages/odoo/addons', '/var/lib/odoo/.local/share/Odoo/addons/18.0', '/opt/hrpay/addons', '/opt/hrpay/oca'] 
+2026-10-08 12:41:13,005 1 INFO ? odoo: database: odoo@postgres:5432 
+2026-10-08 12:41:13,015 1 INFO ? odoo.sql_db: Connection to the database failed 
+Traceback (most recent call last):
+  File "/usr/bin/odoo", line 8, in <module>
+    odoo.cli.main()
+  File "/usr/lib/python3/dist-packages/odoo/cli/command.py", line 76, in main
+    o.run(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 182, in run
+    main(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 153, in main
+    odoo.service.db._create_empty_database(db_name)
+  File "/usr/lib/python3/dist-packages/odoo/service/db.py", line 133, in _create_empty_database
+    with closing(db.cursor()) as cr:
+                 ^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/sql_db.py", line 812, in cursor
+    return Cursor(self.__pool, self.__dbname, self.__dsn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/sql_db.py", line 295, in __init__
+    self._cnx = pool.borrow(dsn)
+                ^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/decorator.py", line 232, in fun
+    return caller(func, *(extras + args), **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/tools/func.py", line 97, in locked
+    return func(inst, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/sql_db.py", line 739, in borrow
+    result = psycopg2.connect(
+             ^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "postgres" (172.19.0.2), port 5432 failed: fe_sendauth: no password supplied
+
+

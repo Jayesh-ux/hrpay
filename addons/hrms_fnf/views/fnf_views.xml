@@ -180,7 +180,7 @@
 
         <menuitem id="menu_hrms_fnf_case"
                   name="Final Settlements"
-                  parent="hr_payroll.menu_hr_payroll_root"
+                  parent="hr_payroll_community.menu_hr_payroll_community_root"
                   action="action_hrms_fnf_case"
                   groups="hrms_core_ext.group_hrms_payroll_admin"/>
 

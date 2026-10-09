@@ -97,7 +97,6 @@ production.
       figures. There is nothing to compare against.
 - [ ] Multi-company and per-establishment scoping is untested.
 - [ ] Load testing (target: 5,000 employees) not run.
-- [ ] OCA module versions in `.oca/` were fetched, not pinned by SHA.
 - [ ] Encryption key rotation not exercised.
 - [ ] Payroll-to-GL posting not exercised (`hr_payroll_account_community` needs a
       chart of accounts).

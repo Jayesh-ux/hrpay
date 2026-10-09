@@ -18,18 +18,6 @@
         sequence="90"
         groups="hrms_core_ext.group_hrms_roster_manager"/>
 
-    <menuitem id="menu_hrms_roster_period"
-        name="Roster periods"
-        parent="menu_hrms_roster_root"
-        action="action_hr_roster_period"
-        sequence="10"/>
-
-    <menuitem id="menu_hrms_roster_assignment"
-        name="Assignments"
-        parent="menu_hrms_roster_root"
-        action="action_hr_roster_assignment"
-        sequence="20"/>
-
     <record id="view_hr_roster_shift_list" model="ir.ui.view">
         <field name="name">hr.roster.shift.list</field>
         <field name="model">hr.roster.shift</field>
@@ -337,5 +325,17 @@
         <field name="res_model">hr.roster.period</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <menuitem id="menu_hrms_roster_period"
+        name="Roster periods"
+        parent="menu_hrms_roster_root"
+        action="action_hr_roster_period"
+        sequence="10"/>
+
+    <menuitem id="menu_hrms_roster_assignment"
+        name="Assignments"
+        parent="menu_hrms_roster_root"
+        action="action_hr_roster_assignment"
+        sequence="20"/>
 
 </odoo>

@@ -166,14 +166,11 @@ class EmployeeAvailability(models.Model):
         required=True,
     )
     source_leave_id = fields.Many2one("hr.leave", ondelete="set null")
-
-    _sql_constraints = [
-        (
-            "availability_dates_ordered",
-            "CHECK (date_to >= date_from)",
-            "Availability end date must not precede its start.",
-        )
-    ]
+    shift_id = fields.Many2one(
+        "hr.roster.shift",
+        ondelete="set null",
+        help="For a preference: the shift being asked for. Blank means any shift.",
+    )
 
     @api.depends("employee_id", "date_from", "date_to", "kind")
     def _compute_name(self):
@@ -281,7 +278,7 @@ class SolverResult(models.Model):
                     f"'{period.state}'. Only a draft period can be filled by the "
                     "solver."
                 )
-            unfilled = _json(rec.unfilled_json)
+            unfilled = json.loads(rec.unfilled_json or "[]")
             if unfilled:
                 raise UserError(
                     f"{rec.name}: this proposal leaves "
@@ -297,7 +294,7 @@ class SolverResult(models.Model):
         self.ensure_one()
         Assignment = self.env["hr.roster.assignment"]
         period = self.roster_period_id
-        for item in _json(self.proposal_json):
+        for item in json.loads(self.proposal_json or "[]"):
             Assignment.create(
                 {
                     "company_id": period.company_id.id,
@@ -545,19 +542,19 @@ class _RosterPlan:
             return f"would be {self.day_count[emp] + 1} consecutive days (max {setting.max_consecutive_days})"
         return None
 
-    def _rank(self, candidate, shift, demand):
+    def _rank(self, candidate, shift, demand, day):
         """Ordering key. Lower sorts first. Hard constraints are already applied."""
         emp = candidate["employee_id"]
         iso_key = None
         skill_rank = 0
-        if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
-            overlap = candidate["skills"] & set(demand["required_skill_ids"])
+        if self.setting.prefer_skill_match and demand.required_skill_ids:
+            overlap = candidate["skills"] & set(demand.required_skill_ids.ids)
             # Most specific match: an exact single-skill match beats a broad one.
             skill_rank = -len(overlap) if overlap else 10_000
         preference_rank = 10_000
         if self.setting.honour_preferences:
             for (start, end), shift_id in self.preference.get(emp, []):
-                if start <= demand["date"] <= end and (
+                if start <= day <= end and (
                     not shift_id or shift_id == shift.id
                 ):
                     preference_rank = 0
@@ -570,7 +567,7 @@ class _RosterPlan:
 
     # ─── Solve ──────────────────────────────────────────────────────────
     def solve_all_days(self):
-        Demand = self.env["hrms.roster.demand"].sudo()
+        Demand = self.env["hr.roster.demand"].sudo()
         Shift = self.env["hr.roster.shift"].sudo()
         demands = Demand.search(
             [
@@ -605,7 +602,7 @@ class _RosterPlan:
             if reason:
                 blockers[reason.split("(")[0].strip()] += 1
                 continue
-            ranked.append((self._rank(candidate, shift, demand), candidate))
+            ranked.append((self._rank(candidate, shift, demand, day), candidate))
         if not ranked:
             self.gaps.append(
                 {

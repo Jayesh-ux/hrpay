@@ -179,7 +179,7 @@
 
         <menuitem id="menu_hrms_payroll_run"
                   name="Payroll Runs"
-                  parent="hr_payroll.menu_hr_payroll_root"
+                  parent="hr_payroll_community.menu_hr_payroll_community_root"
                   action="action_hrms_payroll_run"
                   groups="hrms_core_ext.group_hrms_payroll_admin,hrms_core_ext.group_hrms_finance_approver"/>
 

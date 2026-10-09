@@ -29,6 +29,7 @@ SYNC_STATES = [
 
 
 class HrEmployee(models.Model):
+    _name = "hr.employee"
     _inherit = ["hr.employee", "hrms.mixin.encrypted"]
 
     _encrypted_fields = {
@@ -152,6 +153,13 @@ class HrEmployee(models.Model):
         "docs/compliance/TDS-INPUT-SPEC.md.",
     )
     hrms_esi_ytd = fields.Float(string="YTD ESI", digits=(16, 2))
+
+    join_date = fields.Date(
+        string="Date of joining",
+        help="Date the employee joined the establishment. Drives notice "
+        "period, gratuity service and payroll period eligibility; it is a "
+        "data point, never an assumption about tenure.",
+    )
 
     # ─── Gratuity service tracking ──────────────────────────────────────
     hrms_service_start = fields.Date(

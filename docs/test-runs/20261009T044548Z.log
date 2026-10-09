@@ -1,0 +1,988 @@
+ Container hrpay-postgres Running 
+ Container hrpay-postgres Waiting 
+ Container hrpay-postgres Healthy 
+ Container hrpay-odoo-run-7a7053e2003f Creating 
+ Container hrpay-odoo-run-7a7053e2003f Created 
+[entrypoint] core addons:    /usr/lib/python3/dist-packages/odoo/addons
+[entrypoint] our addons:     /opt/hrpay/addons
+[entrypoint] oca addons:     /opt/hrpay/oca/OpenHRMS,/opt/hrpay/oca/helpdesk
+[entrypoint] addons path:    /usr/lib/python3/dist-packages/odoo/addons,/opt/hrpay/addons,/opt/hrpay/oca/OpenHRMS,/opt/hrpay/oca/helpdesk
+2026-10-09 04:45:53,053 1 INFO ? odoo: Odoo version 18.0-20260926 
+2026-10-09 04:45:53,053 1 INFO ? odoo: Using configuration file at /etc/odoo/odoo.conf 
+2026-10-09 04:45:53,053 1 INFO ? odoo: addons paths: ['/usr/lib/python3/dist-packages/odoo/addons', '/var/lib/odoo/.local/share/Odoo/addons/18.0', '/opt/hrpay/addons', '/opt/hrpay/oca/OpenHRMS', '/opt/hrpay/oca/helpdesk'] 
+2026-10-09 04:45:53,053 1 INFO ? odoo: database: odoo@postgres:5432 
+Warn: Can't find .pfb for face 'Courier'
+2026-10-09 04:45:53,228 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at /usr/local/bin/wkhtmltopdf 
+2026-10-09 04:45:53,241 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltoimage binary at /usr/local/bin/wkhtmltoimage 
+2026-10-09 04:45:53,458 1 INFO ? odoo.service.server: HTTP service (werkzeug) running on 11e30a49e2f9:8069 
+2026-10-09 04:45:53,486 1 INFO hrpay odoo.tests.common: Importing test framework 
+2026-10-09 04:45:53,531 1 INFO hrpay odoo.modules.loading: loading 1 modules... 
+2026-10-09 04:45:53,539 1 INFO hrpay odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-10-09 04:45:53,571 1 INFO hrpay odoo.modules.loading: updating modules list 
+2026-10-09 04:45:53,576 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-10-09 04:45:54,919 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.button_upgrade on ['HRMS Core Extension', 'HRMS Full and Final Settlement', 'HRMS Helpdesk and Support', 'HRMS Payroll Run Orchestration', 'HRMS Rostering and Attendance', 'HRMS Statutory Rules Engine'] to user __system__ #1 via n/a 
+2026-10-09 04:45:54,919 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.update_list on ['HRMS Core Extension', 'HRMS Full and Final Settlement', 'HRMS Helpdesk and Support', 'HRMS Payroll Run Orchestration', 'HRMS Rostering and Attendance', 'HRMS Statutory Rules Engine'] to user __system__ #1 via n/a 
+2026-10-09 04:45:56,269 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.button_install on [] to user __system__ #1 via n/a 
+2026-10-09 04:45:56,384 1 INFO hrpay odoo.modules.loading: loading 69 modules... 
+2026-10-09 04:45:57,692 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 04:45:57,692 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 04:45:57,693 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 04:45:57,693 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 04:45:57,693 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 04:45:57,694 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 04:45:57,705 1 INFO hrpay odoo.modules.loading: Loading module hrms_core_ext (63/69) 
+2026-10-09 04:45:58,105 1 WARNING hrpay odoo.fields: Field hr.attendance.roster_assignment_id with unknown comodel_name 'hr.roster.assignment' 
+2026-10-09 04:45:58,133 1 INFO hrpay odoo.modules.registry: module hrms_core_ext: creating or updating database tables 
+2026-10-09 04:45:58,211 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (entity_id, entity) of integration.sync.log() have the same label: Entity. [Modules: hrms_core_ext and hrms_core_ext] 
+2026-10-09 04:45:58,409 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/security/hrms_security.xml 
+2026-10-09 04:45:58,422 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/security/ir.model.access.csv 
+2026-10-09 04:45:58,453 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/data/ir_config_data.xml 
+2026-10-09 04:45:58,480 1 INFO hrpay odoo.modules.loading: Module hrms_core_ext loaded in 0.78s, 197 queries (+197 other) 
+2026-10-09 04:45:58,486 1 WARNING hrpay py.warnings: /usr/lib/python3/dist-packages/odoo/api.py:484: DeprecationWarning: The model odoo.addons.hr_payroll_account_community.models.hr_payslip is not overriding the create method in batch
+  File "/usr/bin/odoo", line 8, in <module>
+    odoo.cli.main()
+  File "/usr/lib/python3/dist-packages/odoo/cli/command.py", line 76, in main
+    o.run(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 182, in run
+    main(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 175, in main
+    rc = odoo.service.server.start(preload=preload, stop=stop)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 1512, in start
+    rc = server.run(preload, stop)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 646, in run
+    rc = preload_registries(preload)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 1416, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module)
+  File "/usr/lib/python3/dist-packages/decorator.py", line 232, in fun
+    return caller(func, *(extras + args), **kw)
+  File "/usr/lib/python3/dist-packages/odoo/tools/func.py", line 97, in locked
+    return func(inst, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/modules/registry.py", line 118, in new
+    odoo.modules.load_modules(registry, force_demo, status, update_module)
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 485, in load_modules
+    processed_modules += load_marked_modules(env, graph,
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 365, in load_marked_modules
+    loaded, processed = load_module_graph(
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 186, in load_module_graph
+    load_openerp_module(package.name)
+  File "/usr/lib/python3/dist-packages/odoo/modules/module.py", line 384, in load_openerp_module
+    __import__(qualname)
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/__init__.py", line 23, in <module>
+    from . import models
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/__init__.py", line 24, in <module>
+    from . import hr_payslip
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/hr_payslip.py", line 27, in <module>
+    class HrPayslip(models.Model):
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/hr_payslip.py", line 49, in HrPayslip
+    @api.model
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 431, in model
+    return model_create_single(method)
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 484, in model_create_single
+    warnings.warn(
+ 
+2026-10-09 04:45:58,490 1 INFO hrpay odoo.modules.loading: Loading module hrms_statutory (65/69) 
+2026-10-09 04:45:58,787 1 WARNING hrpay odoo.fields: Field hr.salary.component.nature.hr_salary_component_id with unknown comodel_name 'hr.salary.component' 
+2026-10-09 04:45:58,811 1 INFO hrpay odoo.modules.registry: module hrms_statutory: creating or updating database tables 
+2026-10-09 04:45:59,010 1 INFO hrpay odoo.modules.loading: loading hrms_statutory/security/hrms_statutory_security.xml 
+2026-10-09 04:45:59,014 1 INFO hrpay odoo.modules.loading: loading hrms_statutory/security/ir.model.access.csv 
+2026-10-09 04:45:59,088 1 INFO hrpay odoo.modules.loading: Module hrms_statutory loaded in 0.60s, 180 queries (+180 other) 
+2026-10-09 04:45:59,088 1 INFO hrpay odoo.modules.loading: Loading module hrms_helpdesk (66/69) 
+2026-10-09 04:45:59,471 1 INFO hrpay odoo.modules.registry: module hrms_helpdesk: creating or updating database tables 
+2026-10-09 04:45:59,483 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (hrms_category_id, category_id) of helpdesk.ticket() have the same label: Category. [Modules: hrms_helpdesk and helpdesk_mgmt] 
+2026-10-09 04:45:59,545 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/security/hrms_helpdesk_security.xml 
+2026-10-09 04:45:59,551 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/security/ir.model.access.csv 
+2026-10-09 04:45:59,566 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/data/helpdesk_ticket_categories.xml 
+2026-10-09 04:45:59,578 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/views/ticket_views.xml 
+2026-10-09 04:45:59,645 1 INFO hrpay odoo.modules.loading: Module hrms_helpdesk loaded in 0.56s, 134 queries (+134 other) 
+2026-10-09 04:45:59,645 1 INFO hrpay odoo.modules.loading: Loading module hrms_roster (67/69) 
+2026-10-09 04:45:59,954 1 INFO hrpay odoo.modules.registry: module hrms_roster: creating or updating database tables 
+2026-10-09 04:46:00,116 1 INFO hrpay odoo.modules.loading: loading hrms_roster/security/solver_security.xml 
+2026-10-09 04:46:00,317 1 INFO hrpay odoo.modules.loading: loading hrms_roster/security/ir.model.access.csv 
+2026-10-09 04:46:00,406 1 INFO hrpay odoo.modules.loading: loading hrms_roster/views/roster_views.xml 
+2026-10-09 04:46:00,651 1 INFO hrpay odoo.modules.loading: loading hrms_roster/views/solver_views.xml 
+2026-10-09 04:46:00,811 1 INFO hrpay odoo.modules.loading: Module hrms_roster loaded in 1.17s, 481 queries (+481 other) 
+2026-10-09 04:46:00,812 1 INFO hrpay odoo.modules.loading: Loading module hrms_fnf (68/69) 
+2026-10-09 04:46:01,483 1 INFO hrpay odoo.modules.registry: module hrms_fnf: creating or updating database tables 
+2026-10-09 04:46:01,498 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (company_currency_id, currency_id) of hrms.fnf.case() have the same label: Currency. [Modules: hrms_fnf and hrms_fnf] 
+2026-10-09 04:46:01,658 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/security/hrms_fnf_security.xml 
+2026-10-09 04:46:01,666 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/security/ir.model.access.csv 
+2026-10-09 04:46:01,692 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/data/fnf_reason_codes.xml 
+2026-10-09 04:46:01,701 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/views/fnf_views.xml 
+2026-10-09 04:46:01,723 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: action_raise_dispute on hrms.fnf.case has parameters and cannot be called from a button
+View error context:
+{'file': '/opt/hrpay/addons/hrms_fnf/views/fnf_views.xml',
+ 'line': 8,
+ 'name': 'hrms.fnf.case.form',
+ 'view': ir.ui.view(1270,),
+ 'view.model': 'hrms.fnf.case',
+ 'view.parent': ir.ui.view(),
+ 'xmlid': 'view_hrms_fnf_case_form'} 
+2026-10-09 04:46:01,766 1 INFO hrpay odoo.modules.loading: Module hrms_fnf loaded in 0.95s, 144 queries (+144 other) 
+2026-10-09 04:46:01,766 1 INFO hrpay odoo.modules.loading: Loading module hrms_payroll_run (69/69) 
+2026-10-09 04:46:02,077 1 INFO hrpay odoo.modules.registry: module hrms_payroll_run: creating or updating database tables 
+2026-10-09 04:46:02,084 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (company_currency_id, currency_id) of hrms.payroll.run() have the same label: Currency. [Modules: hrms_payroll_run and hrms_payroll_run] 
+2026-10-09 04:46:02,140 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/security/ir.model.access.csv 
+2026-10-09 04:46:02,158 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/security/hrms_payroll_run_security.xml 
+2026-10-09 04:46:02,162 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/views/payroll_run_views.xml 
+2026-10-09 04:46:02,183 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: action_review on hrms.payroll.run has parameters and cannot be called from a button
+View error context:
+{'file': '/opt/hrpay/addons/hrms_payroll_run/views/payroll_run_views.xml',
+ 'line': 5,
+ 'name': 'hrms.payroll.run.form',
+ 'view': ir.ui.view(1273,),
+ 'view.model': 'hrms.payroll.run',
+ 'view.parent': ir.ui.view(),
+ 'xmlid': 'view_hrms_payroll_run_form'} 
+2026-10-09 04:46:02,582 1 INFO hrpay odoo.modules.loading: Module hrms_payroll_run loaded in 0.82s, 113 queries (+113 other) 
+2026-10-09 04:46:02,582 1 INFO hrpay odoo.modules.loading: 69 modules loaded in 6.20s, 1249 queries (+1249 extra) 
+2026-10-09 04:46:03,233 1 INFO hrpay odoo.modules.registry: verifying fields for every extended model 
+2026-10-09 04:46:04,330 1 INFO hrpay odoo.modules.loading: Modules loaded. 
+2026-10-09 04:46:04,337 1 INFO hrpay odoo.modules.registry: Registry changed, signaling through the database 
+2026-10-09 04:46:04,339 1 INFO hrpay odoo.modules.registry: Registry loaded in 10.880s 
+2026-10-09 04:46:04,339 1 INFO hrpay odoo.service.server: Starting post tests 
+2026-10-09 04:46:04,345 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_author_cannot_validate_their_own_version ... 
+2026-10-09 04:46:04,374 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,389 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_cannot_validate_a_version_without_a_validator ... 
+2026-10-09 04:46:04,414 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,425 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_catalog_codes_matches_the_table ... 
+2026-10-09 04:46:04,430 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_catalog_has_no_duplicate_codes ... 
+2026-10-09 04:46:04,435 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_coverage_report_refuses_to_declare_go_live_readiness ... 
+2026-10-09 04:46:04,460 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,542 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_draft_version_still_refuses_to_serve_a_value ... 
+2026-10-09 04:46:04,566 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,578 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_every_seeded_rule_has_a_source_reference ... 
+2026-10-09 04:46:04,603 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,610 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_no_seeded_code_resolves ... 
+2026-10-09 04:46:04,641 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,679 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seed_creates_no_versions_at_all ... 
+2026-10-09 04:46:04,704 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,710 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seeded_rule_cannot_be_used_for_a_calculation ... 
+2026-10-09 04:46:04,733 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,749 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seeded_rules_are_active_so_they_are_visible ... 
+2026-10-09 04:46:04,772 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,779 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seeding_is_idempotent ... 
+2026-10-09 04:46:04,806 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,833 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,840 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-10-09 04:46:04,844 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestPostInitHook.test_hook_leaves_everything_unresolved ... 
+2026-10-09 04:46:04,870 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:04,909 1 INFO hrpay odoo.addons.hrms_statutory.hooks: hrms_statutory: verified that all 50 catalog codes are unresolved, so the sign-off gate is holding. 
+2026-10-09 04:46:04,909 1 INFO hrpay odoo.addons.hrms_statutory.hooks: hrms_statutory: post_init_hook created 0 rule skeleton(s). Every one remains unsigned-off, so payroll is blocked until a qualified professional signs off each value. 
+2026-10-09 04:46:04,918 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-10-09 04:46:05,472 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [33] 
+2026-10-09 04:46:05,498 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [321] 
+2026-10-09 04:46:05,503 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 04:46:05,536 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_author_cannot_validate_own_version ... 
+2026-10-09 04:46:05,748 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [34] 
+2026-10-09 04:46:05,757 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [323] 
+2026-10-09 04:46:05,760 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <rule.author.test> to <rule.author@example.invalid> 
+2026-10-09 04:46:05,802 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_date_after_the_last_version_uses_the_last_known_value ... 
+2026-10-09 04:46:05,817 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_draft_version_can_still_be_corrected ... 
+2026-10-09 04:46:05,825 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_draft_version_is_ignored ... 
+2026-10-09 04:46:05,838 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_effective_dating_picks_the_right_version ... 
+2026-10-09 04:46:05,860 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_missing_source_reference_is_refused ... 
+2026-10-09 04:46:05,865 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_one_rule_per_scope ... 
+2026-10-09 04:46:05,871 1 ERROR hrpay odoo.sql_db: bad query: b' UPDATE "hrms_statutory_rule"\n                    SET "scope_key" = "__tmp"."scope_key"::VARCHAR, "write_date" = "__tmp"."write_date"::timestamp, "write_uid" = "__tmp"."write_uid"::int4\n                    FROM (VALUES (55, \'IN.PF.WAGE_CEILING|IN||\', \'2026-10-09T04:46:04.924729\'::timestamp, 1)) AS "__tmp"("id", "scope_key", "write_date", "write_uid")\n                    WHERE "hrms_statutory_rule"."id" = "__tmp"."id"\n                '
+ERROR: duplicate key value violates unique constraint "hrms_statutory_rule_scope_key_unique"
+DETAIL:  Key (scope_key)=(IN.PF.WAGE_CEILING|IN||) already exists.
+ 
+2026-10-09 04:46:05,876 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_state_specific_version_wins_over_national ... 
+2026-10-09 04:46:05,902 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_superuser_cannot_be_the_validator ... 
+2026-10-09 04:46:05,916 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_unconfigured_rule_refuses_to_resolve ... 
+2026-10-09 04:46:05,931 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validated_version_cannot_be_deleted ... 
+2026-10-09 04:46:05,943 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validated_version_is_immutable ... 
+2026-10-09 04:46:05,959 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validating_a_new_version_supersedes_and_closes_the_prior_one ... 
+2026-10-09 04:46:05,979 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validation_requires_a_named_validator ... 
+2026-10-09 04:46:05,992 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 5 checked, 2 removed 
+2026-10-09 04:46:06,346 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [35] 
+2026-10-09 04:46:06,355 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [327] 
+2026-10-09 04:46:06,358 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 04:46:06,391 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_a_genuine_zero_rate_is_accepted ... 
+2026-10-09 04:46:06,411 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_invalid_json_is_refused ... 
+2026-10-09 04:46:06,420 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_json_component_round_trips ... 
+2026-10-09 04:46:06,435 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_numeric_component_requires_a_number ... 
+2026-10-09 04:46:06,449 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 1 checked, 1 removed 
+2026-10-09 04:46:06,806 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [36] 
+2026-10-09 04:46:06,814 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [331] 
+2026-10-09 04:46:06,817 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 04:46:06,851 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_catalog_seeds_rules_without_values ... 
+2026-10-09 04:46:06,879 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:06,906 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:06,911 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_coverage_report_is_not_go_live_ready_on_a_fresh_db ... 
+2026-10-09 04:46:06,937 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:07,017 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_every_catalog_rule_is_createable ... 
+2026-10-09 04:46:07,044 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:07,050 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_no_rule_ships_with_a_baked_in_value ... 
+2026-10-09 04:46:07,079 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 04:46:07,090 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 1 checked, 1 removed 
+2026-10-09 04:46:07,091 1 WARNING hrpay odoo.tests.common: A child process was found, terminating it: psutil.Process(pid=34, name='curl', status='sleeping', started='04:45:56') 
+2026-10-09 04:46:07,443 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [37] 
+2026-10-09 04:46:07,451 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [335] 
+2026-10-09 04:46:07,455 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 04:46:07,488 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_ceiling_is_applied_and_the_excess_reported ... 
+2026-10-09 04:46:07,601 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_ceiling_of_zero_is_not_treated_as_no_ceiling ... 
+2026-10-09 04:46:07,708 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_gratuity_refuses_without_configured_eligibility ... 
+2026-10-09 04:46:07,809 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_over_five_years_is_eligible_and_dated ... 
+2026-10-09 04:46:07,915 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_remainder_above_six_months_counts_as_a_full_year ... 
+2026-10-09 04:46:08,016 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_remainder_of_exactly_six_months_is_not_counted_by_default ... 
+2026-10-09 04:46:08,116 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_result_records_the_rule_versions_used ... 
+2026-10-09 04:46:08,219 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_the_six_month_boundary_can_be_configured_inclusive ... 
+2026-10-09 04:46:08,318 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_under_five_years_is_not_eligible ... 
+2026-10-09 04:46:08,424 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_wage_basis_refuses_ctc_when_there_is_no_payslip ... 
+2026-10-09 04:46:08,546 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 11 checked, 11 removed 
+2026-10-09 04:46:08,894 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [38] 
+2026-10-09 04:46:08,902 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [369] 
+2026-10-09 04:46:08,905 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 04:46:08,937 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuityFixedTerm.test_fixed_term_is_ineligible_before_a_full_year ... 
+2026-10-09 04:46:09,038 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuityFixedTerm.test_fixed_term_uses_pro_rata_and_the_lower_threshold ... 
+2026-10-09 04:46:09,150 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 3 checked, 3 removed 
+2026-10-09 04:46:09,183 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_apply_creates_draft_assignments_only ... 
+2026-10-09 04:46:09,557 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:09,557 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_apply_creates_draft_assignments_only
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 335, in test_apply_creates_draft_assignments_only
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:09,564 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_apply_is_refused_twice ... 
+2026-10-09 04:46:09,934 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:09,934 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_apply_is_refused_twice
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 360, in test_apply_is_refused_twice
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:09,939 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_apply_refuses_a_proposal_with_unfilled_demand ... 
+2026-10-09 04:46:10,294 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:10,294 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_apply_refuses_a_proposal_with_unfilled_demand
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 348, in test_apply_refuses_a_proposal_with_unfilled_demand
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:10,300 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_availability_dates_must_be_ordered ... 
+2026-10-09 04:46:10,494 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_declared_unavailable_is_not_rostered ... 
+2026-10-09 04:46:10,883 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:10,883 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_declared_unavailable_is_not_rostered
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 196, in test_declared_unavailable_is_not_rostered
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:10,890 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_employee_on_approved_leave_is_not_rostered ... 
+2026-10-09 04:46:11,472 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:11,472 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_employee_on_approved_leave_is_not_rostered
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 179, in test_employee_on_approved_leave_is_not_rostered
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:11,477 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_excluded_employee_cannot_be_rostered ... 
+2026-10-09 04:46:11,868 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:11,868 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_excluded_employee_cannot_be_rostered
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 152, in test_excluded_employee_cannot_be_rostered
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:11,873 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_last_working_day_inside_period_excludes_employee ... 
+2026-10-09 04:46:12,249 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: excluding Leaving Midweek: last working day 2026-08-05 is inside the period 
+2026-10-09 04:46:12,256 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:12,256 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_last_working_day_inside_period_excludes_employee
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 162, in test_last_working_day_inside_period_excludes_employee
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:12,262 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_nobody_is_rostered_twice_on_the_same_date ... 
+2026-10-09 04:46:12,997 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:12,998 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_nobody_is_rostered_twice_on_the_same_date
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 283, in test_nobody_is_rostered_twice_on_the_same_date
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:13,002 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_overnight_shift_ends_next_day ... 
+2026-10-09 04:46:13,180 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:13,180 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_overnight_shift_ends_next_day
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 272, in test_overnight_shift_ends_next_day
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:13,200 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_preference_honoured_when_nothing_else_differs ... 
+2026-10-09 04:46:13,650 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:13,651 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_preference_honoured_when_nothing_else_differs
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 325, in test_preference_honoured_when_nothing_else_differs
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 352, in solve
+    plan.load_availability()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 458, in load_availability
+    self.preference[rec.employee_id.id].append((window, rec.shift_id.id))
+                                                        ^^^^^^^^^^^^
+AttributeError: 'hrms.roster.availability' object has no attribute 'shift_id'
+ 
+2026-10-09 04:46:13,657 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_proposal_never_breaches_consecutive_day_cap ... 
+2026-10-09 04:46:13,832 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:13,832 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_proposal_never_breaches_consecutive_day_cap
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 236, in test_proposal_never_breaches_consecutive_day_cap
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:13,837 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_proposal_never_exceeds_weekly_day_cap ... 
+2026-10-09 04:46:14,009 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:14,009 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_proposal_never_exceeds_weekly_day_cap
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 223, in test_proposal_never_exceeds_weekly_day_cap
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:14,015 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_proposal_never_exceeds_weekly_hour_ceiling ... 
+2026-10-09 04:46:14,187 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:14,187 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_proposal_never_exceeds_weekly_hour_ceiling
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 216, in test_proposal_never_exceeds_weekly_hour_ceiling
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:14,192 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_rest_window_is_enforced ... 
+2026-10-09 04:46:14,373 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:14,373 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_rest_window_is_enforced
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 253, in test_rest_window_is_enforced
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:14,379 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_shortfall_is_reported_not_double_booked ... 
+2026-10-09 04:46:14,733 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:14,733 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_shortfall_is_reported_not_double_booked
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 206, in test_shortfall_is_reported_not_double_booked
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 353, in solve
+    plan.solve_all_days()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 589, in solve_all_days
+    self._fill_one_slot(day, demand, shifts[demand.shift_id.id])
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 600, in _fill_one_slot
+    ranked.append((self._rank(candidate, shift, demand), candidate))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 545, in _rank
+    if self.setting.prefer_skill_match and demand.get("required_skill_ids"):
+                                           ^^^^^^^^^^
+AttributeError: 'hr.roster.demand' object has no attribute 'get'
+ 
+2026-10-09 04:46:14,738 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_skill_match_outranks_stated_preference ... 
+2026-10-09 04:46:15,103 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:15,104 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_skill_match_outranks_stated_preference
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 306, in test_skill_match_outranks_stated_preference
+    result = self._solve()
+             ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 122, in _solve
+    return self.env["hrms.roster.solver"].solve(self.period, self.setting)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 352, in solve
+    plan.load_availability()
+  File "/opt/hrpay/addons/hrms_roster/models/solver.py", line 458, in load_availability
+    self.preference[rec.employee_id.id].append((window, rec.shift_id.id))
+                                                        ^^^^^^^^^^^^
+AttributeError: 'hrms.roster.availability' object has no attribute 'shift_id'
+ 
+2026-10-09 04:46:15,108 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_non_draft_period ... 
+2026-10-09 04:46:15,116 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_when_pool_is_empty ... 
+2026-10-09 04:46:15,123 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: ====================================================================== 
+2026-10-09 04:46:15,123 1 ERROR hrpay odoo.addons.hrms_roster.tests.test_solver: ERROR: TestRosterSolver.test_solver_refuses_when_pool_is_empty
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_roster/tests/test_solver.py", line 141, in test_solver_refuses_when_pool_is_empty
+    self.period.date_from = "2030-01-07"
+    ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 1424, in __set__
+    records.write({self.name: write_value})
+  File "/usr/lib/python3/dist-packages/odoo/models.py", line 4848, in write
+    real_recs._validate_fields(vals, inverse_fields)
+  File "/usr/lib/python3/dist-packages/odoo/models.py", line 1636, in _validate_fields
+    check(self)
+  File "/opt/hrpay/addons/hrms_roster/models/roster_period.py", line 95, in _check_dates
+    raise UserError(f"{rec.name}: end date precedes start date.")
+odoo.exceptions.UserError: Test week: end date precedes start date.
+ 
+2026-10-09 04:46:15,131 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_without_demand ... 
+2026-10-09 04:46:15,144 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_without_settings ... 
+2026-10-09 04:46:15,156 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_result_grants_no_write_permission ... 
+2026-10-09 04:46:15,167 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 30 checked, 30 removed 
+2026-10-09 04:46:15,169 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolverSettings.test_default_settings_cover_a_full_week_and_a_full_day ... 
+2026-10-09 04:46:15,197 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolverSettings.test_settings_reject_out_of_range_limits ... 
+2026-10-09 04:46:15,232 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-10-09 04:46:15,589 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [39] 
+2026-10-09 04:46:15,597 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [502] 
+2026-10-09 04:46:15,600 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.payroll.test> to <fnf.payroll@example.invalid> 
+2026-10-09 04:46:15,798 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [40] 
+2026-10-09 04:46:15,807 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [504] 
+2026-10-09 04:46:15,811 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.finance.test> to <fnf.finance@example.invalid> 
+2026-10-09 04:46:15,928 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_acknowledgement_requires_a_calculated_statement ... 
+2026-10-09 04:46:15,962 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 04:46:15,972 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_calculate_produces_an_itemised_statement ... 
+2026-10-09 04:46:16,159 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [41] 
+2026-10-09 04:46:16,169 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [511] 
+2026-10-09 04:46:16,173 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:16,258 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:16,258 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementGates.test_calculate_produces_an_itemised_statement
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 172, in test_calculate_produces_an_itemised_statement
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:16,262 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_calculated_case_cannot_be_deleted ... 
+2026-10-09 04:46:16,441 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [42] 
+2026-10-09 04:46:16,449 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [513] 
+2026-10-09 04:46:16,453 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:16,535 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:16,536 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementGates.test_calculated_case_cannot_be_deleted
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 211, in test_calculated_case_cannot_be_deleted
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:16,540 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_configured_deadline_is_anchored_to_the_last_working_day ... 
+2026-10-09 04:46:16,719 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [43] 
+2026-10-09 04:46:16,727 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [515] 
+2026-10-09 04:46:16,730 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:16,800 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 04:46:16,806 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_draft_case_can_be_deleted ... 
+2026-10-09 04:46:16,818 1 INFO hrpay odoo.models.unlink: User #1 deleted hrms.fnf.case records with IDs: [24] 
+2026-10-09 04:46:16,822 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_notice_data_is_required_when_the_reason_carries_notice ... 
+2026-10-09 04:46:16,846 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 04:46:16,857 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_only_one_case_per_employee ... 
+2026-10-09 04:46:16,880 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 04:46:16,885 1 ERROR hrpay odoo.sql_db: bad query: b'INSERT INTO "hrms_fnf_case" ("company_id", "create_date", "create_uid", "currency_id", "employee_id", "last_working_day", "notice_period_days", "notice_served_days", "reason_id", "resignation_date", "separation_state", "write_date", "write_uid") VALUES (18, \'2026-10-09 04:46:15.238058\', 1, 1, 97, \'2026-09-30\', 60, 60, 12, \'2026-08-01\', \'draft\', \'2026-10-09 04:46:15.238058\', 1) RETURNING "id"'
+ERROR: duplicate key value violates unique constraint "hrms_fnf_case_one_open_case_per_employee"
+DETAIL:  Key (employee_id)=(97) already exists.
+ 
+2026-10-09 04:46:16,891 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_recalculation_is_refused_after_acknowledgement ... 
+2026-10-09 04:46:17,074 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [44] 
+2026-10-09 04:46:17,082 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [517] 
+2026-10-09 04:46:17,087 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:17,164 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:17,164 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementGates.test_recalculation_is_refused_after_acknowledgement
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 195, in test_recalculation_is_refused_after_acknowledgement
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:17,169 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_statement_inputs_lock_after_acknowledgement ... 
+2026-10-09 04:46:17,349 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [45] 
+2026-10-09 04:46:17,355 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [519] 
+2026-10-09 04:46:17,359 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:17,434 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:17,434 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementGates.test_statement_inputs_lock_after_acknowledgement
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 203, in test_statement_inputs_lock_after_acknowledgement
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:17,441 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_unconfigured_statutory_deadline_leaves_payable_by_empty ... 
+2026-10-09 04:46:17,464 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 04:46:17,473 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 4 checked, 4 removed 
+2026-10-09 04:46:17,830 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [46] 
+2026-10-09 04:46:17,840 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [523] 
+2026-10-09 04:46:17,843 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.payroll.test> to <fnf.payroll@example.invalid> 
+2026-10-09 04:46:18,028 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [47] 
+2026-10-09 04:46:18,036 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [525] 
+2026-10-09 04:46:18,040 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.finance.test> to <fnf.finance@example.invalid> 
+2026-10-09 04:46:18,131 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_dispute_requires_a_reason ... 
+2026-10-09 04:46:18,327 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [48] 
+2026-10-09 04:46:18,337 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [532] 
+2026-10-09 04:46:18,341 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:18,417 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:18,417 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementApproval.test_dispute_requires_a_reason
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 279, in test_dispute_requires_a_reason
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:18,422 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_negative_settlement_without_recovery_permission_is_refused ... 
+2026-10-09 04:46:18,599 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [49] 
+2026-10-09 04:46:18,607 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [534] 
+2026-10-09 04:46:18,612 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:18,696 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:18,696 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementApproval.test_negative_settlement_without_recovery_permission_is_refused
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 264, in test_negative_settlement_without_recovery_permission_is_refused
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:18,701 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_only_the_calculated_states_can_be_approved ... 
+2026-10-09 04:46:18,877 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [50] 
+2026-10-09 04:46:18,888 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [536] 
+2026-10-09 04:46:18,892 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:18,967 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:18,967 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementApproval.test_only_the_calculated_states_can_be_approved
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 247, in test_only_the_calculated_states_can_be_approved
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:18,971 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_paid_case_cannot_be_paid_again ... 
+2026-10-09 04:46:19,151 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [51] 
+2026-10-09 04:46:19,159 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [538] 
+2026-10-09 04:46:19,163 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:19,240 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:19,240 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementApproval.test_paid_case_cannot_be_paid_again
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 288, in test_paid_case_cannot_be_paid_again
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:19,245 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_superuser_cannot_approve ... 
+2026-10-09 04:46:19,427 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [52] 
+2026-10-09 04:46:19,433 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [540] 
+2026-10-09 04:46:19,437 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:19,512 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:19,512 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestSettlementApproval.test_superuser_cannot_approve
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 240, in test_superuser_cannot_approve
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:19,520 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 4 checked, 4 removed 
+2026-10-09 04:46:19,879 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [53] 
+2026-10-09 04:46:19,888 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [544] 
+2026-10-09 04:46:19,892 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.payroll.test> to <fnf.payroll@example.invalid> 
+2026-10-09 04:46:20,073 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [54] 
+2026-10-09 04:46:20,081 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [546] 
+2026-10-09 04:46:20,085 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.finance.test> to <fnf.finance@example.invalid> 
+2026-10-09 04:46:20,181 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestNoticeShortfall.test_shortfall_is_computed_from_period_minus_served ... 
+2026-10-09 04:46:20,214 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestNoticeShortfall.test_shortfall_is_not_recovered_when_the_reason_forbids_it ... 
+2026-10-09 04:46:20,407 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [55] 
+2026-10-09 04:46:20,414 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [553] 
+2026-10-09 04:46:20,418 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 04:46:20,500 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: ====================================================================== 
+2026-10-09 04:46:20,500 1 ERROR hrpay odoo.addons.hrms_fnf.tests.test_settlement: ERROR: TestNoticeShortfall.test_shortfall_is_not_recovered_when_the_reason_forbids_it
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_fnf/tests/test_settlement.py", line 324, in test_shortfall_is_not_recovered_when_the_reason_forbids_it
+    case.action_calculate()
+  File "/opt/hrpay/addons/hrms_fnf/models/settlement.py", line 306, in action_calculate
+    lines = self.env["hrms.fnf.line"]._build_lines(rec)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 86, in _build_lines
+    encashment, encashment_detail = _leave_encashment(case)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_fnf/models/encashment.py", line 276, in _leave_encashment
+    raise UserError(
+odoo.exceptions.UserError: Settlement Employee: leave type 'Paid Time Off' has 156.0 day(s) to encash but no payroll pay code, so the amount cannot be priced. Assign a pay code to the leave type.
+ 
+2026-10-09 04:46:20,505 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestNoticeShortfall.test_working_past_notice_yields_no_shortfall ... 
+2026-10-09 04:46:20,519 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 4 checked, 4 removed 
+2026-10-09 04:46:20,915 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [56] 
+2026-10-09 04:46:20,939 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [558] 
+2026-10-09 04:46:20,946 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.payroll.test> to <run.payroll.test@example.invalid> 
+2026-10-09 04:46:21,320 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [57] 
+2026-10-09 04:46:21,328 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [560] 
+2026-10-09 04:46:21,331 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.reviewer.test> to <run.reviewer.test@example.invalid> 
+2026-10-09 04:46:21,540 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [58] 
+2026-10-09 04:46:21,549 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [562] 
+2026-10-09 04:46:21,554 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.finance.test> to <run.finance.test@example.invalid> 
+2026-10-09 04:46:21,566 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_employee_without_a_wage_blocks_the_run ... 
+2026-10-09 04:46:21,751 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [570] 
+2026-10-09 04:46:21,765 1 INFO hrpay odoo.models.unlink: User #1 deleted hr.contract records with IDs: [76] 
+2026-10-09 04:46:21,813 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: ====================================================================== 
+2026-10-09 04:46:21,814 1 ERROR hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: ERROR: TestRunCoverageGate.test_employee_without_a_wage_blocks_the_run
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_payroll_run/tests/test_payroll_run.py", line 95, in test_employee_without_a_wage_blocks_the_run
+    run.action_compute()
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 325, in action_compute
+    issues = _issues_list(run)
+             ^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 622, in _issues_list
+    return [i for i in (run.blocking_issues or "").split("\n") if i.strip()]
+                        ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 1309, in __get__
+    self.compute_value(recs)
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 1491, in compute_value
+    records._compute_field_value(self)
+  File "/usr/lib/python3/dist-packages/odoo/models.py", line 5315, in _compute_field_value
+    fields.determine(field.compute, self)
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 110, in determine
+    return needle(*args)
+           ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 193, in _compute_blocking_issues
+    unrostered = run._unrostered_employees()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 306, in _unrostered_employees
+    if e.id not in rostered and run.establishment_id.hrms_rostered
+                                ^^^
+NameError: name 'run' is not defined
+ 
+2026-10-09 04:46:21,819 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_rostered_establishment_is_satisfied_by_assignments ... 
+2026-10-09 04:46:21,940 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_statutory_coverage_gap_is_reported ... 
+2026-10-09 04:46:22,035 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: ====================================================================== 
+2026-10-09 04:46:22,035 1 ERROR hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: ERROR: TestRunCoverageGate.test_statutory_coverage_gap_is_reported
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_payroll_run/tests/test_payroll_run.py", line 146, in test_statutory_coverage_gap_is_reported
+    self.assertTrue(run.blocking_issues)
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 1309, in __get__
+    self.compute_value(recs)
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 1491, in compute_value
+    records._compute_field_value(self)
+  File "/usr/lib/python3/dist-packages/odoo/models.py", line 5315, in _compute_field_value
+    fields.determine(field.compute, self)
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 110, in determine
+    return needle(*args)
+           ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 193, in _compute_blocking_issues
+    unrostered = run._unrostered_employees()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 306, in _unrostered_employees
+    if e.id not in rostered and run.establishment_id.hrms_rostered
+                                ^^^
+NameError: name 'run' is not defined
+ 
+2026-10-09 04:46:22,043 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_unrostered_establishment_blocks_when_roster_required ... 
+2026-10-09 04:46:22,139 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: ====================================================================== 
+2026-10-09 04:46:22,139 1 ERROR hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: ERROR: TestRunCoverageGate.test_unrostered_establishment_blocks_when_roster_required
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_payroll_run/tests/test_payroll_run.py", line 101, in test_unrostered_establishment_blocks_when_roster_required
+    self.assertIn("roster", (run.blocking_issues or "").lower())
+                             ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 1309, in __get__
+    self.compute_value(recs)
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 1491, in compute_value
+    records._compute_field_value(self)
+  File "/usr/lib/python3/dist-packages/odoo/models.py", line 5315, in _compute_field_value
+    fields.determine(field.compute, self)
+  File "/usr/lib/python3/dist-packages/odoo/fields.py", line 110, in determine
+    return needle(*args)
+           ^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 193, in _compute_blocking_issues
+    unrostered = run._unrostered_employees()
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hrpay/addons/hrms_payroll_run/models/run.py", line 306, in _unrostered_employees
+    if e.id not in rostered and run.establishment_id.hrms_rostered
+                                ^^^
+NameError: name 'run' is not defined
+ 
+2026-10-09 04:46:22,150 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 5 checked, 5 removed 
+2026-10-09 04:46:22,151 1 WARNING hrpay odoo.tests.common: A child process was found, terminating it: psutil.Process(pid=42, name='curl', status='sleeping', started='04:46:11') 
+2026-10-09 04:46:22,518 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [59] 
+2026-10-09 04:46:22,528 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [587] 
+2026-10-09 04:46:22,532 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.payroll.test> to <run.payroll.test@example.invalid> 
+2026-10-09 04:46:22,710 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [60] 
+2026-10-09 04:46:22,718 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [589] 
+2026-10-09 04:46:22,721 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.reviewer.test> to <run.reviewer.test@example.invalid> 
+2026-10-09 04:46:22,898 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [61] 
+2026-10-09 04:46:22,908 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [591] 
+2026-10-09 04:46:22,911 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.finance.test> to <run.finance.test@example.invalid> 
+2026-10-09 04:46:22,920 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_approval_refuses_when_payslips_changed_after_computation ... 
+2026-10-09 04:46:23,055 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 04:46:23,123 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_input_checksum_reflects_the_inputs ... 
+2026-10-09 04:46:23,334 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: ====================================================================== 
+2026-10-09 04:46:23,335 1 ERROR hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: FAIL: TestRunIntegrity.test_input_checksum_reflects_the_inputs
+Traceback (most recent call last):
+  File "/opt/hrpay/addons/hrms_payroll_run/tests/test_payroll_run.py", line 166, in test_input_checksum_reflects_the_inputs
+    self.assertNotEqual(run.input_checksum, first)
+AssertionError: '26ec1204a1e33c7ca4b51de77fb6cb87e860abc51e1c2914acdfc96d84265910' == '26ec1204a1e33c7ca4b51de77fb6cb87e860abc51e1c2914acdfc96d84265910'
+ 
+2026-10-09 04:46:23,340 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_locked_run_cannot_be_cancelled ... 
+2026-10-09 04:46:23,366 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_non_cancelled_run_cannot_be_deleted ... 
+2026-10-09 04:46:23,395 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_only_one_run_per_establishment_and_period ... 
+2026-10-09 04:46:23,421 1 ERROR hrpay odoo.sql_db: bad query: b'INSERT INTO "hrms_payroll_run" ("company_id", "create_date", "create_uid", "currency_id", "establishment_id", "period_end", "period_start", "state", "write_date", "write_uid") VALUES (22, \'2026-10-09 04:46:22.158146\', 1, 1, 18, \'2026-08-31\', \'2026-08-01\', \'draft\', \'2026-10-09 04:46:22.158146\', 1) RETURNING "id"'
+ERROR: duplicate key value violates unique constraint "hrms_payroll_run_one_run_per_establishment_period"
+DETAIL:  Key (establishment_id, period_start, period_end)=(18, 2026-08-01, 2026-08-31) already exists.
+ 
+2026-10-09 04:46:23,429 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_period_cannot_change_once_the_run_leaves_draft ... 
+2026-10-09 04:46:23,457 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 5 checked, 5 removed 
+2026-10-09 04:46:23,817 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [62] 
+2026-10-09 04:46:23,828 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [613] 
+2026-10-09 04:46:23,833 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.payroll.test> to <run.payroll.test@example.invalid> 
+2026-10-09 04:46:24,007 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [63] 
+2026-10-09 04:46:24,016 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [615] 
+2026-10-09 04:46:24,019 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.reviewer.test> to <run.reviewer.test@example.invalid> 
+2026-10-09 04:46:24,200 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [64] 
+2026-10-09 04:46:24,207 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [617] 
+2026-10-09 04:46:24,211 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.finance.test> to <run.finance.test@example.invalid> 
+2026-10-09 04:46:24,220 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_anomaly_flags_do_not_block_computation ... 
+2026-10-09 04:46:24,231 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_anomaly_flags_must_be_acknowledged_by_a_note ... 
+2026-10-09 04:46:24,259 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_computer_cannot_review_their_own_run ... 
+2026-10-09 04:46:24,281 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_invalid_flag_payload_is_refused ... 
+2026-10-09 04:46:24,304 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_review_requires_a_note ... 
+2026-10-09 04:46:24,330 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_reviewer_cannot_approve_their_own_run ... 
+2026-10-09 04:46:24,361 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 3 checked, 3 removed 
+2026-10-09 04:46:24,362 1 INFO hrpay odoo.service.server: 105 post-tests in 20.02s, 17908 queries 
+2026-10-09 04:46:24,363 1 INFO hrpay odoo.tests.stats: hrms_fnf: 24 tests 5.28s 4631 queries 
+2026-10-09 04:46:24,363 1 INFO hrpay odoo.tests.stats: hrms_payroll_run: 22 tests 3.84s 2918 queries 
+2026-10-09 04:46:24,363 1 INFO hrpay odoo.tests.stats: hrms_roster: 28 tests 6.08s 5813 queries 
+2026-10-09 04:46:24,363 1 INFO hrpay odoo.tests.stats: hrms_statutory: 61 tests 4.80s 4546 queries 
+2026-10-09 04:46:24,363 1 ERROR hrpay odoo.tests.result: 1 failed, 30 error(s) of 105 tests when loading database 'hrpay' 
+2026-10-09 04:46:24,363 1 INFO hrpay odoo.service.server: Initiating shutdown 
+2026-10-09 04:46:24,364 1 INFO hrpay odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-10-09 04:46:24,366 1 INFO hrpay odoo.addons.base.models.ir_http: Generating routing map for key None 
+2026-10-09 04:46:25,249 1 INFO hrpay werkzeug: 127.0.0.1 - - [09/Oct/2026 04:46:25] "GET /web/database/selector HTTP/1.1" 200 - 6 0.015 28.709
+2026-10-09 04:46:25,267 1 INFO hrpay werkzeug: 127.0.0.1 - - [09/Oct/2026 04:46:25] "GET /web/database/selector HTTP/1.1" 200 - 3 0.032 13.647
+2026-10-09 04:46:25,302 1 INFO hrpay odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 2 connections  
+2026-10-09 04:46:25,303 1 INFO hrpay odoo.sql_db: ConnectionPool(read-only;used=0/count=0/max=64): Closed 2 connections  
+

@@ -9,10 +9,10 @@
         <record id="view_helpdesk_ticket_form_hrms" model="ir.ui.view">
             <field name="name">helpdesk.ticket.form.hrms</field>
             <field name="model">helpdesk.ticket</field>
-            <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_ticket_form"/>
+            <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
             <field name="arch" type="xml">
                 <field name="team_id" position="after">
-                    <field name="hrms_employee_id" readonly="states_draft_only"/>
+                    <field name="hrms_employee_id" readonly="hrms_deadline_locked_by"/>
                     <field name="hrms_employee_department_id"/>
                     <field name="hrms_confidential" invisible="not hrms_confidential"/>
                     <field name="hrms_days_to_deadline"
@@ -35,7 +35,7 @@
         <record id="view_helpdesk_ticket_search_hrms" model="ir.ui.view">
             <field name="name">helpdesk.ticket.search.hrms</field>
             <field name="model">helpdesk.ticket</field>
-            <field name="inherit_id" ref="helpdesk_mgmt.view_helpdesk_ticket_search"/>
+            <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_search"/>
             <field name="arch" type="xml">
                 <field name="stage_id" position="after">
                     <field name="hrms_employee_id"/>

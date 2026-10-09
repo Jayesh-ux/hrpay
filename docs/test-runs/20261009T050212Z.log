@@ -1,0 +1,1445 @@
+ Volume hrpay_odoo-filestore Creating 
+ Volume hrpay_odoo-filestore Created 
+ Container hrpay-postgres Running 
+ Container hrpay-postgres Waiting 
+ Container hrpay-postgres Healthy 
+ Container hrpay-odoo-run-ab76af7d0d57 Creating 
+ Container hrpay-odoo-run-ab76af7d0d57 Created 
+[entrypoint] core addons:    /usr/lib/python3/dist-packages/odoo/addons
+[entrypoint] our addons:     /opt/hrpay/addons
+[entrypoint] oca addons:     /opt/hrpay/oca/OpenHRMS,/opt/hrpay/oca/helpdesk
+[entrypoint] addons path:    /usr/lib/python3/dist-packages/odoo/addons,/opt/hrpay/addons,/opt/hrpay/oca/OpenHRMS,/opt/hrpay/oca/helpdesk
+2026-10-09 05:02:23,164 1 INFO ? odoo: Odoo version 18.0-20260926 
+2026-10-09 05:02:23,164 1 INFO ? odoo: Using configuration file at /etc/odoo/odoo.conf 
+2026-10-09 05:02:23,164 1 INFO ? odoo: addons paths: ['/usr/lib/python3/dist-packages/odoo/addons', '/var/lib/odoo/.local/share/Odoo/addons/18.0', '/opt/hrpay/addons', '/opt/hrpay/oca/OpenHRMS', '/opt/hrpay/oca/helpdesk'] 
+2026-10-09 05:02:23,165 1 INFO ? odoo: database: odoo@postgres:5432 
+Warn: Can't find .pfb for face 'Courier'
+2026-10-09 05:02:23,387 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at /usr/local/bin/wkhtmltopdf 
+2026-10-09 05:02:23,403 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltoimage binary at /usr/local/bin/wkhtmltoimage 
+2026-10-09 05:02:23,643 1 INFO hrpay odoo.modules.loading: init db 
+2026-10-09 05:02:25,771 1 INFO hrpay odoo.modules.loading: loading 1 modules... 
+2026-10-09 05:02:25,772 1 INFO hrpay odoo.modules.loading: Loading module base (1/1) 
+2026-10-09 05:02:25,802 1 INFO hrpay odoo.modules.registry: module base: creating or updating database tables 
+2026-10-09 05:02:26,865 1 INFO hrpay odoo.models: Prepare computation of ir.module.module.menus_by_module 
+2026-10-09 05:02:26,866 1 INFO hrpay odoo.models: Prepare computation of ir.module.module.reports_by_module 
+2026-10-09 05:02:26,866 1 INFO hrpay odoo.models: Prepare computation of ir.module.module.views_by_module 
+2026-10-09 05:02:27,249 1 INFO hrpay odoo.models: Prepare computation of res.partner.user_id 
+2026-10-09 05:02:27,249 1 INFO hrpay odoo.models: Prepare computation of res.partner.commercial_partner_id 
+2026-10-09 05:02:27,250 1 INFO hrpay odoo.models: Prepare computation of res.partner.complete_name 
+2026-10-09 05:02:27,250 1 INFO hrpay odoo.models: Prepare computation of res.partner.company_registry 
+2026-10-09 05:02:27,250 1 INFO hrpay odoo.models: Prepare computation of res.partner.commercial_company_name 
+2026-10-09 05:02:27,250 1 INFO hrpay odoo.models: Prepare computation of res.partner.partner_share 
+2026-10-09 05:02:27,353 1 INFO hrpay odoo.models: Prepare computation of res.currency.decimal_places 
+2026-10-09 05:02:27,427 1 INFO hrpay odoo.models: Prepare computation of res.company.uses_default_logo 
+2026-10-09 05:02:27,427 1 INFO hrpay odoo.models: Prepare computation of res.company.logo_web 
+2026-10-09 05:02:27,437 1 INFO hrpay odoo.models: Computing parent_path for table res_company... 
+2026-10-09 05:02:27,523 1 INFO hrpay odoo.models: Prepare computation of res.users.signature 
+2026-10-09 05:02:27,523 1 INFO hrpay odoo.models: Prepare computation of res.users.share 
+2026-10-09 05:02:30,979 1 INFO hrpay odoo.modules.loading: loading base/data/res_bank.xml 
+2026-10-09 05:02:30,986 1 INFO hrpay odoo.modules.loading: loading base/data/res.lang.csv 
+2026-10-09 05:02:31,038 1 INFO hrpay odoo.modules.loading: loading base/data/res_lang_data.xml 
+2026-10-09 05:02:31,093 1 INFO hrpay odoo.modules.loading: loading base/data/res_partner_data.xml 
+2026-10-09 05:02:31,179 1 INFO hrpay odoo.modules.loading: loading base/data/res_currency_data.xml 
+2026-10-09 05:02:31,974 1 INFO hrpay odoo.modules.loading: loading base/data/res_company_data.xml 
+2026-10-09 05:02:31,985 1 INFO hrpay odoo.modules.loading: loading base/data/res_users_data.xml 
+2026-10-09 05:02:33,150 1 INFO hrpay odoo.modules.loading: loading base/data/report_paperformat_data.xml 
+2026-10-09 05:02:33,161 1 INFO hrpay odoo.modules.loading: loading base/data/res_country_data.xml 
+2026-10-09 05:02:33,772 1 INFO hrpay odoo.modules.loading: loading base/data/ir_demo_data.xml 
+2026-10-09 05:02:33,786 1 INFO hrpay odoo.modules.loading: loading base/security/base_groups.xml 
+2026-10-09 05:02:34,186 1 INFO hrpay odoo.modules.loading: loading base/security/base_security.xml 
+2026-10-09 05:02:34,405 1 INFO hrpay odoo.modules.loading: loading base/views/base_menus.xml 
+2026-10-09 05:02:34,506 1 INFO hrpay odoo.modules.loading: loading base/views/decimal_precision_views.xml 
+2026-10-09 05:02:34,527 1 INFO hrpay odoo.modules.loading: loading base/views/res_config_views.xml 
+2026-10-09 05:02:34,536 1 INFO hrpay odoo.modules.loading: loading base/data/res.country.state.csv 
+2026-10-09 05:02:35,637 1 INFO hrpay odoo.modules.loading: loading base/views/ir_actions_views.xml 
+2026-10-09 05:02:35,835 1 INFO hrpay odoo.modules.loading: loading base/views/ir_asset_views.xml 
+2026-10-09 05:02:35,862 1 INFO hrpay odoo.modules.loading: loading base/views/ir_config_parameter_views.xml 
+2026-10-09 05:02:35,888 1 INFO hrpay odoo.modules.loading: loading base/views/ir_cron_views.xml 
+2026-10-09 05:02:35,931 1 INFO hrpay odoo.modules.loading: loading base/views/ir_cron_trigger_views.xml 
+2026-10-09 05:02:35,956 1 INFO hrpay odoo.modules.loading: loading base/views/ir_filters_views.xml 
+2026-10-09 05:02:35,983 1 INFO hrpay odoo.modules.loading: loading base/views/ir_mail_server_views.xml 
+2026-10-09 05:02:36,014 1 INFO hrpay odoo.modules.loading: loading base/views/ir_model_views.xml 
+2026-10-09 05:02:36,233 1 INFO hrpay odoo.modules.loading: loading base/views/ir_attachment_views.xml 
+2026-10-09 05:02:36,263 1 INFO hrpay odoo.modules.loading: loading base/views/ir_rule_views.xml 
+2026-10-09 05:02:36,292 1 INFO hrpay odoo.modules.loading: loading base/views/ir_sequence_views.xml 
+2026-10-09 05:02:36,320 1 INFO hrpay odoo.modules.loading: loading base/views/ir_ui_menu_views.xml 
+2026-10-09 05:02:36,348 1 INFO hrpay odoo.modules.loading: loading base/views/ir_ui_view_views.xml 
+2026-10-09 05:02:36,415 1 INFO hrpay odoo.modules.loading: loading base/views/ir_default_views.xml 
+2026-10-09 05:02:36,443 1 INFO hrpay odoo.modules.loading: loading base/data/ir_config_parameter_data.xml 
+2026-10-09 05:02:36,447 1 INFO hrpay odoo.modules.loading: loading base/data/ir_cron_data.xml 
+2026-10-09 05:02:36,461 1 INFO hrpay odoo.modules.loading: loading base/report/ir_model_report.xml 
+2026-10-09 05:02:36,468 1 INFO hrpay odoo.modules.loading: loading base/report/ir_model_templates.xml 
+2026-10-09 05:02:36,479 1 INFO hrpay odoo.modules.loading: loading base/views/ir_logging_views.xml 
+2026-10-09 05:02:36,503 1 INFO hrpay odoo.modules.loading: loading base/views/ir_qweb_widget_templates.xml 
+2026-10-09 05:02:36,521 1 INFO hrpay odoo.modules.loading: loading base/views/ir_module_views.xml 
+2026-10-09 05:02:36,594 1 INFO hrpay odoo.modules.loading: loading base/data/ir_module_category_data.xml 
+2026-10-09 05:02:36,691 1 INFO hrpay odoo.modules.loading: loading base/data/ir_module_module.xml 
+2026-10-09 05:02:36,806 1 INFO hrpay odoo.modules.loading: loading base/report/ir_module_reports.xml 
+2026-10-09 05:02:36,811 1 INFO hrpay odoo.modules.loading: loading base/report/ir_module_report_templates.xml 
+2026-10-09 05:02:36,819 1 INFO hrpay odoo.modules.loading: loading base/wizard/base_module_update_views.xml 
+2026-10-09 05:02:36,842 1 INFO hrpay odoo.modules.loading: loading base/wizard/base_language_install_views.xml 
+2026-10-09 05:02:36,858 1 INFO hrpay odoo.modules.loading: loading base/wizard/base_import_language_views.xml 
+2026-10-09 05:02:36,876 1 INFO hrpay odoo.modules.loading: loading base/wizard/base_module_upgrade_views.xml 
+2026-10-09 05:02:36,912 1 INFO hrpay odoo.modules.loading: loading base/wizard/base_module_uninstall_views.xml 
+2026-10-09 05:02:36,928 1 INFO hrpay odoo.modules.loading: loading base/wizard/base_export_language_views.xml 
+2026-10-09 05:02:36,949 1 INFO hrpay odoo.modules.loading: loading base/wizard/base_partner_merge_views.xml 
+2026-10-09 05:02:36,977 1 INFO hrpay odoo.modules.loading: loading base/data/ir_demo_failure_data.xml 
+2026-10-09 05:02:37,001 1 INFO hrpay odoo.modules.loading: loading base/views/ir_profile_views.xml 
+2026-10-09 05:02:37,037 1 INFO hrpay odoo.modules.loading: loading base/views/res_company_views.xml 
+2026-10-09 05:02:37,069 1 INFO hrpay odoo.modules.loading: loading base/views/res_lang_views.xml 
+2026-10-09 05:02:37,121 1 INFO hrpay odoo.modules.loading: loading base/views/res_partner_views.xml 
+2026-10-09 05:02:37,330 1 INFO hrpay odoo.modules.loading: loading base/views/res_bank_views.xml 
+2026-10-09 05:02:37,374 1 INFO hrpay odoo.modules.loading: loading base/views/res_country_views.xml 
+2026-10-09 05:02:37,433 1 INFO hrpay odoo.modules.loading: loading base/views/res_currency_views.xml 
+2026-10-09 05:02:37,483 1 INFO hrpay odoo.modules.loading: loading base/views/res_users_views.xml 
+2026-10-09 05:02:37,648 1 INFO hrpay odoo.modules.loading: loading base/views/res_device_views.xml 
+2026-10-09 05:02:37,678 1 INFO hrpay odoo.modules.loading: loading base/views/res_users_identitycheck_views.xml 
+2026-10-09 05:02:37,687 1 INFO hrpay odoo.modules.loading: loading base/views/res_config_settings_views.xml 
+2026-10-09 05:02:37,696 1 INFO hrpay odoo.modules.loading: loading base/views/report_paperformat_views.xml 
+2026-10-09 05:02:37,732 1 INFO hrpay odoo.modules.loading: loading base/security/ir.model.access.csv 
+2026-10-09 05:02:37,952 1 INFO hrpay odoo.modules.loading: Module base loaded in 12.18s, 8244 queries (+8244 other) 
+2026-10-09 05:02:37,953 1 INFO hrpay odoo.modules.loading: 1 modules loaded in 12.18s, 8244 queries (+8244 extra) 
+2026-10-09 05:02:37,975 1 INFO hrpay odoo.modules.loading: updating modules list 
+2026-10-09 05:02:37,977 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-10-09 05:02:39,075 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.button_install on ['HRMS Core Extension', 'HRMS Full and Final Settlement', 'HRMS Helpdesk and Support', 'HRMS Payroll Run Orchestration', 'HRMS Rostering and Attendance', 'HRMS Statutory Rules Engine'] to user __system__ #1 via n/a 
+2026-10-09 05:02:39,262 1 INFO hrpay odoo.modules.loading: loading 69 modules... 
+2026-10-09 05:02:39,262 1 INFO hrpay odoo.modules.loading: Loading module uom (2/69) 
+2026-10-09 05:02:39,287 1 INFO hrpay odoo.modules.registry: module uom: creating or updating database tables 
+2026-10-09 05:02:39,425 1 INFO hrpay odoo.modules.loading: loading uom/data/uom_data.xml 
+2026-10-09 05:02:39,525 1 INFO hrpay odoo.modules.loading: loading uom/security/uom_security.xml 
+2026-10-09 05:02:39,556 1 INFO hrpay odoo.modules.loading: loading uom/security/ir.model.access.csv 
+2026-10-09 05:02:39,572 1 INFO hrpay odoo.modules.loading: loading uom/views/uom_uom_views.xml 
+2026-10-09 05:02:39,633 1 INFO hrpay odoo.modules.loading: Module uom loaded in 0.37s, 305 queries (+305 other) 
+2026-10-09 05:02:39,633 1 INFO hrpay odoo.modules.loading: Loading module web (3/69) 
+2026-10-09 05:02:39,665 1 INFO hrpay odoo.modules.registry: module web: creating or updating database tables 
+2026-10-09 05:02:40,594 1 INFO hrpay odoo.modules.loading: loading web/security/ir.model.access.csv 
+2026-10-09 05:02:40,606 1 INFO hrpay odoo.modules.loading: loading web/views/webclient_templates.xml 
+2026-10-09 05:02:40,676 1 INFO hrpay odoo.modules.loading: loading web/views/report_templates.xml 
+2026-10-09 05:02:40,797 1 INFO hrpay odoo.modules.loading: loading web/views/base_document_layout_views.xml 
+2026-10-09 05:02:40,813 1 INFO hrpay odoo.modules.loading: loading web/views/partner_view.xml 
+2026-10-09 05:02:40,821 1 INFO hrpay odoo.modules.loading: loading web/views/speedscope_template.xml 
+2026-10-09 05:02:40,827 1 INFO hrpay odoo.modules.loading: loading web/views/neutralize_views.xml 
+2026-10-09 05:02:40,835 1 INFO hrpay odoo.modules.loading: loading web/data/ir_attachment.xml 
+2026-10-09 05:02:40,842 1 INFO hrpay odoo.modules.loading: loading web/data/report_layout.xml 
+2026-10-09 05:02:40,908 1 INFO hrpay odoo.modules.loading: Module web loaded in 1.28s, 1126 queries (+1126 other) 
+2026-10-09 05:02:40,909 1 INFO hrpay odoo.modules.loading: Loading module auth_totp (4/69) 
+2026-10-09 05:02:40,947 1 INFO hrpay odoo.modules.registry: module auth_totp: creating or updating database tables 
+2026-10-09 05:02:41,051 1 INFO hrpay odoo.modules.loading: loading auth_totp/security/security.xml 
+2026-10-09 05:02:41,089 1 INFO hrpay odoo.modules.loading: loading auth_totp/security/ir.model.access.csv 
+2026-10-09 05:02:41,102 1 INFO hrpay odoo.modules.loading: loading auth_totp/data/ir_action_data.xml 
+2026-10-09 05:02:41,112 1 INFO hrpay odoo.modules.loading: loading auth_totp/views/res_users_views.xml 
+2026-10-09 05:02:41,152 1 INFO hrpay odoo.modules.loading: loading auth_totp/views/templates.xml 
+2026-10-09 05:02:41,159 1 INFO hrpay odoo.modules.loading: loading auth_totp/wizard/auth_totp_wizard_views.xml 
+2026-10-09 05:02:41,190 1 INFO hrpay odoo.modules.loading: Module auth_totp loaded in 0.28s, 188 queries (+188 other) 
+2026-10-09 05:02:41,190 1 INFO hrpay odoo.modules.loading: Loading module barcodes (5/69) 
+2026-10-09 05:02:41,219 1 INFO hrpay odoo.modules.registry: module barcodes: creating or updating database tables 
+2026-10-09 05:02:41,337 1 INFO hrpay odoo.modules.loading: loading barcodes/data/barcodes_data.xml 
+2026-10-09 05:02:41,346 1 INFO hrpay odoo.modules.loading: loading barcodes/views/barcodes_view.xml 
+2026-10-09 05:02:41,376 1 INFO hrpay odoo.modules.loading: loading barcodes/security/ir.model.access.csv 
+2026-10-09 05:02:41,407 1 INFO hrpay odoo.modules.loading: Module barcodes loaded in 0.22s, 149 queries (+149 other) 
+2026-10-09 05:02:41,407 1 INFO hrpay odoo.modules.loading: Loading module base_import (6/69) 
+2026-10-09 05:02:41,623 1 INFO hrpay odoo.modules.registry: module base_import: creating or updating database tables 
+2026-10-09 05:02:42,740 1 INFO hrpay odoo.modules.loading: loading base_import/security/base_import_security.xml 
+2026-10-09 05:02:42,751 1 INFO hrpay odoo.modules.loading: loading base_import/security/ir.model.access.csv 
+2026-10-09 05:02:42,775 1 INFO hrpay odoo.modules.loading: Module base_import loaded in 1.37s, 923 queries (+923 other) 
+2026-10-09 05:02:42,775 1 INFO hrpay odoo.modules.loading: Loading module base_import_module (7/69) 
+2026-10-09 05:02:42,804 1 INFO hrpay odoo.modules.registry: module base_import_module: creating or updating database tables 
+2026-10-09 05:02:42,915 1 INFO hrpay odoo.modules.loading: loading base_import_module/security/ir.model.access.csv 
+2026-10-09 05:02:42,928 1 INFO hrpay odoo.modules.loading: loading base_import_module/views/base_import_module_view.xml 
+2026-10-09 05:02:42,953 1 INFO hrpay odoo.modules.loading: loading base_import_module/views/ir_module_views.xml 
+2026-10-09 05:02:43,013 1 INFO hrpay odoo.modules.loading: Module base_import_module loaded in 0.24s, 164 queries (+164 other) 
+2026-10-09 05:02:43,013 1 INFO hrpay odoo.modules.loading: Loading module base_setup (8/69) 
+2026-10-09 05:02:43,040 1 INFO hrpay odoo.modules.registry: module base_setup: creating or updating database tables 
+2026-10-09 05:02:43,126 1 INFO hrpay odoo.modules.loading: loading base_setup/data/base_setup_data.xml 
+2026-10-09 05:02:43,136 1 INFO hrpay odoo.modules.loading: loading base_setup/views/res_config_settings_views.xml 
+2026-10-09 05:02:43,181 1 INFO hrpay odoo.modules.loading: loading base_setup/views/res_partner_views.xml 
+2026-10-09 05:02:43,208 1 INFO hrpay odoo.modules.loading: Module base_setup loaded in 0.19s, 154 queries (+154 other) 
+2026-10-09 05:02:43,208 1 INFO hrpay odoo.modules.loading: Loading module bus (9/69) 
+2026-10-09 05:02:43,247 1 INFO hrpay odoo.modules.registry: module bus: creating or updating database tables 
+2026-10-09 05:02:43,479 1 INFO hrpay odoo.modules.loading: loading bus/security/ir.model.access.csv 
+2026-10-09 05:02:43,504 1 INFO hrpay odoo.modules.loading: Module bus loaded in 0.30s, 168 queries (+168 other) 
+2026-10-09 05:02:43,504 1 INFO hrpay odoo.modules.loading: Loading module http_routing (10/69) 
+2026-10-09 05:02:43,534 1 INFO hrpay odoo.modules.registry: module http_routing: creating or updating database tables 
+2026-10-09 05:02:43,571 1 INFO hrpay odoo.modules.loading: loading http_routing/views/http_routing_template.xml 
+2026-10-09 05:02:43,609 1 INFO hrpay odoo.modules.loading: loading http_routing/views/res_lang_views.xml 
+2026-10-09 05:02:43,644 1 INFO hrpay odoo.modules.loading: Module http_routing loaded in 0.14s, 100 queries (+100 other) 
+2026-10-09 05:02:43,644 1 INFO hrpay odoo.modules.loading: Loading module onboarding (11/69) 
+2026-10-09 05:02:43,675 1 INFO hrpay odoo.modules.registry: module onboarding: creating or updating database tables 
+2026-10-09 05:02:43,945 1 INFO hrpay odoo.modules.loading: loading onboarding/views/onboarding_templates.xml 
+2026-10-09 05:02:43,963 1 INFO hrpay odoo.modules.loading: loading onboarding/views/onboarding_views.xml 
+2026-10-09 05:02:43,996 1 INFO hrpay odoo.modules.loading: loading onboarding/views/onboarding_menus.xml 
+2026-10-09 05:02:44,010 1 INFO hrpay odoo.modules.loading: loading onboarding/security/ir.model.access.csv 
+2026-10-09 05:02:44,049 1 INFO hrpay odoo.modules.loading: Module onboarding loaded in 0.41s, 225 queries (+225 other) 
+2026-10-09 05:02:44,049 1 INFO hrpay odoo.modules.loading: Loading module resource (12/69) 
+2026-10-09 05:02:44,087 1 INFO hrpay odoo.modules.registry: module resource: creating or updating database tables 
+2026-10-09 05:02:44,414 1 INFO hrpay odoo.modules.loading: loading resource/data/resource_data.xml 
+2026-10-09 05:02:44,437 1 INFO hrpay odoo.modules.loading: loading resource/security/ir.model.access.csv 
+2026-10-09 05:02:44,455 1 INFO hrpay odoo.modules.loading: loading resource/security/resource_security.xml 
+2026-10-09 05:02:44,486 1 INFO hrpay odoo.modules.loading: loading resource/views/resource_resource_views.xml 
+2026-10-09 05:02:44,517 1 INFO hrpay odoo.modules.loading: loading resource/views/resource_calendar_leaves_views.xml 
+2026-10-09 05:02:44,552 1 INFO hrpay odoo.modules.loading: loading resource/views/resource_calendar_attendance_views.xml 
+2026-10-09 05:02:44,567 1 INFO hrpay odoo.modules.loading: loading resource/views/resource_calendar_views.xml 
+2026-10-09 05:02:44,589 1 INFO hrpay odoo.modules.loading: loading resource/views/menuitems.xml 
+2026-10-09 05:02:44,632 1 INFO hrpay odoo.modules.loading: Module resource loaded in 0.58s, 406 queries (+406 other) 
+2026-10-09 05:02:44,632 1 INFO hrpay odoo.modules.loading: Loading module web_hierarchy (13/69) 
+2026-10-09 05:02:44,672 1 INFO hrpay odoo.modules.registry: module web_hierarchy: creating or updating database tables 
+2026-10-09 05:02:45,954 1 INFO hrpay odoo.modules.loading: Module web_hierarchy loaded in 1.32s, 969 queries (+969 other) 
+2026-10-09 05:02:45,954 1 INFO hrpay odoo.modules.loading: Loading module web_tour (14/69) 
+2026-10-09 05:02:45,985 1 INFO hrpay odoo.modules.registry: module web_tour: creating or updating database tables 
+2026-10-09 05:02:45,993 1 INFO hrpay odoo.models: Prepare computation of res.users.tour_enabled 
+2026-10-09 05:02:46,164 1 INFO hrpay odoo.modules.loading: loading web_tour/security/ir.model.access.csv 
+2026-10-09 05:02:46,179 1 INFO hrpay odoo.modules.loading: loading web_tour/views/tour_views.xml 
+2026-10-09 05:02:46,218 1 INFO hrpay odoo.modules.loading: loading web_tour/views/res_users_views.xml 
+2026-10-09 05:02:46,254 1 INFO hrpay odoo.modules.loading: Module web_tour loaded in 0.30s, 188 queries (+188 other) 
+2026-10-09 05:02:46,255 1 INFO hrpay odoo.modules.loading: Loading module html_editor (15/69) 
+2026-10-09 05:02:46,356 1 INFO hrpay odoo.modules.registry: module html_editor: creating or updating database tables 
+2026-10-09 05:02:46,419 1 INFO hrpay odoo.modules.loading: Module html_editor loaded in 0.16s, 46 queries (+46 other) 
+2026-10-09 05:02:46,419 1 INFO hrpay odoo.modules.loading: Loading module iap (16/69) 
+2026-10-09 05:02:46,449 1 INFO hrpay odoo.modules.registry: module iap: creating or updating database tables 
+2026-10-09 05:02:46,663 1 INFO hrpay odoo.modules.loading: loading iap/data/services.xml 
+2026-10-09 05:02:46,669 1 INFO hrpay odoo.modules.loading: loading iap/security/ir.model.access.csv 
+2026-10-09 05:02:46,684 1 INFO hrpay odoo.modules.loading: loading iap/security/ir_rule.xml 
+2026-10-09 05:02:46,694 1 INFO hrpay odoo.modules.loading: loading iap/views/iap_views.xml 
+2026-10-09 05:02:46,725 1 INFO hrpay odoo.modules.loading: loading iap/views/res_config_settings.xml 
+2026-10-09 05:02:46,756 1 INFO hrpay odoo.modules.loading: Module iap loaded in 0.34s, 183 queries (+183 other) 
+2026-10-09 05:02:46,756 1 INFO hrpay odoo.modules.loading: Loading module mail (17/69) 
+2026-10-09 05:02:46,819 1 INFO hrpay odoo.modules.registry: module mail: creating or updating database tables 
+2026-10-09 05:02:47,526 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.partner_ids 
+2026-10-09 05:02:47,527 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.template_id 
+2026-10-09 05:02:47,527 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_type_id 
+2026-10-09 05:02:47,527 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_date_deadline_range 
+2026-10-09 05:02:47,527 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_user_id 
+2026-10-09 05:02:47,528 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.mail_post_method 
+2026-10-09 05:02:47,528 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_summary 
+2026-10-09 05:02:47,528 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_date_deadline_range_type 
+2026-10-09 05:02:47,528 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_user_type 
+2026-10-09 05:02:47,528 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_user_field_name 
+2026-10-09 05:02:47,528 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.activity_note 
+2026-10-09 05:02:47,528 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.mail_post_autofollow 
+2026-10-09 05:02:47,591 1 INFO hrpay odoo.models: Prepare computation of res.company.email_primary_color 
+2026-10-09 05:02:47,591 1 INFO hrpay odoo.models: Prepare computation of res.company.email_secondary_color 
+2026-10-09 05:02:47,615 1 INFO hrpay odoo.models: Prepare computation of res.users.notification_type 
+2026-10-09 05:02:47,775 1 INFO hrpay odoo.models: Prepare computation of res.partner.email_normalized 
+<string>:38: (ERROR/3) Unexpected indentation.
+<string>:43: (WARNING/2) Block quote ends without a blank line; unexpected unindent.
+2026-10-09 05:02:50,788 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_groups.xml 
+2026-10-09 05:02:50,931 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_activity_schedule_views.xml 
+2026-10-09 05:02:50,944 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_blacklist_remove_views.xml 
+2026-10-09 05:02:50,956 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_compose_message_views.xml 
+2026-10-09 05:02:50,980 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_resend_message_views.xml 
+2026-10-09 05:02:50,996 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_resend_partner_views.xml 
+2026-10-09 05:02:51,010 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_template_preview_views.xml 
+2026-10-09 05:02:51,023 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_wizard_invite_views.xml 
+2026-10-09 05:02:51,032 1 INFO hrpay odoo.modules.loading: loading mail/wizard/mail_template_reset_views.xml 
+2026-10-09 05:02:51,045 1 INFO hrpay odoo.modules.loading: loading mail/views/fetchmail_views.xml 
+2026-10-09 05:02:51,069 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_message_subtype_views.xml 
+2026-10-09 05:02:51,090 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_tracking_value_views.xml 
+2026-10-09 05:02:51,107 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_notification_views.xml 
+2026-10-09 05:02:51,123 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_message_views.xml 
+2026-10-09 05:02:51,163 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_message_schedule_views.xml 
+2026-10-09 05:02:51,184 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_mail_views.xml 
+2026-10-09 05:02:51,216 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_followers_views.xml 
+2026-10-09 05:02:51,237 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_ice_server_views.xml 
+2026-10-09 05:02:51,252 1 INFO hrpay odoo.modules.loading: loading mail/views/discuss_channel_member_views.xml 
+2026-10-09 05:02:51,272 1 INFO hrpay odoo.modules.loading: loading mail/views/discuss_channel_rtc_session_views.xml 
+2026-10-09 05:02:51,292 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_link_preview_views.xml 
+2026-10-09 05:02:51,308 1 INFO hrpay odoo.modules.loading: loading mail/views/discuss/discuss_gif_favorite_views.xml 
+2026-10-09 05:02:51,325 1 INFO hrpay odoo.modules.loading: loading mail/views/discuss_channel_views.xml 
+2026-10-09 05:02:51,362 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_canned_response_views.xml 
+2026-10-09 05:02:51,383 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_activity_views.xml 
+2026-10-09 05:02:51,873 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_activity_plan_views.xml 
+2026-10-09 05:02:51,927 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_activity_plan_template_views.xml 
+2026-10-09 05:02:51,943 1 INFO hrpay odoo.modules.loading: loading mail/views/res_config_settings_views.xml 
+2026-10-09 05:02:51,976 1 INFO hrpay odoo.modules.loading: loading mail/data/ir_config_parameter_data.xml 
+2026-10-09 05:02:51,983 1 INFO hrpay odoo.modules.loading: loading mail/data/res_partner_data.xml 
+2026-10-09 05:02:52,066 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_message_subtype_data.xml 
+2026-10-09 05:02:52,079 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_templates_chatter.xml 
+2026-10-09 05:02:52,099 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_templates_email_layouts.xml 
+2026-10-09 05:02:52,125 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_templates_mailgateway.xml 
+2026-10-09 05:02:52,148 1 INFO hrpay odoo.modules.loading: loading mail/data/discuss_channel_data.xml 
+2026-10-09 05:02:52,208 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_activity_data.xml 
+2026-10-09 05:02:52,235 1 INFO hrpay odoo.modules.loading: loading mail/data/security_notifications_templates.xml 
+2026-10-09 05:02:52,241 1 INFO hrpay odoo.modules.loading: loading mail/data/ir_cron_data.xml 
+2026-10-09 05:02:52,316 1 INFO hrpay odoo.modules.loading: loading mail/data/ir_actions_client.xml 
+2026-10-09 05:02:52,326 1 INFO hrpay odoo.modules.loading: loading mail/security/mail_security.xml 
+2026-10-09 05:02:52,532 1 INFO hrpay odoo.modules.loading: loading mail/security/ir.model.access.csv 
+2026-10-09 05:02:52,626 1 INFO hrpay odoo.modules.loading: loading mail/views/discuss_public_templates.xml 
+2026-10-09 05:02:52,634 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_alias_domain_views.xml 
+2026-10-09 05:02:52,656 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_alias_views.xml 
+2026-10-09 05:02:52,681 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_gateway_allowed_views.xml 
+2026-10-09 05:02:52,697 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_guest_views.xml 
+2026-10-09 05:02:52,715 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_message_reaction_views.xml 
+2026-10-09 05:02:52,731 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_templates_public.xml 
+2026-10-09 05:02:52,742 1 INFO hrpay odoo.modules.loading: loading mail/views/res_users_views.xml 
+2026-10-09 05:02:52,772 1 INFO hrpay odoo.modules.loading: loading mail/views/res_users_settings_views.xml 
+2026-10-09 05:02:52,790 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_template_views.xml 
+2026-10-09 05:02:52,824 1 INFO hrpay odoo.modules.loading: loading mail/views/ir_actions_server_views.xml 
+2026-10-09 05:02:52,841 1 INFO hrpay odoo.modules.loading: loading mail/views/ir_model_views.xml 
+2026-10-09 05:02:52,878 1 INFO hrpay odoo.modules.loading: loading mail/views/res_partner_views.xml 
+2026-10-09 05:02:52,938 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_blacklist_views.xml 
+2026-10-09 05:02:52,961 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_menus.xml 
+2026-10-09 05:02:53,171 1 INFO hrpay odoo.modules.loading: loading mail/views/res_company_views.xml 
+2026-10-09 05:02:53,184 1 INFO hrpay odoo.modules.loading: loading mail/views/mail_scheduled_message_views.xml 
+2026-10-09 05:02:53,193 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_canned_response_data.xml 
+2026-10-09 05:02:53,201 1 INFO hrpay odoo.modules.loading: loading mail/data/mail_templates_invite.xml 
+2026-10-09 05:02:53,212 1 INFO hrpay odoo.modules.loading: loading mail/data/web_tour_tour.xml 
+2026-10-09 05:02:53,276 1 INFO hrpay odoo.modules.loading: Module mail loaded in 6.52s, 4546 queries (+4547 other) 
+2026-10-09 05:02:53,276 1 INFO hrpay odoo.modules.loading: Loading module web_editor (18/69) 
+2026-10-09 05:02:53,357 1 INFO hrpay odoo.modules.registry: module web_editor: creating or updating database tables 
+2026-10-09 05:02:54,989 1 INFO hrpay odoo.modules.loading: loading web_editor/security/ir.model.access.csv 
+2026-10-09 05:02:55,043 1 INFO hrpay odoo.modules.loading: loading web_editor/data/editor_assets.xml 
+2026-10-09 05:02:55,056 1 INFO hrpay odoo.modules.loading: loading web_editor/views/editor.xml 
+2026-10-09 05:02:55,107 1 INFO hrpay odoo.modules.loading: loading web_editor/views/snippets.xml 
+2026-10-09 05:02:55,203 1 INFO hrpay odoo.modules.loading: Module web_editor loaded in 1.93s, 1478 queries (+1478 other) 
+2026-10-09 05:02:55,203 1 INFO hrpay odoo.modules.loading: Loading module analytic (19/69) 
+2026-10-09 05:02:55,267 1 INFO hrpay odoo.modules.registry: module analytic: creating or updating database tables 
+2026-10-09 05:02:55,762 1 INFO hrpay odoo.modules.loading: loading analytic/security/analytic_security.xml 
+2026-10-09 05:02:55,834 1 INFO hrpay odoo.modules.loading: loading analytic/security/ir.model.access.csv 
+2026-10-09 05:02:55,860 1 INFO hrpay odoo.modules.loading: loading analytic/views/analytic_line_views.xml 
+2026-10-09 05:02:55,989 1 INFO hrpay odoo.modules.loading: loading analytic/views/analytic_account_views.xml 
+2026-10-09 05:02:56,028 1 INFO hrpay odoo.modules.loading: loading analytic/views/analytic_plan_views.xml 
+2026-10-09 05:02:56,054 1 INFO hrpay odoo.modules.loading: loading analytic/views/analytic_distribution_model_views.xml 
+2026-10-09 05:02:56,072 1 INFO hrpay odoo.modules.loading: loading analytic/data/analytic_data.xml 
+2026-10-09 05:02:56,168 1 INFO hrpay odoo.modules.loading: Module analytic loaded in 0.96s, 434 queries (+434 other) 
+2026-10-09 05:02:56,168 1 INFO hrpay odoo.modules.loading: Loading module auth_signup (20/69) 
+2026-10-09 05:02:56,222 1 INFO hrpay odoo.modules.registry: module auth_signup: creating or updating database tables 
+2026-10-09 05:02:56,379 1 INFO hrpay odoo.modules.loading: loading auth_signup/data/ir_config_parameter_data.xml 
+2026-10-09 05:02:56,387 1 INFO hrpay odoo.modules.loading: loading auth_signup/data/ir_cron_data.xml 
+2026-10-09 05:02:56,403 1 INFO hrpay odoo.modules.loading: loading auth_signup/data/mail_template_data.xml 
+2026-10-09 05:02:56,430 1 INFO hrpay odoo.modules.loading: loading auth_signup/views/res_config_settings_views.xml 
+2026-10-09 05:02:56,453 1 INFO hrpay odoo.modules.loading: loading auth_signup/views/res_users_views.xml 
+2026-10-09 05:02:56,488 1 INFO hrpay odoo.modules.loading: loading auth_signup/views/auth_signup_login_templates.xml 
+2026-10-09 05:02:56,514 1 INFO hrpay odoo.modules.loading: loading auth_signup/views/auth_signup_templates_email.xml 
+2026-10-09 05:02:56,532 1 INFO hrpay odoo.modules.loading: loading auth_signup/views/webclient_templates.xml 
+2026-10-09 05:02:56,563 1 INFO hrpay odoo.modules.loading: Module auth_signup loaded in 0.40s, 207 queries (+207 other) 
+2026-10-09 05:02:56,563 1 INFO hrpay odoo.modules.loading: Loading module auth_totp_mail (21/69) 
+2026-10-09 05:02:56,614 1 INFO hrpay odoo.modules.registry: module auth_totp_mail: creating or updating database tables 
+2026-10-09 05:02:56,669 1 INFO hrpay odoo.modules.loading: loading auth_totp_mail/data/ir_action_data.xml 
+2026-10-09 05:02:56,696 1 INFO hrpay odoo.modules.loading: loading auth_totp_mail/data/mail_template_data.xml 
+2026-10-09 05:02:56,706 1 INFO hrpay odoo.modules.loading: loading auth_totp_mail/data/security_notifications_template.xml 
+2026-10-09 05:02:56,717 1 INFO hrpay odoo.modules.loading: loading auth_totp_mail/views/res_users_views.xml 
+2026-10-09 05:02:56,787 1 INFO hrpay odoo.modules.loading: Module auth_totp_mail loaded in 0.22s, 121 queries (+121 other) 
+2026-10-09 05:02:56,787 1 INFO hrpay odoo.modules.loading: Loading module base_install_request (22/69) 
+2026-10-09 05:02:56,837 1 INFO hrpay odoo.modules.registry: module base_install_request: creating or updating database tables 
+2026-10-09 05:02:56,981 1 INFO hrpay odoo.modules.loading: loading base_install_request/security/ir.model.access.csv 
+2026-10-09 05:02:56,999 1 INFO hrpay odoo.modules.loading: loading base_install_request/wizard/base_module_install_request_views.xml 
+2026-10-09 05:02:57,025 1 INFO hrpay odoo.modules.loading: loading base_install_request/data/mail_template_data.xml 
+2026-10-09 05:02:57,034 1 INFO hrpay odoo.modules.loading: loading base_install_request/data/mail_templates_module_install.xml 
+2026-10-09 05:02:57,041 1 INFO hrpay odoo.modules.loading: loading base_install_request/views/ir_module_module_views.xml 
+2026-10-09 05:02:57,079 1 INFO hrpay odoo.modules.loading: Module base_install_request loaded in 0.29s, 153 queries (+153 other) 
+2026-10-09 05:02:57,079 1 INFO hrpay odoo.modules.loading: Loading module calendar (23/69) 
+2026-10-09 05:02:57,171 1 INFO hrpay odoo.modules.registry: module calendar: creating or updating database tables 
+2026-10-09 05:02:57,948 1 INFO hrpay odoo.modules.loading: loading calendar/security/ir.model.access.csv 
+2026-10-09 05:02:57,978 1 INFO hrpay odoo.modules.loading: loading calendar/security/calendar_security.xml 
+2026-10-09 05:02:58,007 1 INFO hrpay odoo.modules.loading: loading calendar/data/calendar_cron.xml 
+2026-10-09 05:02:58,020 1 INFO hrpay odoo.modules.loading: loading calendar/data/mail_template_data.xml 
+2026-10-09 05:02:58,049 1 INFO hrpay odoo.modules.loading: loading calendar/data/calendar_data.xml 
+2026-10-09 05:02:58,070 1 INFO hrpay odoo.modules.loading: loading calendar/data/mail_activity_type_data.xml 
+2026-10-09 05:02:58,075 1 INFO hrpay odoo.modules.loading: loading calendar/data/mail_message_subtype_data.xml 
+2026-10-09 05:02:58,081 1 INFO hrpay odoo.modules.loading: loading calendar/views/mail_activity_views.xml 
+2026-10-09 05:02:58,099 1 INFO hrpay odoo.modules.loading: loading calendar/views/calendar_templates.xml 
+2026-10-09 05:02:58,109 1 INFO hrpay odoo.modules.loading: loading calendar/views/calendar_views.xml 
+2026-10-09 05:02:58,285 1 INFO hrpay odoo.modules.loading: loading calendar/views/res_config_settings_views.xml 
+2026-10-09 05:02:58,308 1 INFO hrpay odoo.modules.loading: loading calendar/views/res_partner_views.xml 
+2026-10-09 05:02:58,331 1 INFO hrpay odoo.modules.loading: loading calendar/views/res_users_views.xml 
+2026-10-09 05:02:58,358 1 INFO hrpay odoo.modules.loading: loading calendar/wizard/calendar_provider_config.xml 
+2026-10-09 05:02:58,368 1 INFO hrpay odoo.modules.loading: loading calendar/wizard/calendar_popover_delete_wizard.xml 
+2026-10-09 05:02:58,376 1 INFO hrpay odoo.modules.loading: loading calendar/wizard/mail_activity_schedule_views.xml 
+2026-10-09 05:02:58,422 1 INFO hrpay odoo.modules.loading: Module calendar loaded in 1.34s, 766 queries (+766 other) 
+2026-10-09 05:02:58,423 1 INFO hrpay odoo.modules.loading: Loading module google_gmail (24/69) 
+2026-10-09 05:02:58,478 1 INFO hrpay odoo.modules.registry: module google_gmail: creating or updating database tables 
+2026-10-09 05:02:58,556 1 INFO hrpay odoo.modules.loading: loading google_gmail/views/fetchmail_server_views.xml 
+2026-10-09 05:02:58,577 1 INFO hrpay odoo.modules.loading: loading google_gmail/views/ir_mail_server_views.xml 
+2026-10-09 05:02:58,589 1 INFO hrpay odoo.modules.loading: loading google_gmail/views/res_config_settings_views.xml 
+2026-10-09 05:02:58,677 1 INFO hrpay odoo.modules.loading: Module google_gmail loaded in 0.25s, 124 queries (+124 other) 
+2026-10-09 05:02:58,677 1 INFO hrpay odoo.modules.loading: Loading module iap_mail (25/69) 
+2026-10-09 05:02:58,734 1 INFO hrpay odoo.modules.registry: module iap_mail: creating or updating database tables 
+2026-10-09 05:02:58,779 1 INFO hrpay odoo.modules.loading: loading iap_mail/data/mail_templates.xml 
+2026-10-09 05:02:58,796 1 INFO hrpay odoo.modules.loading: loading iap_mail/views/iap_views.xml 
+2026-10-09 05:02:58,823 1 INFO hrpay odoo.modules.loading: Module iap_mail loaded in 0.15s, 70 queries (+70 other) 
+2026-10-09 05:02:58,823 1 INFO hrpay odoo.modules.loading: Loading module mail_bot (26/69) 
+2026-10-09 05:02:58,877 1 INFO hrpay odoo.modules.registry: module mail_bot: creating or updating database tables 
+2026-10-09 05:02:58,957 1 INFO hrpay odoo.modules.loading: loading mail_bot/views/res_users_views.xml 
+2026-10-09 05:02:58,994 1 INFO hrpay odoo.modules.loading: loading mail_bot/data/mailbot_data.xml 
+2026-10-09 05:02:59,015 1 INFO hrpay odoo.modules.loading: Module mail_bot loaded in 0.19s, 129 queries (+129 other) 
+2026-10-09 05:02:59,016 1 INFO hrpay odoo.modules.loading: Loading module phone_validation (27/69) 
+2026-10-09 05:02:59,118 1 INFO hrpay odoo.modules.registry: module phone_validation: creating or updating database tables 
+2026-10-09 05:03:01,031 1 INFO hrpay odoo.modules.loading: loading phone_validation/security/ir.model.access.csv 
+2026-10-09 05:03:01,048 1 INFO hrpay odoo.modules.loading: loading phone_validation/views/phone_blacklist_views.xml 
+2026-10-09 05:03:01,089 1 INFO hrpay odoo.modules.loading: loading phone_validation/wizard/phone_blacklist_remove_view.xml 
+2026-10-09 05:03:01,121 1 INFO hrpay odoo.modules.loading: Module phone_validation loaded in 2.10s, 1617 queries (+1617 other) 
+2026-10-09 05:03:01,121 1 INFO hrpay odoo.modules.loading: Loading module privacy_lookup (28/69) 
+2026-10-09 05:03:01,179 1 INFO hrpay odoo.modules.registry: module privacy_lookup: creating or updating database tables 
+2026-10-09 05:03:01,387 1 INFO hrpay odoo.modules.loading: loading privacy_lookup/wizard/privacy_lookup_wizard_views.xml 
+2026-10-09 05:03:01,438 1 INFO hrpay odoo.modules.loading: loading privacy_lookup/views/privacy_log_views.xml 
+2026-10-09 05:03:01,471 1 INFO hrpay odoo.modules.loading: loading privacy_lookup/security/ir.model.access.csv 
+2026-10-09 05:03:01,492 1 INFO hrpay odoo.modules.loading: loading privacy_lookup/data/ir_actions_server_data.xml 
+2026-10-09 05:03:01,527 1 INFO hrpay odoo.modules.loading: Module privacy_lookup loaded in 0.41s, 249 queries (+249 other) 
+2026-10-09 05:03:01,527 1 INFO hrpay odoo.modules.loading: Loading module product (29/69) 
+2026-10-09 05:03:01,618 1 INFO hrpay odoo.modules.registry: module product: creating or updating database tables 
+2026-10-09 05:03:03,087 1 INFO hrpay odoo.modules.loading: loading product/data/product_data.xml 
+2026-10-09 05:03:03,138 1 INFO hrpay odoo.modules.loading: loading product/security/product_security.xml 
+2026-10-09 05:03:03,439 1 INFO hrpay odoo.modules.loading: loading product/security/ir.model.access.csv 
+2026-10-09 05:03:03,488 1 INFO hrpay odoo.modules.loading: loading product/wizard/product_label_layout_views.xml 
+2026-10-09 05:03:03,507 1 INFO hrpay odoo.modules.loading: loading product/wizard/update_product_attribute_value_views.xml 
+2026-10-09 05:03:03,518 1 INFO hrpay odoo.modules.loading: loading product/views/product_tag_views.xml 
+2026-10-09 05:03:03,538 1 INFO hrpay odoo.modules.loading: loading product/views/product_views.xml 
+2026-10-09 05:03:03,673 1 INFO hrpay odoo.modules.loading: loading product/views/res_config_settings_views.xml 
+2026-10-09 05:03:03,706 1 INFO hrpay odoo.modules.loading: loading product/views/product_attribute_views.xml 
+2026-10-09 05:03:03,763 1 INFO hrpay odoo.modules.loading: loading product/views/product_attribute_value_views.xml 
+2026-10-09 05:03:03,769 1 INFO hrpay odoo.modules.loading: loading product/views/product_category_views.xml 
+2026-10-09 05:03:03,791 1 INFO hrpay odoo.modules.loading: loading product/views/product_combo_views.xml 
+2026-10-09 05:03:03,811 1 INFO hrpay odoo.modules.loading: loading product/views/product_document_views.xml 
+2026-10-09 05:03:03,837 1 INFO hrpay odoo.modules.loading: loading product/views/product_packaging_views.xml 
+2026-10-09 05:03:03,874 1 INFO hrpay odoo.modules.loading: loading product/views/product_pricelist_item_views.xml 
+2026-10-09 05:03:03,904 1 INFO hrpay odoo.modules.loading: loading product/views/product_pricelist_views.xml 
+2026-10-09 05:03:03,938 1 INFO hrpay odoo.modules.loading: loading product/views/product_supplierinfo_views.xml 
+2026-10-09 05:03:03,972 1 INFO hrpay odoo.modules.loading: loading product/views/product_template_attribute_line_views.xml 
+2026-10-09 05:03:03,980 1 INFO hrpay odoo.modules.loading: loading product/views/product_template_views.xml 
+2026-10-09 05:03:04,031 1 INFO hrpay odoo.modules.loading: loading product/views/res_country_group_views.xml 
+2026-10-09 05:03:04,043 1 INFO hrpay odoo.modules.loading: loading product/views/res_partner_views.xml 
+2026-10-09 05:03:04,058 1 INFO hrpay odoo.modules.loading: loading product/report/product_reports.xml 
+2026-10-09 05:03:04,096 1 INFO hrpay odoo.modules.loading: loading product/report/product_product_templates.xml 
+2026-10-09 05:03:04,131 1 INFO hrpay odoo.modules.loading: loading product/report/product_template_templates.xml 
+2026-10-09 05:03:04,153 1 INFO hrpay odoo.modules.loading: loading product/report/product_packaging.xml 
+2026-10-09 05:03:04,160 1 INFO hrpay odoo.modules.loading: loading product/report/product_pricelist_report_templates.xml 
+2026-10-09 05:03:04,228 1 INFO hrpay odoo.modules.loading: Module product loaded in 2.70s, 1759 queries (+1759 other) 
+2026-10-09 05:03:04,228 1 INFO hrpay odoo.modules.loading: Loading module resource_mail (30/69) 
+2026-10-09 05:03:04,296 1 INFO hrpay odoo.modules.registry: module resource_mail: creating or updating database tables 
+2026-10-09 05:03:04,374 1 INFO hrpay odoo.modules.loading: Module resource_mail loaded in 0.15s, 35 queries (+35 other) 
+2026-10-09 05:03:04,374 1 INFO hrpay odoo.modules.loading: Loading module web_unsplash (31/69) 
+2026-10-09 05:03:04,440 1 INFO hrpay odoo.modules.registry: module web_unsplash: creating or updating database tables 
+2026-10-09 05:03:04,536 1 INFO hrpay odoo.modules.loading: loading web_unsplash/views/res_config_settings_view.xml 
+2026-10-09 05:03:04,601 1 INFO hrpay odoo.modules.loading: Module web_unsplash loaded in 0.23s, 100 queries (+100 other) 
+2026-10-09 05:03:04,601 1 INFO hrpay odoo.modules.loading: Loading module partner_autocomplete (32/69) 
+2026-10-09 05:03:04,671 1 INFO hrpay odoo.modules.registry: module partner_autocomplete: creating or updating database tables 
+2026-10-09 05:03:05,016 1 INFO hrpay odoo.modules.loading: loading partner_autocomplete/security/ir.model.access.csv 
+2026-10-09 05:03:05,056 1 INFO hrpay odoo.modules.loading: loading partner_autocomplete/views/res_partner_views.xml 
+2026-10-09 05:03:05,134 1 INFO hrpay odoo.modules.loading: loading partner_autocomplete/views/res_company_views.xml 
+2026-10-09 05:03:05,150 1 INFO hrpay odoo.modules.loading: loading partner_autocomplete/views/res_config_settings_views.xml 
+2026-10-09 05:03:05,175 1 INFO hrpay odoo.modules.loading: loading partner_autocomplete/data/cron.xml 
+2026-10-09 05:03:05,189 1 INFO hrpay odoo.modules.loading: loading partner_autocomplete/data/iap_service_data.xml 
+2026-10-09 05:03:05,220 1 INFO hrpay odoo.modules.loading: Module partner_autocomplete loaded in 0.62s, 209 queries (+209 other) 
+2026-10-09 05:03:05,220 1 INFO hrpay odoo.modules.loading: Loading module portal (33/69) 
+2026-10-09 05:03:05,313 1 INFO hrpay odoo.modules.registry: module portal: creating or updating database tables 
+2026-10-09 05:03:05,940 1 INFO hrpay odoo.modules.loading: loading portal/security/ir.model.access.csv 
+2026-10-09 05:03:05,958 1 INFO hrpay odoo.modules.loading: loading portal/data/mail_template_data.xml 
+2026-10-09 05:03:05,972 1 INFO hrpay odoo.modules.loading: loading portal/data/mail_templates.xml 
+2026-10-09 05:03:05,981 1 INFO hrpay odoo.modules.loading: loading portal/views/mail_templates_public.xml 
+2026-10-09 05:03:05,991 1 INFO hrpay odoo.modules.loading: loading portal/views/portal_templates.xml 
+2026-10-09 05:03:06,159 1 INFO hrpay odoo.modules.loading: loading portal/views/res_config_settings_views.xml 
+2026-10-09 05:03:06,185 1 INFO hrpay odoo.modules.loading: loading portal/wizard/portal_share_views.xml 
+2026-10-09 05:03:06,200 1 INFO hrpay odoo.modules.loading: loading portal/wizard/portal_wizard_views.xml 
+2026-10-09 05:03:06,249 1 INFO hrpay odoo.modules.loading: Module portal loaded in 1.03s, 534 queries (+534 other) 
+2026-10-09 05:03:06,250 1 INFO hrpay odoo.modules.loading: Loading module sms (34/69) 
+2026-10-09 05:03:06,367 1 INFO hrpay odoo.modules.registry: module sms: creating or updating database tables 
+2026-10-09 05:03:06,388 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.sms_template_id 
+2026-10-09 05:03:06,388 1 INFO hrpay odoo.models: Prepare computation of ir.actions.server.sms_method 
+2026-10-09 05:03:06,436 1 INFO hrpay odoo.models: Prepare computation of res.partner.phone_sanitized 
+2026-10-09 05:03:09,516 1 INFO hrpay odoo.modules.loading: loading sms/data/iap_service_data.xml 
+2026-10-09 05:03:09,523 1 INFO hrpay odoo.modules.loading: loading sms/data/ir_cron_data.xml 
+2026-10-09 05:03:09,535 1 INFO hrpay odoo.modules.loading: loading sms/wizard/sms_account_code_views.xml 
+2026-10-09 05:03:09,547 1 INFO hrpay odoo.modules.loading: loading sms/wizard/sms_account_phone_views.xml 
+2026-10-09 05:03:09,557 1 INFO hrpay odoo.modules.loading: loading sms/wizard/sms_account_sender_views.xml 
+2026-10-09 05:03:09,565 1 INFO hrpay odoo.modules.loading: loading sms/wizard/sms_composer_views.xml 
+2026-10-09 05:03:09,580 1 INFO hrpay odoo.modules.loading: loading sms/wizard/sms_template_preview_views.xml 
+2026-10-09 05:03:09,595 1 INFO hrpay odoo.modules.loading: loading sms/wizard/sms_resend_views.xml 
+2026-10-09 05:03:09,611 1 INFO hrpay odoo.modules.loading: loading sms/wizard/sms_template_reset_views.xml 
+2026-10-09 05:03:09,624 1 INFO hrpay odoo.modules.loading: loading sms/views/ir_actions_server_views.xml 
+2026-10-09 05:03:09,643 1 INFO hrpay odoo.modules.loading: loading sms/views/mail_notification_views.xml 
+2026-10-09 05:03:09,664 1 INFO hrpay odoo.modules.loading: loading sms/views/res_config_settings_views.xml 
+2026-10-09 05:03:09,681 1 INFO hrpay odoo.modules.loading: loading sms/views/res_partner_views.xml 
+2026-10-09 05:03:09,725 1 INFO hrpay odoo.modules.loading: loading sms/views/iap_account_views.xml 
+2026-10-09 05:03:09,741 1 INFO hrpay odoo.modules.loading: loading sms/views/sms_sms_views.xml 
+2026-10-09 05:03:09,775 1 INFO hrpay odoo.modules.loading: loading sms/views/sms_template_views.xml 
+2026-10-09 05:03:09,808 1 INFO hrpay odoo.modules.loading: loading sms/security/ir.model.access.csv 
+2026-10-09 05:03:09,846 1 INFO hrpay odoo.modules.loading: loading sms/security/sms_security.xml 
+2026-10-09 05:03:09,877 1 INFO hrpay odoo.modules.loading: Module sms loaded in 3.63s, 2290 queries (+2290 other) 
+2026-10-09 05:03:09,878 1 INFO hrpay odoo.modules.loading: Loading module snailmail (35/69) 
+2026-10-09 05:03:09,966 1 INFO hrpay odoo.modules.registry: module snailmail: creating or updating database tables 
+2026-10-09 05:03:10,477 1 INFO hrpay odoo.modules.loading: loading snailmail/data/iap_service_data.xml 
+2026-10-09 05:03:10,483 1 INFO hrpay odoo.modules.loading: loading snailmail/data/snailmail_data.xml 
+2026-10-09 05:03:10,493 1 INFO hrpay odoo.modules.loading: loading snailmail/views/report_assets.xml 
+2026-10-09 05:03:10,512 1 INFO hrpay odoo.modules.loading: loading snailmail/views/snailmail_views.xml 
+2026-10-09 05:03:10,539 1 INFO hrpay odoo.modules.loading: loading snailmail/wizard/snailmail_letter_format_error_views.xml 
+2026-10-09 05:03:10,554 1 INFO hrpay odoo.modules.loading: loading snailmail/wizard/snailmail_letter_missing_required_fields_views.xml 
+2026-10-09 05:03:10,567 1 INFO hrpay odoo.modules.loading: loading snailmail/security/ir.model.access.csv 
+2026-10-09 05:03:10,606 1 INFO hrpay odoo.modules.loading: Module snailmail loaded in 0.73s, 477 queries (+477 other) 
+2026-10-09 05:03:10,607 1 INFO hrpay odoo.modules.loading: Loading module auth_totp_portal (36/69) 
+2026-10-09 05:03:10,778 1 INFO hrpay odoo.modules.registry: module auth_totp_portal: creating or updating database tables 
+2026-10-09 05:03:10,827 1 INFO hrpay odoo.modules.loading: loading auth_totp_portal/security/security.xml 
+2026-10-09 05:03:10,844 1 INFO hrpay odoo.modules.loading: loading auth_totp_portal/views/templates.xml 
+2026-10-09 05:03:10,872 1 INFO hrpay odoo.modules.loading: Module auth_totp_portal loaded in 0.27s, 66 queries (+66 other) 
+2026-10-09 05:03:10,872 1 INFO hrpay odoo.modules.loading: Loading module calendar_sms (37/69) 
+2026-10-09 05:03:10,957 1 INFO hrpay odoo.modules.registry: module calendar_sms: creating or updating database tables 
+2026-10-09 05:03:10,963 1 INFO hrpay odoo.models: Prepare computation of calendar.alarm.sms_template_id 
+2026-10-09 05:03:11,035 1 INFO hrpay odoo.modules.loading: loading calendar_sms/data/sms_data.xml 
+2026-10-09 05:03:11,042 1 INFO hrpay odoo.modules.loading: loading calendar_sms/views/calendar_views.xml 
+2026-10-09 05:03:11,100 1 INFO hrpay odoo.modules.loading: Module calendar_sms loaded in 0.23s, 105 queries (+105 other) 
+2026-10-09 05:03:11,100 1 INFO hrpay odoo.modules.loading: Loading module digest (38/69) 
+2026-10-09 05:03:11,178 1 INFO hrpay odoo.modules.registry: module digest: creating or updating database tables 
+2026-10-09 05:03:11,380 1 INFO hrpay odoo.modules.loading: loading digest/security/ir.model.access.csv 
+2026-10-09 05:03:11,396 1 INFO hrpay odoo.modules.loading: loading digest/data/digest_data.xml 
+2026-10-09 05:03:11,427 1 INFO hrpay odoo.modules.loading: loading digest/data/digest_tips_data.xml 
+2026-10-09 05:03:11,451 1 INFO hrpay odoo.modules.loading: loading digest/data/ir_cron_data.xml 
+2026-10-09 05:03:11,464 1 INFO hrpay odoo.modules.loading: loading digest/data/res_config_settings_data.xml 
+2026-10-09 05:03:11,474 1 INFO hrpay odoo.modules.loading: loading digest/views/digest_views.xml 
+2026-10-09 05:03:11,539 1 INFO hrpay odoo.modules.loading: loading digest/views/digest_templates.xml 
+2026-10-09 05:03:11,546 1 INFO hrpay odoo.modules.loading: loading digest/views/res_config_settings_views.xml 
+2026-10-09 05:03:11,592 1 INFO hrpay odoo.modules.loading: Module digest loaded in 0.49s, 305 queries (+305 other) 
+2026-10-09 05:03:11,592 1 INFO hrpay odoo.modules.loading: Loading module helpdesk_mgmt (39/69) 
+2026-10-09 05:03:11,696 1 INFO hrpay odoo.modules.registry: module helpdesk_mgmt: creating or updating database tables 
+2026-10-09 05:03:12,350 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/data/helpdesk_data.xml 
+2026-10-09 05:03:12,413 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/security/helpdesk_security.xml 
+2026-10-09 05:03:12,676 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/security/ir.model.access.csv 
+2026-10-09 05:03:12,712 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/res_partner_views.xml 
+2026-10-09 05:03:12,735 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/res_config_settings_views.xml 
+2026-10-09 05:03:12,761 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_templates.xml 
+2026-10-09 05:03:12,827 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_menu.xml 
+2026-10-09 05:03:12,960 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_team_views.xml 
+2026-10-09 05:03:12,988 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_stage_views.xml 
+2026-10-09 05:03:13,008 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_category_views.xml 
+2026-10-09 05:03:13,030 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_channel_views.xml 
+2026-10-09 05:03:13,048 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_tag_views.xml 
+2026-10-09 05:03:13,065 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_ticket_views.xml 
+2026-10-09 05:03:13,126 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/views/helpdesk_dashboard_views.xml 
+2026-10-09 05:03:13,139 1 INFO hrpay odoo.modules.loading: loading helpdesk_mgmt/wizards/helpdesk_ticket_duplicate_wizard_views.xml 
+2026-10-09 05:03:13,174 1 INFO hrpay odoo.modules.loading: Module helpdesk_mgmt loaded in 1.58s, 1106 queries (+1106 other) 
+2026-10-09 05:03:13,175 1 INFO hrpay odoo.modules.loading: Loading module payment (40/69) 
+2026-10-09 05:03:13,269 1 INFO hrpay odoo.modules.registry: module payment: creating or updating database tables 
+2026-10-09 05:03:13,943 1 INFO hrpay odoo.modules.loading: loading payment/data/ir_actions_server_data.xml 
+2026-10-09 05:03:13,951 1 INFO hrpay odoo.modules.loading: loading payment/data/onboarding_data.xml 
+2026-10-09 05:03:13,958 1 INFO hrpay odoo.modules.loading: loading payment/data/payment_method_data.xml 
+2026-10-09 05:03:16,253 1 INFO hrpay odoo.modules.loading: loading payment/data/payment_provider_data.xml 
+2026-10-09 05:03:16,405 1 INFO hrpay odoo.modules.loading: loading payment/data/payment_cron.xml 
+2026-10-09 05:03:16,416 1 INFO hrpay odoo.modules.loading: loading payment/views/express_checkout_templates.xml 
+2026-10-09 05:03:16,425 1 INFO hrpay odoo.modules.loading: loading payment/views/payment_form_templates.xml 
+2026-10-09 05:03:16,477 1 INFO hrpay odoo.modules.loading: loading payment/views/portal_templates.xml 
+2026-10-09 05:03:16,525 1 INFO hrpay odoo.modules.loading: loading payment/views/payment_provider_views.xml 
+2026-10-09 05:03:16,559 1 INFO hrpay odoo.modules.loading: loading payment/views/payment_method_views.xml 
+2026-10-09 05:03:16,589 1 INFO hrpay odoo.modules.loading: loading payment/views/payment_transaction_views.xml 
+2026-10-09 05:03:16,622 1 INFO hrpay odoo.modules.loading: loading payment/views/payment_token_views.xml 
+2026-10-09 05:03:16,643 1 INFO hrpay odoo.modules.loading: loading payment/views/res_partner_views.xml 
+2026-10-09 05:03:16,663 1 INFO hrpay odoo.modules.loading: loading payment/security/ir.model.access.csv 
+2026-10-09 05:03:17,477 1 INFO hrpay odoo.modules.loading: loading payment/security/payment_security.xml 
+2026-10-09 05:03:17,515 1 INFO hrpay odoo.modules.loading: loading payment/wizards/payment_capture_wizard_views.xml 
+2026-10-09 05:03:17,525 1 INFO hrpay odoo.modules.loading: loading payment/wizards/payment_link_wizard_views.xml 
+2026-10-09 05:03:17,535 1 INFO hrpay odoo.modules.loading: loading payment/wizards/payment_onboarding_views.xml 
+2026-10-09 05:03:17,583 1 INFO hrpay odoo.modules.loading: Module payment loaded in 4.41s, 2406 queries (+2406 other) 
+2026-10-09 05:03:17,584 1 INFO hrpay odoo.modules.loading: Loading module spreadsheet (41/69) 
+2026-10-09 05:03:17,761 1 INFO hrpay odoo.modules.registry: module spreadsheet: creating or updating database tables 
+2026-10-09 05:03:17,847 1 INFO hrpay odoo.modules.loading: loading spreadsheet/views/public_readonly_spreadsheet_templates.xml 
+2026-10-09 05:03:17,873 1 INFO hrpay odoo.modules.loading: Module spreadsheet loaded in 0.29s, 86 queries (+86 other) 
+2026-10-09 05:03:17,873 1 INFO hrpay odoo.modules.loading: Loading module account (42/69) 
+2026-10-09 05:03:18,065 1 INFO hrpay odoo.modules.registry: module account: creating or updating database tables 
+2026-10-09 05:03:18,443 1 INFO hrpay odoo.models: Prepare computation of res.company.account_fiscal_country_id 
+2026-10-09 05:03:18,443 1 INFO hrpay odoo.models: Prepare computation of res.company.invoice_terms_html 
+2026-10-09 05:03:22,633 1 INFO hrpay odoo.modules.loading: loading account/security/account_security.xml 
+2026-10-09 05:03:23,404 1 INFO hrpay odoo.modules.loading: loading account/security/ir.model.access.csv 
+2026-10-09 05:03:23,537 1 INFO hrpay odoo.modules.loading: loading account/data/account_data.xml 
+2026-10-09 05:03:23,633 1 INFO hrpay odoo.modules.loading: loading account/data/digest_data.xml 
+2026-10-09 05:03:23,644 1 INFO hrpay odoo.modules.loading: loading account/views/account_report.xml 
+2026-10-09 05:03:23,674 1 INFO hrpay odoo.modules.loading: loading account/data/mail_template_data.xml 
+2026-10-09 05:03:23,700 1 INFO hrpay odoo.modules.loading: loading account/data/onboarding_data.xml 
+2026-10-09 05:03:23,738 1 INFO hrpay odoo.modules.loading: loading account/data/account_tour.xml 
+2026-10-09 05:03:23,744 1 INFO hrpay odoo.modules.loading: loading account/data/ir_sequence.xml 
+2026-10-09 05:03:23,750 1 INFO hrpay odoo.modules.loading: loading account/views/account_payment_view.xml 
+2026-10-09 05:03:23,837 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_automatic_entry_wizard_views.xml 
+2026-10-09 05:03:23,854 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_autopost_bills_wizard.xml 
+2026-10-09 05:03:23,865 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_unreconcile_view.xml 
+2026-10-09 05:03:23,872 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_move_reversal_view.xml 
+2026-10-09 05:03:23,886 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_resequence_views.xml 
+2026-10-09 05:03:23,901 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_payment_register_views.xml 
+2026-10-09 05:03:23,916 1 INFO hrpay odoo.modules.loading: loading account/views/account_move_views.xml 
+2026-10-09 05:03:24,572 1 INFO hrpay odoo.modules.loading: loading account/wizard/setup_wizards_view.xml 
+2026-10-09 05:03:24,601 1 INFO hrpay odoo.modules.loading: loading account/views/account_account_views.xml 
+2026-10-09 05:03:24,642 1 INFO hrpay odoo.modules.loading: loading account/views/account_group_views.xml 
+2026-10-09 05:03:24,660 1 INFO hrpay odoo.modules.loading: loading account/views/account_journal_views.xml 
+2026-10-09 05:03:24,723 1 INFO hrpay odoo.modules.loading: loading account/views/account_account_tag_views.xml 
+2026-10-09 05:03:24,741 1 INFO hrpay odoo.modules.loading: loading account/views/account_bank_statement_views.xml 
+2026-10-09 05:03:24,781 1 INFO hrpay odoo.modules.loading: loading account/views/account_reconcile_model_views.xml 
+2026-10-09 05:03:24,822 1 INFO hrpay odoo.modules.loading: loading account/views/account_tax_views.xml 
+2026-10-09 05:03:24,898 1 INFO hrpay odoo.modules.loading: loading account/views/account_full_reconcile_views.xml 
+2026-10-09 05:03:24,912 1 INFO hrpay odoo.modules.loading: loading account/views/account_payment_term_views.xml 
+2026-10-09 05:03:24,980 1 INFO hrpay odoo.modules.loading: loading account/views/account_payment_method.xml 
+2026-10-09 05:03:25,012 1 INFO hrpay odoo.modules.loading: loading account/views/res_partner_bank_views.xml 
+2026-10-09 05:03:25,090 1 INFO hrpay odoo.modules.loading: loading account/views/report_statement.xml 
+2026-10-09 05:03:25,144 1 INFO hrpay odoo.modules.loading: loading account/views/terms_template.xml 
+2026-10-09 05:03:25,166 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_validate_move_view.xml 
+2026-10-09 05:03:25,184 1 INFO hrpay odoo.modules.loading: loading account/views/res_company_views.xml 
+2026-10-09 05:03:25,223 1 INFO hrpay odoo.modules.loading: loading account/views/product_view.xml 
+2026-10-09 05:03:25,272 1 INFO hrpay odoo.modules.loading: loading account/views/account_analytic_plan_views.xml 
+2026-10-09 05:03:25,288 1 INFO hrpay odoo.modules.loading: loading account/views/account_analytic_account_views.xml 
+2026-10-09 05:03:25,312 1 INFO hrpay odoo.modules.loading: loading account/views/account_analytic_distribution_model_views.xml 
+2026-10-09 05:03:25,335 1 INFO hrpay odoo.modules.loading: loading account/views/account_analytic_line_views.xml 
+2026-10-09 05:03:25,380 1 INFO hrpay odoo.modules.loading: loading account/views/report_invoice.xml 
+2026-10-09 05:03:25,432 1 INFO hrpay odoo.modules.loading: loading account/report/account_invoice_report_view.xml 
+2026-10-09 05:03:25,486 1 INFO hrpay odoo.modules.loading: loading account/views/account_cash_rounding_view.xml 
+2026-10-09 05:03:25,510 1 INFO hrpay odoo.modules.loading: loading account/views/ir_actions_views.xml 
+2026-10-09 05:03:25,522 1 INFO hrpay odoo.modules.loading: loading account/views/ir_module_views.xml 
+2026-10-09 05:03:25,537 1 INFO hrpay odoo.modules.loading: loading account/views/base_document_layout_views.xml 
+2026-10-09 05:03:25,552 1 INFO hrpay odoo.modules.loading: loading account/views/res_config_settings_views.xml 
+2026-10-09 05:03:25,623 1 INFO hrpay odoo.modules.loading: loading account/views/partner_view.xml 
+2026-10-09 05:03:25,737 1 INFO hrpay odoo.modules.loading: loading account/views/account_journal_dashboard_view.xml 
+2026-10-09 05:03:25,767 1 INFO hrpay odoo.modules.loading: loading account/views/account_portal_templates.xml 
+2026-10-09 05:03:25,828 1 INFO hrpay odoo.modules.loading: loading account/views/report_payment_receipt_templates.xml 
+2026-10-09 05:03:25,841 1 INFO hrpay odoo.modules.loading: loading account/data/service_cron.xml 
+2026-10-09 05:03:25,864 1 INFO hrpay odoo.modules.loading: loading account/views/account_incoterms_view.xml 
+2026-10-09 05:03:25,894 1 INFO hrpay odoo.modules.loading: loading account/data/account_incoterms_data.xml 
+2026-10-09 05:03:25,929 1 INFO hrpay odoo.modules.loading: loading account/views/digest_views.xml 
+2026-10-09 05:03:25,947 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_move_send_wizard.xml 
+2026-10-09 05:03:25,960 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_move_send_batch_wizard.xml 
+2026-10-09 05:03:25,971 1 INFO hrpay odoo.modules.loading: loading account/report/account_hash_integrity_templates.xml 
+2026-10-09 05:03:25,980 1 INFO hrpay odoo.modules.loading: loading account/views/res_currency.xml 
+2026-10-09 05:03:25,995 1 INFO hrpay odoo.modules.loading: loading account/views/account_menuitem.xml 
+2026-10-09 05:03:26,296 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_secure_entries_wizard.xml 
+2026-10-09 05:03:26,319 1 INFO hrpay odoo.modules.loading: loading account/views/mail_message_views.xml 
+2026-10-09 05:03:26,347 1 INFO hrpay odoo.modules.loading: loading account/wizard/accrued_orders.xml 
+2026-10-09 05:03:26,358 1 INFO hrpay odoo.modules.loading: loading account/views/bill_preview_template.xml 
+2026-10-09 05:03:26,371 1 INFO hrpay odoo.modules.loading: loading account/data/account_reports_data.xml 
+2026-10-09 05:03:26,398 1 INFO hrpay odoo.modules.loading: loading account/views/uom_uom_views.xml 
+2026-10-09 05:03:26,410 1 INFO hrpay odoo.modules.loading: loading account/views/product_views.xml 
+2026-10-09 05:03:26,430 1 INFO hrpay odoo.modules.loading: loading account/views/tests_shared_js_python.xml 
+2026-10-09 05:03:26,437 1 INFO hrpay odoo.modules.loading: loading account/views/account_lock_exception_views.xml 
+2026-10-09 05:03:26,448 1 INFO hrpay odoo.modules.loading: loading account/views/report_templates.xml 
+2026-10-09 05:03:26,473 1 INFO hrpay odoo.modules.loading: loading account/wizard/account_merge_wizard_views.xml 
+2026-10-09 05:03:26,491 1 INFO hrpay odoo.modules.loading: loading account/data/ir_config_parameter_data.xml 
+2026-10-09 05:03:26,626 1 INFO hrpay odoo.modules.loading: Module account loaded in 8.75s, 5842 queries (+5842 other) 
+2026-10-09 05:03:26,627 1 INFO hrpay odoo.modules.loading: Loading module helpdesk_type (43/69) 
+2026-10-09 05:03:26,744 1 INFO hrpay odoo.modules.registry: module helpdesk_type: creating or updating database tables 
+2026-10-09 05:03:26,931 1 INFO hrpay odoo.modules.loading: loading helpdesk_type/security/ir.model.access.csv 
+2026-10-09 05:03:26,948 1 INFO hrpay odoo.modules.loading: loading helpdesk_type/views/helpdesk_ticket_type.xml 
+2026-10-09 05:03:26,978 1 INFO hrpay odoo.modules.loading: loading helpdesk_type/views/helpdesk_ticket_team.xml 
+2026-10-09 05:03:26,994 1 INFO hrpay odoo.modules.loading: loading helpdesk_type/views/helpdesk_ticket.xml 
+2026-10-09 05:03:27,029 1 INFO hrpay odoo.modules.loading: loading helpdesk_type/views/res_config_settings_views.xml 
+2026-10-09 05:03:27,054 1 INFO hrpay odoo.modules.loading: loading helpdesk_type/views/helpdesk_ticket_templates.xml 
+2026-10-09 05:03:27,100 1 INFO hrpay odoo.modules.loading: Module helpdesk_type loaded in 0.47s, 249 queries (+249 other) 
+2026-10-09 05:03:27,100 1 INFO hrpay odoo.modules.loading: Loading module hr (44/69) 
+2026-10-09 05:03:27,345 1 INFO hrpay odoo.modules.registry: module hr: creating or updating database tables 
+2026-10-09 05:03:31,021 1 INFO hrpay odoo.modules.loading: loading hr/security/hr_security.xml 
+2026-10-09 05:03:31,310 1 INFO hrpay odoo.modules.loading: loading hr/security/ir.model.access.csv 
+2026-10-09 05:03:31,345 1 INFO hrpay odoo.modules.loading: loading hr/data/digest_data.xml 
+2026-10-09 05:03:31,352 1 INFO hrpay odoo.modules.loading: loading hr/data/report_paperformat.xml 
+2026-10-09 05:03:31,359 1 INFO hrpay odoo.modules.loading: loading hr/wizard/hr_departure_wizard_views.xml 
+2026-10-09 05:03:31,374 1 INFO hrpay odoo.modules.loading: loading hr/wizard/mail_activity_schedule_views.xml 
+2026-10-09 05:03:31,391 1 INFO hrpay odoo.modules.loading: loading hr/views/mail_activity_plan_views.xml 
+2026-10-09 05:03:31,449 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_departure_reason_views.xml 
+2026-10-09 05:03:31,466 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_contract_type_views.xml 
+2026-10-09 05:03:31,483 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_job_views.xml 
+2026-10-09 05:03:31,513 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_employee_category_views.xml 
+2026-10-09 05:03:31,529 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_employee_public_views.xml 
+2026-10-09 05:03:31,568 1 INFO hrpay odoo.modules.loading: loading hr/report/hr_employee_badge.xml 
+2026-10-09 05:03:31,582 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_employee_views.xml 
+2026-10-09 05:03:31,673 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_department_views.xml 
+2026-10-09 05:03:31,725 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_work_location_views.xml 
+2026-10-09 05:03:31,743 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_views.xml 
+2026-10-09 05:03:31,858 1 INFO hrpay odoo.modules.loading: loading hr/views/res_config_settings_views.xml 
+2026-10-09 05:03:31,895 1 INFO hrpay odoo.modules.loading: loading hr/views/res_partner_views.xml 
+2026-10-09 05:03:31,930 1 INFO hrpay odoo.modules.loading: loading hr/views/discuss_channel_views.xml 
+2026-10-09 05:03:31,944 1 INFO hrpay odoo.modules.loading: loading hr/views/res_users.xml 
+2026-10-09 05:03:32,034 1 INFO hrpay odoo.modules.loading: loading hr/views/hr_templates.xml 
+2026-10-09 05:03:32,042 1 INFO hrpay odoo.modules.loading: loading hr/data/hr_data.xml 
+2026-10-09 05:03:32,258 1 INFO hrpay odoo.modules.loading: Module hr loaded in 5.16s, 3827 queries (+3827 other) 
+2026-10-09 05:03:32,258 1 INFO hrpay odoo.modules.loading: Loading module spreadsheet_dashboard (45/69) 
+2026-10-09 05:03:32,383 1 INFO hrpay odoo.modules.registry: module spreadsheet_dashboard: creating or updating database tables 
+2026-10-09 05:03:32,626 1 INFO hrpay odoo.modules.loading: loading spreadsheet_dashboard/security/security.xml 
+2026-10-09 05:03:32,758 1 INFO hrpay odoo.modules.loading: loading spreadsheet_dashboard/security/ir.model.access.csv 
+2026-10-09 05:03:32,776 1 INFO hrpay odoo.modules.loading: loading spreadsheet_dashboard/views/spreadsheet_dashboard_views.xml 
+2026-10-09 05:03:32,806 1 INFO hrpay odoo.modules.loading: loading spreadsheet_dashboard/views/menu_views.xml 
+2026-10-09 05:03:32,843 1 INFO hrpay odoo.modules.loading: loading spreadsheet_dashboard/data/dashboard.xml 
+2026-10-09 05:03:32,893 1 INFO hrpay odoo.modules.loading: Module spreadsheet_dashboard loaded in 0.64s, 337 queries (+337 other) 
+2026-10-09 05:03:32,893 1 INFO hrpay odoo.modules.loading: Loading module account_add_gln (46/69) 
+2026-10-09 05:03:33,012 1 INFO hrpay odoo.modules.registry: module account_add_gln: creating or updating database tables 
+2026-10-09 05:03:33,136 1 INFO hrpay odoo.modules.loading: loading account_add_gln/views/res_partner_views.xml 
+2026-10-09 05:03:33,188 1 INFO hrpay odoo.modules.loading: Module account_add_gln loaded in 0.30s, 108 queries (+108 other) 
+2026-10-09 05:03:33,188 1 INFO hrpay odoo.modules.loading: Loading module account_edi_ubl_cii (47/69) 
+2026-10-09 05:03:33,336 1 INFO hrpay odoo.modules.registry: module account_edi_ubl_cii: creating or updating database tables 
+2026-10-09 05:03:33,372 1 INFO hrpay odoo.models: Prepare computation of res.partner.peppol_endpoint 
+2026-10-09 05:03:33,372 1 INFO hrpay odoo.models: Prepare computation of res.partner.peppol_eas 
+2026-10-09 05:03:33,735 1 INFO hrpay odoo.modules.loading: loading account_edi_ubl_cii/data/cii_22_templates.xml 
+2026-10-09 05:03:33,768 1 INFO hrpay odoo.modules.loading: loading account_edi_ubl_cii/data/ubl_20_templates.xml 
+2026-10-09 05:03:33,881 1 INFO hrpay odoo.modules.loading: loading account_edi_ubl_cii/data/ir_config_parameter_data.xml 
+2026-10-09 05:03:33,886 1 INFO hrpay odoo.modules.loading: loading account_edi_ubl_cii/data/ubl_21_templates.xml 
+2026-10-09 05:03:33,948 1 INFO hrpay odoo.modules.loading: loading account_edi_ubl_cii/views/account_move_views.xml 
+2026-10-09 05:03:33,958 1 INFO hrpay odoo.modules.loading: loading account_edi_ubl_cii/views/res_partner_views.xml 
+2026-10-09 05:03:33,987 1 INFO hrpay odoo.modules.loading: loading account_edi_ubl_cii/report/account_edi_ubl_cii_report_templates.xml 
+2026-10-09 05:03:34,049 1 INFO hrpay odoo.modules.loading: Module account_edi_ubl_cii loaded in 0.86s, 453 queries (+453 other) 
+2026-10-09 05:03:34,049 1 INFO hrpay odoo.modules.loading: Loading module account_payment (48/69) 
+2026-10-09 05:03:34,182 1 INFO hrpay odoo.modules.registry: module account_payment: creating or updating database tables 
+2026-10-09 05:03:34,508 1 INFO hrpay odoo.modules.loading: loading account_payment/data/ir_config_parameter.xml 
+2026-10-09 05:03:34,514 1 INFO hrpay odoo.modules.loading: loading account_payment/data/onboarding_data.xml 
+2026-10-09 05:03:34,526 1 INFO hrpay odoo.modules.loading: loading account_payment/security/ir.model.access.csv 
+2026-10-09 05:03:34,542 1 INFO hrpay odoo.modules.loading: loading account_payment/security/ir_rules.xml 
+2026-10-09 05:03:34,553 1 INFO hrpay odoo.modules.loading: loading account_payment/views/account_payment_menus.xml 
+2026-10-09 05:03:34,583 1 INFO hrpay odoo.modules.loading: loading account_payment/views/account_portal_templates.xml 
+2026-10-09 05:03:34,662 1 INFO hrpay odoo.modules.loading: loading account_payment/views/account_move_views.xml 
+2026-10-09 05:03:34,691 1 INFO hrpay odoo.modules.loading: loading account_payment/views/account_journal_views.xml 
+2026-10-09 05:03:34,707 1 INFO hrpay odoo.modules.loading: loading account_payment/views/account_payment_views.xml 
+2026-10-09 05:03:34,722 1 INFO hrpay odoo.modules.loading: loading account_payment/views/payment_form_templates.xml 
+2026-10-09 05:03:34,732 1 INFO hrpay odoo.modules.loading: loading account_payment/views/payment_provider_views.xml 
+2026-10-09 05:03:34,744 1 INFO hrpay odoo.modules.loading: loading account_payment/views/payment_transaction_views.xml 
+2026-10-09 05:03:34,755 1 INFO hrpay odoo.modules.loading: loading account_payment/wizards/account_payment_register_views.xml 
+2026-10-09 05:03:34,769 1 INFO hrpay odoo.modules.loading: loading account_payment/wizards/payment_link_wizard_views.xml 
+2026-10-09 05:03:34,787 1 INFO hrpay odoo.modules.loading: loading account_payment/wizards/payment_refund_wizard_views.xml 
+2026-10-09 05:03:34,797 1 INFO hrpay odoo.modules.loading: loading account_payment/wizards/res_config_settings_views.xml 
+2026-10-09 05:03:34,912 1 INFO hrpay odoo.modules.loading: Module account_payment loaded in 0.86s, 530 queries (+530 other) 
+2026-10-09 05:03:34,912 1 INFO hrpay odoo.modules.loading: Loading module hr_attendance (49/69) 
+2026-10-09 05:03:35,182 1 INFO hrpay odoo.modules.registry: module hr_attendance: creating or updating database tables 
+2026-10-09 05:03:35,270 1 INFO hrpay odoo.models: Prepare computation of hr.employee.last_attendance_id 
+2026-10-09 05:03:35,270 1 INFO hrpay odoo.models: Prepare computation of hr.employee.last_check_in 
+2026-10-09 05:03:35,271 1 INFO hrpay odoo.models: Prepare computation of hr.employee.last_check_out 
+2026-10-09 05:03:35,558 1 INFO hrpay odoo.modules.loading: loading hr_attendance/data/hr_attendance_data.xml 
+2026-10-09 05:03:35,576 1 INFO hrpay odoo.modules.loading: loading hr_attendance/security/hr_attendance_security.xml 
+2026-10-09 05:03:35,916 1 INFO hrpay odoo.modules.loading: loading hr_attendance/security/ir.model.access.csv 
+2026-10-09 05:03:35,934 1 INFO hrpay odoo.modules.loading: loading hr_attendance/views/hr_attendance_view.xml 
+2026-10-09 05:03:36,082 1 INFO hrpay odoo.modules.loading: loading hr_attendance/views/hr_attendance_overtime_view.xml 
+2026-10-09 05:03:36,116 1 INFO hrpay odoo.modules.loading: loading hr_attendance/views/hr_department_view.xml 
+2026-10-09 05:03:36,129 1 INFO hrpay odoo.modules.loading: loading hr_attendance/views/hr_employee_view.xml 
+2026-10-09 05:03:36,217 1 INFO hrpay odoo.modules.loading: loading hr_attendance/views/res_config_settings_views.xml 
+2026-10-09 05:03:36,256 1 INFO hrpay odoo.modules.loading: loading hr_attendance/views/hr_attendance_kiosk_templates.xml 
+2026-10-09 05:03:36,300 1 INFO hrpay odoo.modules.loading: Module hr_attendance loaded in 1.39s, 824 queries (+824 other) 
+2026-10-09 05:03:36,301 1 INFO hrpay odoo.modules.loading: Loading module hr_calendar (50/69) 
+2026-10-09 05:03:36,435 1 INFO hrpay odoo.modules.registry: module hr_calendar: creating or updating database tables 
+2026-10-09 05:03:36,673 1 INFO hrpay odoo.modules.loading: loading hr_calendar/views/calendar_views_calendarApp.xml 
+2026-10-09 05:03:36,765 1 INFO hrpay odoo.modules.loading: loading hr_calendar/views/res_partner_views.xml 
+2026-10-09 05:03:36,795 1 INFO hrpay odoo.modules.loading: Module hr_calendar loaded in 0.49s, 142 queries (+142 other) 
+2026-10-09 05:03:36,795 1 INFO hrpay odoo.modules.loading: Loading module hr_contract (51/69) 
+2026-10-09 05:03:36,930 1 INFO hrpay odoo.modules.registry: module hr_contract: creating or updating database tables 
+2026-10-09 05:03:36,959 1 INFO hrpay odoo.models: Prepare computation of hr.employee.legal_name 
+2026-10-09 05:03:36,959 1 INFO hrpay odoo.models: Prepare computation of hr.employee.first_contract_date 
+2026-10-09 05:03:36,959 1 INFO hrpay odoo.models: Prepare computation of hr.employee.contract_warning 
+2026-10-09 05:03:37,388 1 INFO hrpay odoo.modules.loading: loading hr_contract/security/security.xml 
+2026-10-09 05:03:37,623 1 INFO hrpay odoo.modules.loading: loading hr_contract/security/ir.model.access.csv 
+2026-10-09 05:03:37,645 1 INFO hrpay odoo.modules.loading: loading hr_contract/data/hr_contract_data.xml 
+2026-10-09 05:03:37,680 1 INFO hrpay odoo.modules.loading: loading hr_contract/report/hr_contract_history_report_views.xml 
+2026-10-09 05:03:37,731 1 INFO hrpay odoo.modules.loading: loading hr_contract/views/hr_contract_views.xml 
+2026-10-09 05:03:37,947 1 INFO hrpay odoo.modules.loading: loading hr_contract/views/hr_employee_views.xml 
+2026-10-09 05:03:38,038 1 INFO hrpay odoo.modules.loading: loading hr_contract/views/resource_calendar_views.xml 
+2026-10-09 05:03:38,072 1 INFO hrpay odoo.modules.loading: loading hr_contract/views/res_config_settings_views.xml 
+2026-10-09 05:03:38,115 1 INFO hrpay odoo.modules.loading: loading hr_contract/wizard/hr_departure_wizard_views.xml 
+2026-10-09 05:03:38,186 1 INFO hrpay odoo.modules.loading: Module hr_contract loaded in 1.39s, 781 queries (+781 other) 
+2026-10-09 05:03:38,186 1 INFO hrpay odoo.modules.loading: Loading module hr_expense (52/69) 
+2026-10-09 05:03:38,417 1 INFO hrpay odoo.modules.registry: module hr_expense: creating or updating database tables 
+2026-10-09 05:03:38,428 1 INFO hrpay odoo.models: Prepare computation of hr.employee.expense_manager_id 
+2026-10-09 05:03:39,583 1 INFO hrpay odoo.modules.loading: loading hr_expense/security/hr_expense_security.xml 
+2026-10-09 05:03:39,828 1 INFO hrpay odoo.modules.loading: loading hr_expense/security/ir.model.access.csv 
+2026-10-09 05:03:39,864 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/digest_data.xml 
+2026-10-09 05:03:39,871 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/mail_activity_type_data.xml 
+2026-10-09 05:03:39,878 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/mail_alias_data.xml 
+2026-10-09 05:03:39,888 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/mail_message_subtype_data.xml 
+2026-10-09 05:03:39,911 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/mail_templates.xml 
+2026-10-09 05:03:39,930 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/hr_expense_sequence.xml 
+2026-10-09 05:03:39,939 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/hr_expense_data.xml 
+2026-10-09 05:03:40,159 1 INFO hrpay odoo.modules.loading: loading hr_expense/data/hr_expense_tour.xml 
+2026-10-09 05:03:40,165 1 INFO hrpay odoo.modules.loading: loading hr_expense/wizard/hr_expense_refuse_reason_views.xml 
+2026-10-09 05:03:40,181 1 INFO hrpay odoo.modules.loading: loading hr_expense/wizard/hr_expense_approve_duplicate_views.xml 
+2026-10-09 05:03:40,197 1 INFO hrpay odoo.modules.loading: loading hr_expense/wizard/hr_expense_split_wizard_views.xml 
+2026-10-09 05:03:40,212 1 INFO hrpay odoo.modules.loading: loading hr_expense/views/hr_expense_views.xml 
+2026-10-09 05:03:40,723 1 INFO hrpay odoo.modules.loading: loading hr_expense/views/mail_activity_views.xml 
+2026-10-09 05:03:40,734 1 INFO hrpay odoo.modules.loading: loading hr_expense/security/ir_rule.xml 
+2026-10-09 05:03:40,896 1 INFO hrpay odoo.modules.loading: loading hr_expense/report/hr_expense_report.xml 
+2026-10-09 05:03:40,924 1 INFO hrpay odoo.modules.loading: loading hr_expense/views/account_move_views.xml 
+2026-10-09 05:03:40,950 1 INFO hrpay odoo.modules.loading: loading hr_expense/views/account_payment_views.xml 
+2026-10-09 05:03:40,964 1 INFO hrpay odoo.modules.loading: loading hr_expense/views/hr_department_views.xml 
+2026-10-09 05:03:40,979 1 INFO hrpay odoo.modules.loading: loading hr_expense/views/res_config_settings_views.xml 
+2026-10-09 05:03:41,060 1 INFO hrpay odoo.modules.loading: Module hr_expense loaded in 2.87s, 1737 queries (+1737 other) 
+2026-10-09 05:03:41,061 1 INFO hrpay odoo.modules.loading: Loading module hr_holidays (53/69) 
+2026-10-09 05:03:41,257 1 INFO hrpay odoo.modules.registry: module hr_holidays: creating or updating database tables 
+2026-10-09 05:03:41,274 1 INFO hrpay odoo.models: Prepare computation of hr.employee.leave_manager_id 
+2026-10-09 05:03:42,346 1 INFO hrpay odoo.modules.loading: loading hr_holidays/data/report_paperformat.xml 
+2026-10-09 05:03:42,353 1 INFO hrpay odoo.modules.loading: loading hr_holidays/data/mail_activity_type_data.xml 
+2026-10-09 05:03:42,369 1 INFO hrpay odoo.modules.loading: loading hr_holidays/data/mail_message_subtype_data.xml 
+2026-10-09 05:03:42,391 1 INFO hrpay odoo.modules.loading: loading hr_holidays/data/hr_holidays_data.xml 
+2026-10-09 05:03:42,499 1 INFO hrpay odoo.modules.loading: loading hr_holidays/data/ir_cron_data.xml 
+2026-10-09 05:03:42,519 1 INFO hrpay odoo.modules.loading: loading hr_holidays/data/hr_holidays_tour.xml 
+2026-10-09 05:03:42,524 1 INFO hrpay odoo.modules.loading: loading hr_holidays/security/hr_holidays_security.xml 
+2026-10-09 05:03:42,911 1 INFO hrpay odoo.modules.loading: loading hr_holidays/security/ir.model.access.csv 
+2026-10-09 05:03:42,954 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/resource_views.xml 
+2026-10-09 05:03:43,004 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/hr_leave_views.xml 
+2026-10-09 05:03:43,256 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/hr_leave_type_views.xml 
+2026-10-09 05:03:43,291 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/hr_leave_allocation_views.xml 
+2026-10-09 05:03:43,402 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/hr_leave_accrual_views.xml 
+2026-10-09 05:03:43,442 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/hr_leave_mandatory_day_views.xml 
+2026-10-09 05:03:43,465 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/mail_activity_views.xml 
+2026-10-09 05:03:43,471 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/calendar_views.xml 
+2026-10-09 05:03:43,491 1 INFO hrpay odoo.modules.loading: loading hr_holidays/wizard/hr_holidays_cancel_leave_views.xml 
+2026-10-09 05:03:43,500 1 INFO hrpay odoo.modules.loading: loading hr_holidays/wizard/hr_holidays_summary_employees_views.xml 
+2026-10-09 05:03:43,513 1 INFO hrpay odoo.modules.loading: loading hr_holidays/wizard/hr_leave_generate_multi_wizard_views.xml 
+2026-10-09 05:03:43,527 1 INFO hrpay odoo.modules.loading: loading hr_holidays/wizard/hr_leave_allocation_generate_multi_wizard_views.xml 
+2026-10-09 05:03:43,544 1 INFO hrpay odoo.modules.loading: loading hr_holidays/report/hr_holidays_templates.xml 
+2026-10-09 05:03:43,552 1 INFO hrpay odoo.modules.loading: loading hr_holidays/report/hr_holidays_reports.xml 
+2026-10-09 05:03:43,559 1 INFO hrpay odoo.modules.loading: loading hr_holidays/report/hr_leave_reports.xml 
+2026-10-09 05:03:43,591 1 INFO hrpay odoo.modules.loading: loading hr_holidays/report/hr_leave_report_calendar.xml 
+2026-10-09 05:03:43,617 1 INFO hrpay odoo.modules.loading: loading hr_holidays/report/hr_leave_employee_type_report.xml 
+2026-10-09 05:03:43,636 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/hr_views.xml 
+2026-10-09 05:03:43,756 1 INFO hrpay odoo.modules.loading: loading hr_holidays/views/hr_holidays_views.xml 
+2026-10-09 05:03:43,908 1 INFO hrpay odoo.modules.loading: Module hr_holidays loaded in 2.85s, 2121 queries (+2121 other) 
+2026-10-09 05:03:43,908 1 INFO hrpay odoo.modules.loading: Loading module hr_org_chart (54/69) 
+2026-10-09 05:03:44,059 1 INFO hrpay odoo.modules.registry: module hr_org_chart: creating or updating database tables 
+2026-10-09 05:03:44,164 1 INFO hrpay odoo.modules.loading: loading hr_org_chart/views/hr_department_views.xml 
+2026-10-09 05:03:44,191 1 INFO hrpay odoo.modules.loading: loading hr_org_chart/views/hr_views.xml 
+2026-10-09 05:03:44,389 1 INFO hrpay odoo.modules.loading: loading hr_org_chart/views/hr_employee_public_views.xml 
+2026-10-09 05:03:44,398 1 INFO hrpay odoo.modules.loading: loading hr_org_chart/views/hr_org_chart_menus.xml 
+2026-10-09 05:03:44,427 1 INFO hrpay odoo.modules.loading: Module hr_org_chart loaded in 0.52s, 191 queries (+191 other) 
+2026-10-09 05:03:44,427 1 INFO hrpay odoo.modules.loading: Loading module hr_skills (55/69) 
+2026-10-09 05:03:44,578 1 INFO hrpay odoo.modules.registry: module hr_skills: creating or updating database tables 
+2026-10-09 05:03:44,594 1 INFO hrpay odoo.models: Prepare computation of hr.employee.skill_ids 
+2026-10-09 05:03:45,240 1 INFO hrpay odoo.modules.loading: loading hr_skills/security/ir.model.access.csv 
+2026-10-09 05:03:45,274 1 INFO hrpay odoo.modules.loading: loading hr_skills/security/hr_skills_security.xml 
+2026-10-09 05:03:45,350 1 INFO hrpay odoo.modules.loading: loading hr_skills/views/hr_views.xml 
+2026-10-09 05:03:45,549 1 INFO hrpay odoo.modules.loading: loading hr_skills/views/hr_employee_skill_log_views.xml 
+2026-10-09 05:03:45,579 1 INFO hrpay odoo.modules.loading: loading hr_skills/data/hr_resume_data.xml 
+2026-10-09 05:03:45,591 1 INFO hrpay odoo.modules.loading: loading hr_skills/data/hr_skill_data.xml 
+2026-10-09 05:03:45,695 1 INFO hrpay odoo.modules.loading: loading hr_skills/data/ir_actions_server_data.xml 
+2026-10-09 05:03:45,707 1 INFO hrpay odoo.modules.loading: loading hr_skills/data/report_paperformat.xml 
+2026-10-09 05:03:45,714 1 INFO hrpay odoo.modules.loading: loading hr_skills/report/hr_employee_skill_report_views.xml 
+2026-10-09 05:03:45,751 1 INFO hrpay odoo.modules.loading: loading hr_skills/report/hr_employee_cv_report.xml 
+2026-10-09 05:03:45,760 1 INFO hrpay odoo.modules.loading: loading hr_skills/views/hr_department_views.xml 
+2026-10-09 05:03:45,777 1 INFO hrpay odoo.modules.loading: loading hr_skills/views/hr_employee_cv_templates.xml 
+2026-10-09 05:03:45,798 1 INFO hrpay odoo.modules.loading: loading hr_skills/wizard/hr_employee_cv_wizard_views.xml 
+2026-10-09 05:03:45,841 1 INFO hrpay odoo.modules.loading: Module hr_skills loaded in 1.41s, 888 queries (+888 other) 
+2026-10-09 05:03:45,841 1 INFO hrpay odoo.modules.loading: Loading module mail_bot_hr (56/69) 
+2026-10-09 05:03:46,000 1 INFO hrpay odoo.modules.loading: loading mail_bot_hr/views/res_users_views.xml 
+2026-10-09 05:03:46,125 1 INFO hrpay odoo.modules.loading: Module mail_bot_hr loaded in 0.28s, 70 queries (+70 other) 
+2026-10-09 05:03:46,125 1 INFO hrpay odoo.modules.loading: Loading module snailmail_account (57/69) 
+2026-10-09 05:03:46,306 1 INFO hrpay odoo.modules.registry: module snailmail_account: creating or updating database tables 
+2026-10-09 05:03:46,472 1 INFO hrpay odoo.modules.loading: loading snailmail_account/views/res_config_settings_views.xml 
+2026-10-09 05:03:46,668 1 INFO hrpay odoo.modules.loading: Module snailmail_account loaded in 0.54s, 123 queries (+123 other) 
+2026-10-09 05:03:46,668 1 INFO hrpay odoo.modules.loading: Loading module spreadsheet_account (58/69) 
+2026-10-09 05:03:46,807 1 INFO hrpay odoo.modules.registry: module spreadsheet_account: creating or updating database tables 
+2026-10-09 05:03:46,910 1 INFO hrpay odoo.modules.loading: Module spreadsheet_account loaded in 0.24s, 61 queries (+61 other) 
+2026-10-09 05:03:46,910 1 INFO hrpay odoo.modules.loading: Loading module spreadsheet_dashboard_account (59/69) 
+2026-10-09 05:03:47,063 1 INFO hrpay odoo.modules.loading: loading spreadsheet_dashboard_account/data/dashboards.xml 
+2026-10-09 05:03:47,144 1 INFO hrpay odoo.modules.loading: Module spreadsheet_dashboard_account loaded in 0.23s, 31 queries (+31 other) 
+2026-10-09 05:03:47,144 1 INFO hrpay odoo.modules.loading: Loading module hr_holidays_attendance (60/69) 
+2026-10-09 05:03:47,332 1 INFO hrpay odoo.modules.registry: module hr_holidays_attendance: creating or updating database tables 
+2026-10-09 05:03:47,541 1 INFO hrpay odoo.modules.loading: loading hr_holidays_attendance/views/hr_leave_allocation_views.xml 
+2026-10-09 05:03:47,598 1 INFO hrpay odoo.modules.loading: loading hr_holidays_attendance/views/hr_leave_type_views.xml 
+2026-10-09 05:03:47,611 1 INFO hrpay odoo.modules.loading: loading hr_holidays_attendance/views/hr_leave_views.xml 
+2026-10-09 05:03:47,631 1 INFO hrpay odoo.modules.loading: loading hr_holidays_attendance/views/hr_employee_views.xml 
+2026-10-09 05:03:47,666 1 INFO hrpay odoo.modules.loading: loading hr_holidays_attendance/views/res_users_views.xml 
+2026-10-09 05:03:47,704 1 INFO hrpay odoo.modules.loading: loading hr_holidays_attendance/views/hr_leave_accrual_level_views.xml 
+2026-10-09 05:03:47,719 1 INFO hrpay odoo.modules.loading: loading hr_holidays_attendance/data/hr_holidays_attendance_data.xml 
+2026-10-09 05:03:47,752 1 INFO hrpay odoo.modules.loading: Module hr_holidays_attendance loaded in 0.61s, 266 queries (+266 other) 
+2026-10-09 05:03:47,752 1 INFO hrpay odoo.modules.loading: Loading module hr_holidays_contract (61/69) 
+2026-10-09 05:03:47,935 1 INFO hrpay odoo.modules.registry: module hr_holidays_contract: creating or updating database tables 
+2026-10-09 05:03:48,234 1 INFO hrpay odoo.modules.loading: Module hr_holidays_contract loaded in 0.48s, 86 queries (+86 other) 
+2026-10-09 05:03:48,234 1 INFO hrpay odoo.modules.loading: Loading module hr_payroll_community (62/69) 
+2026-10-09 05:03:48,250 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:03:48,250 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:03:48,252 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:03:48,252 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:03:48,252 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:03:48,252 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:03:48,435 1 INFO hrpay odoo.modules.registry: module hr_payroll_community: creating or updating database tables 
+2026-10-09 05:03:49,312 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/security/hr_payroll_community_security.xml 
+2026-10-09 05:03:49,524 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/security/ir.model.access.csv 
+2026-10-09 05:03:49,555 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/data/ir_sequence_data.xml 
+2026-10-09 05:03:49,562 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/data/hr_payroll_community_data.xml 
+2026-10-09 05:03:49,567 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,571 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,574 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,576 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,578 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,580 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,583 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,585 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,587 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,589 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,591 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,593 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,595 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,599 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,605 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,608 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,612 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,615 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,618 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,620 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,623 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,625 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:03:49,641 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/wizard/hr_payslips_employees_views.xml 
+2026-10-09 05:03:49,656 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/wizard/payslip_lines_contribution_register_views.xml 
+2026-10-09 05:03:49,670 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/report/hr_payroll_report.xml 
+2026-10-09 05:03:49,680 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/report/report_contribution_register_templates.xml 
+2026-10-09 05:03:49,687 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/report/report_payslip_templates.xml 
+2026-10-09 05:03:49,697 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/report/report_payslip_details_templates.xml 
+2026-10-09 05:03:49,706 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_leave_type_views.xml 
+2026-10-09 05:03:49,720 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_contract_views.xml 
+2026-10-09 05:03:49,755 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_salary_rule_views.xml 
+2026-10-09 05:03:49,762 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: 'kanban-box' is deprecated, define a 'card' template instead 
+2026-10-09 05:03:49,794 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_salary_rule_category_views.xml 
+2026-10-09 05:03:49,821 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_contribution_register_views.xml 
+2026-10-09 05:03:49,845 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_payroll_structure_views.xml 
+2026-10-09 05:03:49,858 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: 'kanban-box' is deprecated, define a 'card' template instead 
+2026-10-09 05:03:49,887 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_payslip_views.xml 
+2026-10-09 05:03:49,902 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: 'kanban-box' is deprecated, define a 'card' template instead 
+2026-10-09 05:03:49,923 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_payslip_line_views.xml 
+2026-10-09 05:03:49,970 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_employee_views.xml 
+2026-10-09 05:03:50,002 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/hr_payslip_run_views.xml 
+2026-10-09 05:03:50,019 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: 'kanban-box' is deprecated, define a 'card' template instead 
+2026-10-09 05:03:50,036 1 INFO hrpay odoo.modules.loading: loading hr_payroll_community/views/res_config_settings_views.xml 
+2026-10-09 05:03:50,106 1 INFO hrpay odoo.modules.loading: Module hr_payroll_community loaded in 1.87s, 1176 queries (+1176 other) 
+2026-10-09 05:03:50,106 1 INFO hrpay odoo.modules.loading: Loading module hrms_core_ext (63/69) 
+2026-10-09 05:03:50,242 1 WARNING hrpay odoo.fields: Field hr.attendance.roster_assignment_id with unknown comodel_name 'hr.roster.assignment' 
+2026-10-09 05:03:50,273 1 INFO hrpay odoo.modules.registry: module hrms_core_ext: creating or updating database tables 
+2026-10-09 05:03:50,322 1 INFO hrpay odoo.models: Prepare computation of hr.employee.hrms_state_code 
+2026-10-09 05:03:50,422 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (entity_id, entity) of integration.sync.log() have the same label: Entity. [Modules: hrms_core_ext and hrms_core_ext] 
+2026-10-09 05:03:50,899 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/security/hrms_security.xml 
+2026-10-09 05:03:51,087 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/security/ir.model.access.csv 
+2026-10-09 05:03:51,111 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/data/ir_config_data.xml 
+2026-10-09 05:03:51,143 1 INFO hrpay odoo.modules.loading: Module hrms_core_ext loaded in 1.04s, 628 queries (+628 other) 
+2026-10-09 05:03:51,144 1 INFO hrpay odoo.modules.loading: Loading module hr_payroll_account_community (64/69) 
+2026-10-09 05:03:51,149 1 WARNING hrpay py.warnings: /usr/lib/python3/dist-packages/odoo/api.py:484: DeprecationWarning: The model odoo.addons.hr_payroll_account_community.models.hr_payslip is not overriding the create method in batch
+  File "/usr/bin/odoo", line 8, in <module>
+    odoo.cli.main()
+  File "/usr/lib/python3/dist-packages/odoo/cli/command.py", line 76, in main
+    o.run(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 182, in run
+    main(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 175, in main
+    rc = odoo.service.server.start(preload=preload, stop=stop)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 1512, in start
+    rc = server.run(preload, stop)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 646, in run
+    rc = preload_registries(preload)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 1416, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module)
+  File "/usr/lib/python3/dist-packages/decorator.py", line 232, in fun
+    return caller(func, *(extras + args), **kw)
+  File "/usr/lib/python3/dist-packages/odoo/tools/func.py", line 97, in locked
+    return func(inst, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/modules/registry.py", line 118, in new
+    odoo.modules.load_modules(registry, force_demo, status, update_module)
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 489, in load_modules
+    processed_modules += load_marked_modules(env, graph,
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 365, in load_marked_modules
+    loaded, processed = load_module_graph(
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 186, in load_module_graph
+    load_openerp_module(package.name)
+  File "/usr/lib/python3/dist-packages/odoo/modules/module.py", line 384, in load_openerp_module
+    __import__(qualname)
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/__init__.py", line 23, in <module>
+    from . import models
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/__init__.py", line 24, in <module>
+    from . import hr_payslip
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/hr_payslip.py", line 27, in <module>
+    class HrPayslip(models.Model):
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/hr_payslip.py", line 49, in HrPayslip
+    @api.model
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 431, in model
+    return model_create_single(method)
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 484, in model_create_single
+    warnings.warn(
+ 
+2026-10-09 05:03:51,426 1 INFO hrpay odoo.modules.registry: module hr_payroll_account_community: creating or updating database tables 
+2026-10-09 05:03:51,650 1 INFO hrpay odoo.modules.loading: loading hr_payroll_account_community/views/hr_contract_views.xml 
+2026-10-09 05:03:51,671 1 INFO hrpay odoo.modules.loading: loading hr_payroll_account_community/views/hr_payslip_run_views.xml 
+2026-10-09 05:03:51,698 1 INFO hrpay odoo.modules.loading: loading hr_payroll_account_community/views/hr_payslip_views.xml 
+2026-10-09 05:03:51,718 1 INFO hrpay odoo.modules.loading: loading hr_payroll_account_community/views/hr_salary_rule_views.xml 
+2026-10-09 05:03:51,762 1 INFO hrpay odoo.modules.loading: Module hr_payroll_account_community loaded in 0.62s, 218 queries (+218 other) 
+2026-10-09 05:03:51,763 1 INFO hrpay odoo.modules.loading: Loading module hrms_statutory (65/69) 
+2026-10-09 05:03:51,918 1 WARNING hrpay odoo.fields: Field hr.salary.component.nature.hr_salary_component_id with unknown comodel_name 'hr.salary.component' 
+2026-10-09 05:03:51,945 1 INFO hrpay odoo.modules.registry: module hrms_statutory: creating or updating database tables 
+2026-10-09 05:03:52,554 1 INFO hrpay odoo.modules.loading: loading hrms_statutory/security/hrms_statutory_security.xml 
+2026-10-09 05:03:52,567 1 INFO hrpay odoo.modules.loading: loading hrms_statutory/security/ir.model.access.csv 
+2026-10-09 05:03:52,668 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 50 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:03:52,739 1 INFO hrpay odoo.addons.hrms_statutory.hooks: hrms_statutory: verified that all 50 catalog codes are unresolved, so the sign-off gate is holding. 
+2026-10-09 05:03:52,739 1 INFO hrpay odoo.addons.hrms_statutory.hooks: hrms_statutory: post_init_hook created 50 rule skeleton(s). Every one remains unsigned-off, so payroll is blocked until a qualified professional signs off each value. 
+2026-10-09 05:03:52,757 1 INFO hrpay odoo.modules.loading: Module hrms_statutory loaded in 0.99s, 573 queries (+573 other) 
+2026-10-09 05:03:52,757 1 INFO hrpay odoo.modules.loading: Loading module hrms_helpdesk (66/69) 
+2026-10-09 05:03:52,924 1 INFO hrpay odoo.modules.registry: module hrms_helpdesk: creating or updating database tables 
+2026-10-09 05:03:52,962 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (hrms_category_id, category_id) of helpdesk.ticket() have the same label: Category. [Modules: hrms_helpdesk and helpdesk_mgmt] 
+2026-10-09 05:03:53,088 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/security/hrms_helpdesk_security.xml 
+2026-10-09 05:03:53,180 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/security/ir.model.access.csv 
+2026-10-09 05:03:53,198 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/data/helpdesk_ticket_categories.xml 
+2026-10-09 05:03:53,222 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/views/ticket_views.xml 
+2026-10-09 05:03:53,272 1 INFO hrpay odoo.modules.loading: Module hrms_helpdesk loaded in 0.51s, 260 queries (+260 other) 
+2026-10-09 05:03:53,272 1 INFO hrpay odoo.modules.loading: Loading module hrms_roster (67/69) 
+2026-10-09 05:03:53,453 1 INFO hrpay odoo.modules.registry: module hrms_roster: creating or updating database tables 
+2026-10-09 05:03:54,330 1 INFO hrpay odoo.modules.loading: loading hrms_roster/security/solver_security.xml 
+2026-10-09 05:03:54,484 1 INFO hrpay odoo.modules.loading: loading hrms_roster/security/ir.model.access.csv 
+2026-10-09 05:03:54,513 1 INFO hrpay odoo.modules.loading: loading hrms_roster/views/roster_views.xml 
+2026-10-09 05:03:54,621 1 INFO hrpay odoo.modules.loading: loading hrms_roster/views/solver_views.xml 
+2026-10-09 05:03:54,724 1 INFO hrpay odoo.modules.loading: Module hrms_roster loaded in 1.45s, 729 queries (+729 other) 
+2026-10-09 05:03:54,724 1 INFO hrpay odoo.modules.loading: Loading module hrms_fnf (68/69) 
+2026-10-09 05:03:54,892 1 INFO hrpay odoo.modules.registry: module hrms_fnf: creating or updating database tables 
+2026-10-09 05:03:54,942 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (company_currency_id, currency_id) of hrms.fnf.case() have the same label: Currency. [Modules: hrms_fnf and hrms_fnf] 
+2026-10-09 05:03:55,269 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/security/hrms_fnf_security.xml 
+2026-10-09 05:03:55,319 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/security/ir.model.access.csv 
+2026-10-09 05:03:55,344 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/data/fnf_reason_codes.xml 
+2026-10-09 05:03:55,363 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/views/fnf_views.xml 
+2026-10-09 05:03:55,384 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: action_raise_dispute on hrms.fnf.case has parameters and cannot be called from a button
+View error context:
+{'file': '/opt/hrpay/addons/hrms_fnf/views/fnf_views.xml',
+ 'line': 7,
+ 'name': 'hrms.fnf.case.form',
+ 'view': ir.ui.view(1270,),
+ 'view.model': 'hrms.fnf.case',
+ 'view.parent': ir.ui.view(),
+ 'xmlid': 'view_hrms_fnf_case_form'} 
+2026-10-09 05:03:55,431 1 INFO hrpay odoo.modules.loading: Module hrms_fnf loaded in 0.71s, 266 queries (+266 other) 
+2026-10-09 05:03:55,431 1 INFO hrpay odoo.modules.loading: Loading module hrms_payroll_run (69/69) 
+2026-10-09 05:03:55,606 1 INFO hrpay odoo.modules.registry: module hrms_payroll_run: creating or updating database tables 
+2026-10-09 05:03:55,636 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (company_currency_id, currency_id) of hrms.payroll.run() have the same label: Currency. [Modules: hrms_payroll_run and hrms_payroll_run] 
+2026-10-09 05:03:55,802 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/security/ir.model.access.csv 
+2026-10-09 05:03:55,818 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/security/hrms_payroll_run_security.xml 
+2026-10-09 05:03:55,836 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/views/payroll_run_views.xml 
+2026-10-09 05:03:55,854 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: action_review on hrms.payroll.run has parameters and cannot be called from a button
+View error context:
+{'file': '/opt/hrpay/addons/hrms_payroll_run/views/payroll_run_views.xml',
+ 'line': 4,
+ 'name': 'hrms.payroll.run.form',
+ 'view': ir.ui.view(1273,),
+ 'view.model': 'hrms.payroll.run',
+ 'view.parent': ir.ui.view(),
+ 'xmlid': 'view_hrms_payroll_run_form'} 
+2026-10-09 05:03:55,900 1 INFO hrpay odoo.modules.loading: Module hrms_payroll_run loaded in 0.47s, 184 queries (+184 other) 
+2026-10-09 05:03:55,900 1 INFO hrpay odoo.modules.loading: 69 modules loaded in 76.64s, 47367 queries (+47368 extra) 
+2026-10-09 05:03:57,698 1 INFO hrpay odoo.modules.loading: Modules loaded. 
+2026-10-09 05:03:58,965 1 INFO hrpay odoo.modules.registry: Registry changed, signaling through the database 
+2026-10-09 05:03:58,967 1 INFO hrpay odoo.modules.registry: Registry loaded in 95.365s 
+2026-10-09 05:03:58,967 1 INFO hrpay odoo.service.server: Initiating shutdown 
+2026-10-09 05:03:58,967 1 INFO hrpay odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-10-09 05:03:58,967 1 INFO hrpay odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 1 connections  
+ Container hrpay-postgres Running 
+ Container hrpay-postgres Waiting 
+ Container hrpay-postgres Healthy 
+ Container hrpay-odoo-run-91fdb12a0af4 Creating 
+ Container hrpay-odoo-run-91fdb12a0af4 Created 
+[entrypoint] core addons:    /usr/lib/python3/dist-packages/odoo/addons
+[entrypoint] our addons:     /opt/hrpay/addons
+[entrypoint] oca addons:     /opt/hrpay/oca/OpenHRMS,/opt/hrpay/oca/helpdesk
+[entrypoint] addons path:    /usr/lib/python3/dist-packages/odoo/addons,/opt/hrpay/addons,/opt/hrpay/oca/OpenHRMS,/opt/hrpay/oca/helpdesk
+2026-10-09 05:04:03,721 1 INFO ? odoo: Odoo version 18.0-20260926 
+2026-10-09 05:04:03,721 1 INFO ? odoo: Using configuration file at /etc/odoo/odoo.conf 
+2026-10-09 05:04:03,722 1 INFO ? odoo: addons paths: ['/usr/lib/python3/dist-packages/odoo/addons', '/var/lib/odoo/.local/share/Odoo/addons/18.0', '/opt/hrpay/addons', '/opt/hrpay/oca/OpenHRMS', '/opt/hrpay/oca/helpdesk'] 
+2026-10-09 05:04:03,722 1 INFO ? odoo: database: odoo@postgres:5432 
+Warn: Can't find .pfb for face 'Courier'
+2026-10-09 05:04:03,909 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltopdf binary at /usr/local/bin/wkhtmltopdf 
+2026-10-09 05:04:03,920 1 INFO ? odoo.addons.base.models.ir_actions_report: Will use the Wkhtmltoimage binary at /usr/local/bin/wkhtmltoimage 
+2026-10-09 05:04:04,078 1 INFO ? odoo.service.server: HTTP service (werkzeug) running on bdee6e1b62d0:8069 
+2026-10-09 05:04:04,107 1 INFO hrpay odoo.tests.common: Importing test framework 
+2026-10-09 05:04:04,152 1 INFO hrpay odoo.modules.loading: loading 1 modules... 
+2026-10-09 05:04:04,159 1 INFO hrpay odoo.modules.loading: 1 modules loaded in 0.01s, 0 queries (+0 extra) 
+2026-10-09 05:04:04,192 1 INFO hrpay odoo.modules.loading: updating modules list 
+2026-10-09 05:04:04,197 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.update_list on [] to user __system__ #1 via n/a 
+2026-10-09 05:04:05,788 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.button_upgrade on ['HRMS Core Extension', 'HRMS Full and Final Settlement', 'HRMS Helpdesk and Support', 'HRMS Payroll Run Orchestration', 'HRMS Rostering and Attendance', 'HRMS Statutory Rules Engine'] to user __system__ #1 via n/a 
+2026-10-09 05:04:05,788 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.update_list on ['HRMS Core Extension', 'HRMS Full and Final Settlement', 'HRMS Helpdesk and Support', 'HRMS Payroll Run Orchestration', 'HRMS Rostering and Attendance', 'HRMS Statutory Rules Engine'] to user __system__ #1 via n/a 
+2026-10-09 05:04:07,025 1 INFO hrpay odoo.addons.base.models.ir_module: ALLOW access to module.button_install on [] to user __system__ #1 via n/a 
+2026-10-09 05:04:07,097 1 INFO hrpay odoo.modules.loading: loading 69 modules... 
+2026-10-09 05:04:07,962 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:04:07,962 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:04:07,963 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:04:07,963 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:04:07,963 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:04:07,963 1 WARNING hrpay odoo.addons.base.models.decimal_precision: Deprecated call to decimal_precision.get_precision(<application>), use digits=<application> instead 
+2026-10-09 05:04:07,973 1 INFO hrpay odoo.modules.loading: Loading module hrms_core_ext (63/69) 
+2026-10-09 05:04:08,381 1 WARNING hrpay odoo.fields: Field hr.attendance.roster_assignment_id with unknown comodel_name 'hr.roster.assignment' 
+2026-10-09 05:04:08,411 1 INFO hrpay odoo.modules.registry: module hrms_core_ext: creating or updating database tables 
+2026-10-09 05:04:08,485 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (entity_id, entity) of integration.sync.log() have the same label: Entity. [Modules: hrms_core_ext and hrms_core_ext] 
+2026-10-09 05:04:08,683 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/security/hrms_security.xml 
+2026-10-09 05:04:08,693 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/security/ir.model.access.csv 
+2026-10-09 05:04:08,726 1 INFO hrpay odoo.modules.loading: loading hrms_core_ext/data/ir_config_data.xml 
+2026-10-09 05:04:08,751 1 INFO hrpay odoo.modules.loading: Module hrms_core_ext loaded in 0.78s, 198 queries (+198 other) 
+2026-10-09 05:04:08,758 1 WARNING hrpay py.warnings: /usr/lib/python3/dist-packages/odoo/api.py:484: DeprecationWarning: The model odoo.addons.hr_payroll_account_community.models.hr_payslip is not overriding the create method in batch
+  File "/usr/bin/odoo", line 8, in <module>
+    odoo.cli.main()
+  File "/usr/lib/python3/dist-packages/odoo/cli/command.py", line 76, in main
+    o.run(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 182, in run
+    main(args)
+  File "/usr/lib/python3/dist-packages/odoo/cli/server.py", line 175, in main
+    rc = odoo.service.server.start(preload=preload, stop=stop)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 1512, in start
+    rc = server.run(preload, stop)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 646, in run
+    rc = preload_registries(preload)
+  File "/usr/lib/python3/dist-packages/odoo/service/server.py", line 1416, in preload_registries
+    registry = Registry.new(dbname, update_module=update_module)
+  File "/usr/lib/python3/dist-packages/decorator.py", line 232, in fun
+    return caller(func, *(extras + args), **kw)
+  File "/usr/lib/python3/dist-packages/odoo/tools/func.py", line 97, in locked
+    return func(inst, *args, **kwargs)
+  File "/usr/lib/python3/dist-packages/odoo/modules/registry.py", line 118, in new
+    odoo.modules.load_modules(registry, force_demo, status, update_module)
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 485, in load_modules
+    processed_modules += load_marked_modules(env, graph,
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 365, in load_marked_modules
+    loaded, processed = load_module_graph(
+  File "/usr/lib/python3/dist-packages/odoo/modules/loading.py", line 186, in load_module_graph
+    load_openerp_module(package.name)
+  File "/usr/lib/python3/dist-packages/odoo/modules/module.py", line 384, in load_openerp_module
+    __import__(qualname)
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/__init__.py", line 23, in <module>
+    from . import models
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/__init__.py", line 24, in <module>
+    from . import hr_payslip
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/hr_payslip.py", line 27, in <module>
+    class HrPayslip(models.Model):
+  File "/opt/hrpay/oca/OpenHRMS/hr_payroll_account_community/models/hr_payslip.py", line 49, in HrPayslip
+    @api.model
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 431, in model
+    return model_create_single(method)
+  File "/usr/lib/python3/dist-packages/odoo/api.py", line 484, in model_create_single
+    warnings.warn(
+ 
+2026-10-09 05:04:08,761 1 INFO hrpay odoo.modules.loading: Loading module hrms_statutory (65/69) 
+2026-10-09 05:04:09,068 1 WARNING hrpay odoo.fields: Field hr.salary.component.nature.hr_salary_component_id with unknown comodel_name 'hr.salary.component' 
+2026-10-09 05:04:09,097 1 INFO hrpay odoo.modules.registry: module hrms_statutory: creating or updating database tables 
+2026-10-09 05:04:09,304 1 INFO hrpay odoo.modules.loading: loading hrms_statutory/security/hrms_statutory_security.xml 
+2026-10-09 05:04:09,308 1 INFO hrpay odoo.modules.loading: loading hrms_statutory/security/ir.model.access.csv 
+2026-10-09 05:04:09,384 1 INFO hrpay odoo.modules.loading: Module hrms_statutory loaded in 0.62s, 180 queries (+180 other) 
+2026-10-09 05:04:09,384 1 INFO hrpay odoo.modules.loading: Loading module hrms_helpdesk (66/69) 
+2026-10-09 05:04:09,791 1 INFO hrpay odoo.modules.registry: module hrms_helpdesk: creating or updating database tables 
+2026-10-09 05:04:09,803 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (hrms_category_id, category_id) of helpdesk.ticket() have the same label: Category. [Modules: hrms_helpdesk and helpdesk_mgmt] 
+2026-10-09 05:04:09,867 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/security/hrms_helpdesk_security.xml 
+2026-10-09 05:04:09,873 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/security/ir.model.access.csv 
+2026-10-09 05:04:09,891 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/data/helpdesk_ticket_categories.xml 
+2026-10-09 05:04:09,901 1 INFO hrpay odoo.modules.loading: loading hrms_helpdesk/views/ticket_views.xml 
+2026-10-09 05:04:09,965 1 INFO hrpay odoo.modules.loading: Module hrms_helpdesk loaded in 0.58s, 134 queries (+134 other) 
+2026-10-09 05:04:09,965 1 INFO hrpay odoo.modules.loading: Loading module hrms_roster (67/69) 
+2026-10-09 05:04:10,282 1 INFO hrpay odoo.modules.registry: module hrms_roster: creating or updating database tables 
+2026-10-09 05:04:10,457 1 INFO hrpay odoo.modules.loading: loading hrms_roster/security/solver_security.xml 
+2026-10-09 05:04:10,661 1 INFO hrpay odoo.modules.loading: loading hrms_roster/security/ir.model.access.csv 
+2026-10-09 05:04:10,702 1 INFO hrpay odoo.modules.loading: loading hrms_roster/views/roster_views.xml 
+2026-10-09 05:04:10,826 1 INFO hrpay odoo.modules.loading: loading hrms_roster/views/solver_views.xml 
+2026-10-09 05:04:10,950 1 INFO hrpay odoo.modules.loading: Module hrms_roster loaded in 0.99s, 481 queries (+481 other) 
+2026-10-09 05:04:10,951 1 INFO hrpay odoo.modules.loading: Loading module hrms_fnf (68/69) 
+2026-10-09 05:04:11,274 1 INFO hrpay odoo.modules.registry: module hrms_fnf: creating or updating database tables 
+2026-10-09 05:04:11,291 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (company_currency_id, currency_id) of hrms.fnf.case() have the same label: Currency. [Modules: hrms_fnf and hrms_fnf] 
+2026-10-09 05:04:11,460 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/security/hrms_fnf_security.xml 
+2026-10-09 05:04:11,468 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/security/ir.model.access.csv 
+2026-10-09 05:04:11,495 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/data/fnf_reason_codes.xml 
+2026-10-09 05:04:11,504 1 INFO hrpay odoo.modules.loading: loading hrms_fnf/views/fnf_views.xml 
+2026-10-09 05:04:11,525 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: action_raise_dispute on hrms.fnf.case has parameters and cannot be called from a button
+View error context:
+{'file': '/opt/hrpay/addons/hrms_fnf/views/fnf_views.xml',
+ 'line': 8,
+ 'name': 'hrms.fnf.case.form',
+ 'view': ir.ui.view(1270,),
+ 'view.model': 'hrms.fnf.case',
+ 'view.parent': ir.ui.view(),
+ 'xmlid': 'view_hrms_fnf_case_form'} 
+2026-10-09 05:04:11,573 1 INFO hrpay odoo.modules.loading: Module hrms_fnf loaded in 0.62s, 146 queries (+146 other) 
+2026-10-09 05:04:11,573 1 INFO hrpay odoo.modules.loading: Loading module hrms_payroll_run (69/69) 
+2026-10-09 05:04:11,915 1 INFO hrpay odoo.modules.registry: module hrms_payroll_run: creating or updating database tables 
+2026-10-09 05:04:11,923 1 WARNING hrpay odoo.addons.base.models.ir_model: Two fields (company_currency_id, currency_id) of hrms.payroll.run() have the same label: Currency. [Modules: hrms_payroll_run and hrms_payroll_run] 
+2026-10-09 05:04:11,986 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/security/ir.model.access.csv 
+2026-10-09 05:04:12,004 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/security/hrms_payroll_run_security.xml 
+2026-10-09 05:04:12,007 1 INFO hrpay odoo.modules.loading: loading hrms_payroll_run/views/payroll_run_views.xml 
+2026-10-09 05:04:12,030 1 WARNING hrpay odoo.addons.base.models.ir_ui_view: action_review on hrms.payroll.run has parameters and cannot be called from a button
+View error context:
+{'file': '/opt/hrpay/addons/hrms_payroll_run/views/payroll_run_views.xml',
+ 'line': 5,
+ 'name': 'hrms.payroll.run.form',
+ 'view': ir.ui.view(1273,),
+ 'view.model': 'hrms.payroll.run',
+ 'view.parent': ir.ui.view(),
+ 'xmlid': 'view_hrms_payroll_run_form'} 
+2026-10-09 05:04:12,092 1 INFO hrpay odoo.modules.loading: Module hrms_payroll_run loaded in 0.52s, 113 queries (+113 other) 
+2026-10-09 05:04:12,093 1 INFO hrpay odoo.modules.loading: 69 modules loaded in 5.00s, 1252 queries (+1252 extra) 
+2026-10-09 05:04:12,769 1 INFO hrpay odoo.modules.registry: verifying fields for every extended model 
+2026-10-09 05:04:13,837 1 INFO hrpay odoo.modules.loading: Modules loaded. 
+2026-10-09 05:04:13,848 1 INFO hrpay odoo.modules.registry: Registry changed, signaling through the database 
+2026-10-09 05:04:13,849 1 INFO hrpay odoo.modules.registry: Registry loaded in 9.770s 
+2026-10-09 05:04:13,850 1 INFO hrpay odoo.service.server: Starting post tests 
+2026-10-09 05:04:13,857 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_author_cannot_validate_their_own_version ... 
+2026-10-09 05:04:13,887 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:13,901 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_cannot_validate_a_version_without_a_validator ... 
+2026-10-09 05:04:13,929 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:13,938 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_catalog_codes_matches_the_table ... 
+2026-10-09 05:04:13,945 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_catalog_has_no_duplicate_codes ... 
+2026-10-09 05:04:13,950 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_coverage_report_refuses_to_declare_go_live_readiness ... 
+2026-10-09 05:04:13,978 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,067 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_draft_version_still_refuses_to_serve_a_value ... 
+2026-10-09 05:04:14,094 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,105 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_every_seeded_rule_has_a_source_reference ... 
+2026-10-09 05:04:14,134 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,140 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_no_seeded_code_resolves ... 
+2026-10-09 05:04:14,170 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,211 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seed_creates_no_versions_at_all ... 
+2026-10-09 05:04:14,239 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,244 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seeded_rule_cannot_be_used_for_a_calculation ... 
+2026-10-09 05:04:14,272 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,285 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seeded_rules_are_active_so_they_are_visible ... 
+2026-10-09 05:04:14,314 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,320 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestCatalogSeed.test_seeding_is_idempotent ... 
+2026-10-09 05:04:14,349 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,378 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,385 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-10-09 05:04:14,388 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_seed: Starting TestPostInitHook.test_hook_leaves_everything_unresolved ... 
+2026-10-09 05:04:14,418 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:14,456 1 INFO hrpay odoo.addons.hrms_statutory.hooks: hrms_statutory: verified that all 50 catalog codes are unresolved, so the sign-off gate is holding. 
+2026-10-09 05:04:14,456 1 INFO hrpay odoo.addons.hrms_statutory.hooks: hrms_statutory: post_init_hook created 0 rule skeleton(s). Every one remains unsigned-off, so payroll is blocked until a qualified professional signs off each value. 
+2026-10-09 05:04:14,464 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-10-09 05:04:15,077 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [1] 
+2026-10-09 05:04:15,100 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [25] 
+2026-10-09 05:04:15,107 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 05:04:15,176 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_author_cannot_validate_own_version ... 
+2026-10-09 05:04:15,377 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [2] 
+2026-10-09 05:04:15,386 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [27] 
+2026-10-09 05:04:15,390 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <rule.author.test> to <rule.author@example.invalid> 
+2026-10-09 05:04:15,434 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_date_after_the_last_version_uses_the_last_known_value ... 
+2026-10-09 05:04:15,452 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_draft_version_can_still_be_corrected ... 
+2026-10-09 05:04:15,462 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_draft_version_is_ignored ... 
+2026-10-09 05:04:15,481 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_effective_dating_picks_the_right_version ... 
+2026-10-09 05:04:15,501 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_missing_source_reference_is_refused ... 
+2026-10-09 05:04:15,507 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_one_rule_per_scope ... 
+2026-10-09 05:04:15,515 1 ERROR hrpay odoo.sql_db: bad query: b' UPDATE "hrms_statutory_rule"\n                    SET "scope_key" = "__tmp"."scope_key"::VARCHAR, "write_date" = "__tmp"."write_date"::timestamp, "write_uid" = "__tmp"."write_uid"::int4\n                    FROM (VALUES (51, \'IN.PF.WAGE_CEILING|IN||\', \'2026-10-09T05:04:14.467830\'::timestamp, 1)) AS "__tmp"("id", "scope_key", "write_date", "write_uid")\n                    WHERE "hrms_statutory_rule"."id" = "__tmp"."id"\n                '
+ERROR: duplicate key value violates unique constraint "hrms_statutory_rule_scope_key_unique"
+DETAIL:  Key (scope_key)=(IN.PF.WAGE_CEILING|IN||) already exists.
+ 
+2026-10-09 05:04:15,521 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_state_specific_version_wins_over_national ... 
+2026-10-09 05:04:15,543 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_superuser_cannot_be_the_validator ... 
+2026-10-09 05:04:15,552 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_unconfigured_rule_refuses_to_resolve ... 
+2026-10-09 05:04:15,567 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validated_version_cannot_be_deleted ... 
+2026-10-09 05:04:15,580 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validated_version_is_immutable ... 
+2026-10-09 05:04:15,593 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validating_a_new_version_supersedes_and_closes_the_prior_one ... 
+2026-10-09 05:04:15,613 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestStatutoryRuleResolution.test_validation_requires_a_named_validator ... 
+2026-10-09 05:04:15,627 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 5 checked, 2 removed 
+2026-10-09 05:04:16,025 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [3] 
+2026-10-09 05:04:16,034 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [31] 
+2026-10-09 05:04:16,038 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 05:04:16,070 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_a_genuine_zero_rate_is_accepted ... 
+2026-10-09 05:04:16,088 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_invalid_json_is_refused ... 
+2026-10-09 05:04:16,100 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_json_component_round_trips ... 
+2026-10-09 05:04:16,117 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestValueShapes.test_numeric_component_requires_a_number ... 
+2026-10-09 05:04:16,130 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 1 checked, 1 removed 
+2026-10-09 05:04:16,509 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [4] 
+2026-10-09 05:04:16,518 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [35] 
+2026-10-09 05:04:16,522 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 05:04:16,552 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_catalog_seeds_rules_without_values ... 
+2026-10-09 05:04:16,580 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:16,610 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:16,616 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_coverage_report_is_not_go_live_ready_on_a_fresh_db ... 
+2026-10-09 05:04:16,643 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:16,730 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_every_catalog_rule_is_createable ... 
+2026-10-09 05:04:16,762 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:16,768 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestCatalogCoverage.test_no_rule_ships_with_a_baked_in_value ... 
+2026-10-09 05:04:16,807 1 INFO hrpay odoo.addons.hrms_statutory.models.catalog: hrms_statutory: catalog seeded. 0 rules created, 50 total. No values configured; sign-off required before go-live. 
+2026-10-09 05:04:16,816 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 1 checked, 1 removed 
+2026-10-09 05:04:16,817 1 WARNING hrpay odoo.tests.common: A child process was found, terminating it: psutil.Process(pid=32, name='curl', status='sleeping', started='05:04:06') 
+2026-10-09 05:04:17,225 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [5] 
+2026-10-09 05:04:17,237 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [39] 
+2026-10-09 05:04:17,242 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 05:04:17,281 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_ceiling_is_applied_and_the_excess_reported ... 
+2026-10-09 05:04:17,409 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_ceiling_of_zero_is_not_treated_as_no_ceiling ... 
+2026-10-09 05:04:17,531 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_gratuity_refuses_without_configured_eligibility ... 
+2026-10-09 05:04:17,644 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_over_five_years_is_eligible_and_dated ... 
+2026-10-09 05:04:17,751 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_remainder_above_six_months_counts_as_a_full_year ... 
+2026-10-09 05:04:17,863 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_remainder_of_exactly_six_months_is_not_counted_by_default ... 
+2026-10-09 05:04:17,974 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_result_records_the_rule_versions_used ... 
+2026-10-09 05:04:18,081 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_the_six_month_boundary_can_be_configured_inclusive ... 
+2026-10-09 05:04:18,191 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_under_five_years_is_not_eligible ... 
+2026-10-09 05:04:18,298 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuity.test_wage_basis_refuses_ctc_when_there_is_no_payslip ... 
+2026-10-09 05:04:18,427 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 11 checked, 11 removed 
+2026-10-09 05:04:18,791 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [6] 
+2026-10-09 05:04:18,799 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [73] 
+2026-10-09 05:04:18,803 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <statutory.professional.test> to <statutory.professional@example.invalid> 
+2026-10-09 05:04:18,836 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuityFixedTerm.test_fixed_term_is_ineligible_before_a_full_year ... 
+2026-10-09 05:04:18,940 1 INFO hrpay odoo.addons.hrms_statutory.tests.test_statutory: Starting TestGratuityFixedTerm.test_fixed_term_uses_pro_rata_and_the_lower_threshold ... 
+2026-10-09 05:04:19,050 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 3 checked, 3 removed 
+2026-10-09 05:04:19,090 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_apply_creates_draft_assignments_only ... 
+2026-10-09 05:04:19,480 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 0 unfilled 
+2026-10-09 05:04:19,494 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_apply_is_refused_twice ... 
+2026-10-09 05:04:19,876 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 0 unfilled 
+2026-10-09 05:04:19,924 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_apply_refuses_a_proposal_with_unfilled_demand ... 
+2026-10-09 05:04:20,309 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 2 assignment(s) proposed, 1 unfilled 
+2026-10-09 05:04:20,344 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_availability_dates_must_be_ordered ... 
+2026-10-09 05:04:20,539 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_declared_unavailable_is_not_rostered ... 
+2026-10-09 05:04:20,935 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 1 unfilled 
+2026-10-09 05:04:20,941 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_employee_on_approved_leave_is_not_rostered ... 
+2026-10-09 05:04:21,321 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 1 unfilled 
+2026-10-09 05:04:21,326 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_excluded_employee_cannot_be_rostered ... 
+2026-10-09 05:04:21,700 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 1 unfilled 
+2026-10-09 05:04:21,705 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_last_working_day_inside_period_excludes_employee ... 
+2026-10-09 05:04:22,131 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: excluding Leaving Midweek: last working day 2026-08-05 is inside the period 
+2026-10-09 05:04:22,141 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 1 unfilled 
+2026-10-09 05:04:22,146 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_nobody_is_rostered_twice_on_the_same_date ... 
+2026-10-09 05:04:22,909 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 7 assignment(s) proposed, 0 unfilled 
+2026-10-09 05:04:22,915 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_overnight_shift_ends_next_day ... 
+2026-10-09 05:04:23,098 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 0 unfilled 
+2026-10-09 05:04:23,103 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_preference_honoured_when_nothing_else_differs ... 
+2026-10-09 05:04:23,480 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 0 unfilled 
+2026-10-09 05:04:23,486 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_proposal_never_breaches_consecutive_day_cap ... 
+2026-10-09 05:04:23,702 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 5 assignment(s) proposed, 2 unfilled 
+2026-10-09 05:04:23,707 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_proposal_never_exceeds_weekly_day_cap ... 
+2026-10-09 05:04:23,897 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 5 assignment(s) proposed, 2 unfilled 
+2026-10-09 05:04:23,902 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_proposal_never_exceeds_weekly_hour_ceiling ... 
+2026-10-09 05:04:24,086 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 5 assignment(s) proposed, 2 unfilled 
+2026-10-09 05:04:24,093 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_rest_window_is_enforced ... 
+2026-10-09 05:04:24,269 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 5 assignment(s) proposed, 2 unfilled 
+2026-10-09 05:04:24,274 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_shortfall_is_reported_not_double_booked ... 
+2026-10-09 05:04:24,633 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 2 assignment(s) proposed, 1 unfilled 
+2026-10-09 05:04:24,639 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_skill_match_outranks_stated_preference ... 
+2026-10-09 05:04:25,091 1 INFO hrpay odoo.addons.hrms_roster.models.solver: hrms_roster: solved Test week: 1 assignment(s) proposed, 0 unfilled 
+2026-10-09 05:04:25,105 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_non_draft_period ... 
+2026-10-09 05:04:25,123 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_when_pool_is_empty ... 
+2026-10-09 05:04:25,171 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_without_demand ... 
+2026-10-09 05:04:25,188 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_refuses_without_settings ... 
+2026-10-09 05:04:25,208 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolver.test_solver_result_grants_no_write_permission ... 
+2026-10-09 05:04:25,221 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 30 checked, 30 removed 
+2026-10-09 05:04:25,224 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolverSettings.test_default_settings_cover_a_full_week_and_a_full_day ... 
+2026-10-09 05:04:25,255 1 INFO hrpay odoo.addons.hrms_roster.tests.test_solver: Starting TestRosterSolverSettings.test_settings_reject_out_of_range_limits ... 
+2026-10-09 05:04:25,296 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 0 checked, 0 removed 
+2026-10-09 05:04:25,682 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [7] 
+2026-10-09 05:04:25,691 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [206] 
+2026-10-09 05:04:25,694 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.payroll.test> to <fnf.payroll@example.invalid> 
+2026-10-09 05:04:25,873 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [8] 
+2026-10-09 05:04:25,882 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [208] 
+2026-10-09 05:04:25,886 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.finance.test> to <fnf.finance@example.invalid> 
+2026-10-09 05:04:26,009 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_acknowledgement_requires_a_calculated_statement ... 
+2026-10-09 05:04:26,046 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 05:04:26,055 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_calculate_produces_an_itemised_statement ... 
+2026-10-09 05:04:26,247 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [9] 
+2026-10-09 05:04:26,255 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [215] 
+2026-10-09 05:04:26,259 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:26,346 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:26,355 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_calculated_case_cannot_be_deleted ... 
+2026-10-09 05:04:26,541 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [10] 
+2026-10-09 05:04:26,548 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [217] 
+2026-10-09 05:04:26,552 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:26,633 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:26,647 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_configured_deadline_is_anchored_to_the_last_working_day ... 
+2026-10-09 05:04:26,827 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [11] 
+2026-10-09 05:04:26,834 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [219] 
+2026-10-09 05:04:26,837 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:26,914 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:26,920 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_draft_case_can_be_deleted ... 
+2026-10-09 05:04:26,931 1 INFO hrpay odoo.models.unlink: User #1 deleted hrms.fnf.case records with IDs: [5] 
+2026-10-09 05:04:26,941 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_notice_data_is_required_when_the_reason_carries_notice ... 
+2026-10-09 05:04:26,972 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 05:04:26,982 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_only_one_case_per_employee ... 
+2026-10-09 05:04:27,006 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 05:04:27,013 1 ERROR hrpay odoo.sql_db: bad query: b'INSERT INTO "hrms_fnf_case" ("company_id", "create_date", "create_uid", "currency_id", "employee_id", "last_working_day", "notice_period_days", "notice_served_days", "reason_id", "resignation_date", "separation_state", "write_date", "write_uid") VALUES (7, \'2026-10-09 05:04:25.299740\', 1, 1, 44, \'2026-09-30\', 60, 60, 7, \'2026-08-01\', \'draft\', \'2026-10-09 05:04:25.299740\', 1) RETURNING "id"'
+ERROR: duplicate key value violates unique constraint "hrms_fnf_case_one_open_case_per_employee"
+DETAIL:  Key (employee_id)=(44) already exists.
+ 
+2026-10-09 05:04:27,019 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_recalculation_is_refused_after_acknowledgement ... 
+2026-10-09 05:04:27,237 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [12] 
+2026-10-09 05:04:27,247 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [221] 
+2026-10-09 05:04:27,252 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:27,350 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:27,365 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_statement_inputs_lock_after_acknowledgement ... 
+2026-10-09 05:04:27,556 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [13] 
+2026-10-09 05:04:27,563 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [223] 
+2026-10-09 05:04:27,567 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:27,653 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:27,668 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementGates.test_unconfigured_statutory_deadline_leaves_payable_by_empty ... 
+2026-10-09 05:04:27,692 1 ERROR hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: cannot resolve the payment deadline for Settlement Employee: Statutory rule 'IN.FNF.WAGE_PAYMENT_DEADLINE_WORKING_DAYS' (F&F: wages payment deadline (working days from last working day, all exit types)) has no version effective on 2026-09-30. Either no version has been created, or the previous one expired without a successor. 
+2026-10-09 05:04:27,701 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 4 checked, 4 removed 
+2026-10-09 05:04:28,053 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [14] 
+2026-10-09 05:04:28,062 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [227] 
+2026-10-09 05:04:28,065 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.payroll.test> to <fnf.payroll@example.invalid> 
+2026-10-09 05:04:28,240 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [15] 
+2026-10-09 05:04:28,248 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [229] 
+2026-10-09 05:04:28,251 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.finance.test> to <fnf.finance@example.invalid> 
+2026-10-09 05:04:28,339 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_dispute_requires_a_reason ... 
+2026-10-09 05:04:28,526 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [16] 
+2026-10-09 05:04:28,534 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [236] 
+2026-10-09 05:04:28,537 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:28,622 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:28,637 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_negative_settlement_without_recovery_permission_is_refused ... 
+2026-10-09 05:04:28,823 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [17] 
+2026-10-09 05:04:28,831 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [238] 
+2026-10-09 05:04:28,834 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:28,909 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:28,924 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_only_the_calculated_states_can_be_approved ... 
+2026-10-09 05:04:29,103 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [18] 
+2026-10-09 05:04:29,111 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [240] 
+2026-10-09 05:04:29,114 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:29,195 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:29,220 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_paid_case_cannot_be_paid_again ... 
+2026-10-09 05:04:29,395 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [19] 
+2026-10-09 05:04:29,403 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [242] 
+2026-10-09 05:04:29,408 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:29,490 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:29,507 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: Settlement Employee (2026-09-30) paid 7 day(s) after the statutory deadline 2026-10-02 
+2026-10-09 05:04:29,518 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestSettlementApproval.test_superuser_cannot_approve ... 
+2026-10-09 05:04:29,697 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [20] 
+2026-10-09 05:04:29,704 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [244] 
+2026-10-09 05:04:29,708 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:29,796 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:29,814 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 4 checked, 4 removed 
+2026-10-09 05:04:30,169 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [21] 
+2026-10-09 05:04:30,177 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [248] 
+2026-10-09 05:04:30,180 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.payroll.test> to <fnf.payroll@example.invalid> 
+2026-10-09 05:04:30,356 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [22] 
+2026-10-09 05:04:30,364 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [250] 
+2026-10-09 05:04:30,367 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.finance.test> to <fnf.finance@example.invalid> 
+2026-10-09 05:04:30,455 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestNoticeShortfall.test_shortfall_is_computed_from_period_minus_served ... 
+2026-10-09 05:04:30,489 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestNoticeShortfall.test_shortfall_is_not_recovered_when_the_reason_forbids_it ... 
+2026-10-09 05:04:30,672 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [23] 
+2026-10-09 05:04:30,680 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [257] 
+2026-10-09 05:04:30,684 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <fnf.signatory.test> to <fnf.signatory@example.invalid> 
+2026-10-09 05:04:30,759 1 WARNING hrpay odoo.addons.hrms_fnf.models.settlement: hrms_fnf: no public holiday calendar for the country; the payment deadline is being advanced by calendar days, which may be too generous 
+2026-10-09 05:04:30,766 1 INFO hrpay odoo.addons.hrms_fnf.tests.test_settlement: Starting TestNoticeShortfall.test_working_past_notice_yields_no_shortfall ... 
+2026-10-09 05:04:30,782 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 4 checked, 4 removed 
+2026-10-09 05:04:31,148 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [24] 
+2026-10-09 05:04:31,156 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [262] 
+2026-10-09 05:04:31,159 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.payroll.test> to <run.payroll.test@example.invalid> 
+2026-10-09 05:04:31,336 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [25] 
+2026-10-09 05:04:31,344 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [264] 
+2026-10-09 05:04:31,347 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.reviewer.test> to <run.reviewer.test@example.invalid> 
+2026-10-09 05:04:31,522 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [26] 
+2026-10-09 05:04:31,530 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [266] 
+2026-10-09 05:04:31,533 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.finance.test> to <run.finance.test@example.invalid> 
+2026-10-09 05:04:31,543 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_employee_without_a_wage_blocks_the_run ... 
+2026-10-09 05:04:31,723 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [274] 
+2026-10-09 05:04:31,737 1 INFO hrpay odoo.models.unlink: User #1 deleted hr.contract records with IDs: [35] 
+2026-10-09 05:04:31,786 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_rostered_establishment_is_satisfied_by_assignments ... 
+2026-10-09 05:04:31,903 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_statutory_coverage_gap_is_reported ... 
+2026-10-09 05:04:32,054 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunCoverageGate.test_unrostered_establishment_blocks_when_roster_required ... 
+2026-10-09 05:04:32,201 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 5 checked, 5 removed 
+2026-10-09 05:04:32,202 1 WARNING hrpay odoo.tests.common: A child process was found, terminating it: psutil.Process(pid=40, name='curl', status='sleeping', started='05:04:21') 
+2026-10-09 05:04:32,573 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [27] 
+2026-10-09 05:04:32,581 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [291] 
+2026-10-09 05:04:32,584 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.payroll.test> to <run.payroll.test@example.invalid> 
+2026-10-09 05:04:32,760 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [28] 
+2026-10-09 05:04:32,767 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [293] 
+2026-10-09 05:04:32,771 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.reviewer.test> to <run.reviewer.test@example.invalid> 
+2026-10-09 05:04:32,954 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [29] 
+2026-10-09 05:04:32,962 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [295] 
+2026-10-09 05:04:32,966 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.finance.test> to <run.finance.test@example.invalid> 
+2026-10-09 05:04:32,975 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_approval_refuses_when_payslips_changed_after_computation ... 
+2026-10-09 05:04:33,104 1 WARNING hrpay odoo.addons.base.models.res_company: The method '_company_default_get' on res.company is deprecated and shouldn't be used anymore 
+2026-10-09 05:04:33,161 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_input_checksum_reflects_the_inputs ... 
+2026-10-09 05:04:33,313 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_locked_run_cannot_be_cancelled ... 
+2026-10-09 05:04:33,334 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_non_cancelled_run_cannot_be_deleted ... 
+2026-10-09 05:04:33,353 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_only_one_run_per_establishment_and_period ... 
+2026-10-09 05:04:33,367 1 ERROR hrpay odoo.sql_db: bad query: b'INSERT INTO "hrms_payroll_run" ("company_id", "create_date", "create_uid", "currency_id", "establishment_id", "period_end", "period_start", "state", "write_date", "write_uid") VALUES (11, \'2026-10-09 05:04:32.207139\', 1, 1, 9, \'2026-08-31\', \'2026-08-01\', \'draft\', \'2026-10-09 05:04:32.207139\', 1) RETURNING "id"'
+ERROR: duplicate key value violates unique constraint "hrms_payroll_run_one_run_per_establishment_period"
+DETAIL:  Key (establishment_id, period_start, period_end)=(9, 2026-08-01, 2026-08-31) already exists.
+ 
+2026-10-09 05:04:33,372 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunIntegrity.test_period_cannot_change_once_the_run_leaves_draft ... 
+2026-10-09 05:04:33,396 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 5 checked, 5 removed 
+2026-10-09 05:04:33,749 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [30] 
+2026-10-09 05:04:33,758 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [317] 
+2026-10-09 05:04:33,761 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.payroll.test> to <run.payroll.test@example.invalid> 
+2026-10-09 05:04:33,941 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [31] 
+2026-10-09 05:04:33,948 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [319] 
+2026-10-09 05:04:33,951 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.reviewer.test> to <run.reviewer.test@example.invalid> 
+2026-10-09 05:04:34,123 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.mail records with IDs: [32] 
+2026-10-09 05:04:34,132 1 INFO hrpay odoo.models.unlink: User #1 deleted mail.message records with IDs: [321] 
+2026-10-09 05:04:34,135 1 INFO hrpay odoo.addons.auth_signup.models.res_users: Signup email sent for user <run.finance.test> to <run.finance.test@example.invalid> 
+2026-10-09 05:04:34,143 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_anomaly_flags_do_not_block_computation ... 
+2026-10-09 05:04:34,156 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_anomaly_flags_must_be_acknowledged_by_a_note ... 
+2026-10-09 05:04:34,178 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_computer_cannot_review_their_own_run ... 
+2026-10-09 05:04:34,200 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_invalid_flag_payload_is_refused ... 
+2026-10-09 05:04:34,223 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_review_requires_a_note ... 
+2026-10-09 05:04:34,244 1 INFO hrpay odoo.addons.hrms_payroll_run.tests.test_payroll_run: Starting TestRunApprovalSeparation.test_reviewer_cannot_approve_their_own_run ... 
+2026-10-09 05:04:34,271 1 INFO hrpay odoo.addons.base.models.ir_attachment: filestore gc 3 checked, 3 removed 
+2026-10-09 05:04:34,272 1 INFO hrpay odoo.service.server: 105 post-tests in 20.42s, 18257 queries 
+2026-10-09 05:04:34,273 1 INFO hrpay odoo.tests.stats: hrms_fnf: 24 tests 5.48s 4813 queries 
+2026-10-09 05:04:34,273 1 INFO hrpay odoo.tests.stats: hrms_payroll_run: 22 tests 3.49s 2943 queries 
+2026-10-09 05:04:34,273 1 INFO hrpay odoo.tests.stats: hrms_roster: 28 tests 6.24s 5955 queries 
+2026-10-09 05:04:34,273 1 INFO hrpay odoo.tests.stats: hrms_statutory: 61 tests 5.19s 4546 queries 
+2026-10-09 05:04:34,273 1 INFO hrpay odoo.tests.result: 0 failed, 0 error(s) of 105 tests when loading database 'hrpay' 
+2026-10-09 05:04:34,273 1 INFO hrpay odoo.service.server: Initiating shutdown 
+2026-10-09 05:04:34,274 1 INFO hrpay odoo.service.server: Hit CTRL-C again or send a second signal to force the shutdown. 
+2026-10-09 05:04:34,275 1 INFO hrpay odoo.addons.base.models.ir_http: Generating routing map for key None 
+2026-10-09 05:04:35,222 1 INFO hrpay werkzeug: 127.0.0.1 - - [09/Oct/2026 05:04:35] "GET /web/database/selector HTTP/1.1" 200 - 3 0.014 13.322
+2026-10-09 05:04:35,250 1 INFO hrpay werkzeug: 127.0.0.1 - - [09/Oct/2026 05:04:35] "GET /web/database/selector HTTP/1.1" 200 - 6 0.070 28.384
+2026-10-09 05:04:35,302 1 INFO hrpay odoo.sql_db: ConnectionPool(read/write;used=0/count=0/max=64): Closed 2 connections  
+2026-10-09 05:04:35,305 1 INFO hrpay odoo.sql_db: ConnectionPool(read-only;used=0/count=0/max=64): Closed 2 connections  

@@ -93,7 +93,7 @@ class PayrollRun(models.Model):
         "blocks the lock rather than silently paying the new number.",
     )
     input_checksum = fields.Char(
-        compute="_compute_input_checksum", store=True, readonly=True, copy=False,
+        compute="_compute_input_checksum", readonly=True, copy=False,
         help="Hash of the inputs: attendance, roster, contracts and the statutory "
         "rule versions in force. Detects that the basis changed, even when the "
         "outputs happen to be identical.",
@@ -226,19 +226,22 @@ class PayrollRun(models.Model):
         Employee = self.env["hr.employee"]
         domain = [("company_id", "=", self.company_id.id)]
         if self.establishment_id.hrms_is_establishment:
-            domain.append(
+            domain += [
                 "|",
                 ("hrms_establishment_id", "=", self.establishment_id.id),
                 ("department_id", "=", self.establishment_id.id),
-            )
+            ]
         domain += [
             "|",
             ("join_date", "<=", self.period_end),
             ("join_date", "=", False),
         ]
         if self.period_start:
-            domain.append("|", ("hrms_last_working_day", ">=", self.period_start),
-                          ("hrms_last_working_day", "=", False))
+            domain += [
+                "|",
+                ("hrms_last_working_day", ">=", self.period_start),
+                ("hrms_last_working_day", "=", False),
+            ]
         return Employee.search(domain)
 
     def _input_payload(self):
@@ -300,7 +303,7 @@ class PayrollRun(models.Model):
         return [
             e.name
             for e in self._scope_employees()
-            if e.id not in rostered and run.establishment_id.hrms_rostered
+            if e.id not in rostered and self.establishment_id.hrms_rostered
         ]
 
     def _employees_without_wage(self):
@@ -352,7 +355,7 @@ class PayrollRun(models.Model):
         Confirmation is a separate human act after review.
         """
         Slip = self.env["hr.payslip"].sudo()
-        Structure = self.env["hr.salary.structure"].sudo()
+        Structure = self.env["hr.payroll.structure"].sudo()
         existing = Slip.search(self._slip_domain())
         if existing:
             existing.unlink()
@@ -631,7 +634,7 @@ def _coverage_gaps(run):
     for employee in run._scope_employees():
         missing = []
         try:
-            ctx._snapshot(
+            rows = ctx._snapshot(
                 run.company_id,
                 employee.hrms_state_code,
                 employee.contract_type,
@@ -639,6 +642,9 @@ def _coverage_gaps(run):
             )
         except UserError as exc:
             missing.append(str(exc).split(".")[0])
+        else:
+            if not rows:
+                missing.append("no signed-off statutory configuration in scope")
         if missing:
             gaps[employee] = missing
     return gaps

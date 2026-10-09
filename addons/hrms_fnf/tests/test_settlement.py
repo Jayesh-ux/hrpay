@@ -82,7 +82,7 @@ class SettlementTestCase(TransactionCase):
             "join_date": date(2018, 1, 1),
             "hrms_service_start": date(2018, 1, 1),
             "contract_type": "permanent",
-            "date_of_birth": date(1990, 5, 15),
+            "birthday": date(1990, 5, 15),
         }
         vals.update(kw)
         employee = cls.env["hr.employee"].create(vals)
@@ -135,14 +135,20 @@ class SettlementTestCase(TransactionCase):
             ("IN.FNF.ENCASHMENT_WAGE_BASIS", "json_value", None, None),
         ]
         for code, ctype, numeric, text in specs:
-            rule = Rule.create(
-                {
-                    "name": code,
-                    "code": code,
-                    "component_type": ctype,
-                    "source_reference": "test fixture authority",
-                }
+            rule = Rule.search(
+                [("code", "=", code), ("country_code", "=", "IN")], limit=1
             )
+            if not rule:
+                rule = Rule.create(
+                    {
+                        "name": code,
+                        "code": code,
+                        "component_type": ctype,
+                        "source_reference": "test fixture authority",
+                    }
+                )
+            if rule.component_type != ctype:
+                rule.write({"component_type": ctype})
             Version.create(
                 {
                     "rule_id": rule.id,
@@ -239,9 +245,9 @@ class TestSettlementApproval(SettlementTestCase):
         self._configure_statutory()
         case = self._case()
         case.action_calculate()
-        case.action_approve()
+        case.with_user(self.finance).action_approve()
         with self.assertRaises(UserError):
-            case.action_approve()
+            case.with_user(self.finance).action_approve()
 
     def test_negative_settlement_without_recovery_permission_is_refused(self):
         self._configure_statutory()
@@ -280,11 +286,11 @@ class TestSettlementApproval(SettlementTestCase):
         self._configure_statutory()
         case = self._case()
         case.action_calculate()
-        case.action_approve()
-        case.action_mark_paid(reference="NEFT/001")
+        case.with_user(self.finance).action_approve()
+        case.with_user(self.finance).action_mark_paid(reference="NEFT/001")
         self.assertEqual(case.payment_reference, "NEFT/001")
         with self.assertRaises(UserError):
-            case.action_mark_paid()
+            case.with_user(self.finance).action_mark_paid()
 
 
 @tagged("post_install", "-at_install", "hrms_fnf")

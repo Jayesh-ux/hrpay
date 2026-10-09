@@ -15,8 +15,8 @@
         "hr_payroll_account_community",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "security/hrms_statutory_security.xml",
+        "security/ir.model.access.csv"
     ],
     "installable": True,
     "application": False,

@@ -169,10 +169,21 @@ set -e
 
 # Parse Odoo's own summary lines rather than trusting the exit code alone: a
 # crash after the last test reports a non-zero exit with no failures listed.
-tests_line="$(grep -oE '[0-9]+ tests? [0-9]+ failures?[^,]*' "$test_log" | tail -1 || true)"
-failures_line="$(grep -oE '[0-9]+ failures? [0-9]+ errors?' "$test_log" | tail -1 || true)"
-total_tests="$(echo "$tests_line" | grep -oE '^[0-9]+' || echo 0)"
-total_failures="$(echo "$failures_line" | grep -oE '^[0-9]+' || echo 0)"
+# Odoo 18 prints "X failed, Y error(s) of Z tests when loading database ...";
+# older releases printed "Z tests, X failures, Y errors". Accept either, so a
+# green run is not recorded as "0 tests executed".
+tests_line="$(grep -oE '[0-9]+ failed, [0-9]+ error\(s\) of [0-9]+ tests?[^,]*' "$test_log" | tail -1 || true)"
+if [ -n "$tests_line" ]; then
+  total_tests="$(printf '%s\n' "$tests_line" | grep -oE 'of [0-9]+ tests?' | grep -oE '[0-9]+' || true)"
+  total_failures="$(printf '%s\n' "$tests_line" | grep -oE '^[0-9]+' || true)"
+else
+  tests_line="$(grep -oE '[0-9]+ tests? [0-9]+ failures?[^,]*' "$test_log" | tail -1 || true)"
+  total_tests="$(printf '%s\n' "$tests_line" | grep -oE '^[0-9]+' || true)"
+  failures_line="$(grep -oE '[0-9]+ failures? [0-9]+ errors?' "$test_log" | tail -1 || true)"
+  total_failures="$(printf '%s\n' "$failures_line" | grep -oE '^[0-9]+' || true)"
+fi
+total_tests="${total_tests:-0}"
+total_failures="${total_failures:-0}"
 
 echo "  summary: ${tests_line:-<none found in log>}"
 

@@ -198,7 +198,6 @@ class GratuityEngine(models.AbstractModel):
 
         completed_years = total_months // 12
         completed_months = total_months % 12
-
         # ---- eligibility -------------------------------------------------
         reason = None
         eligible = True
@@ -264,7 +263,26 @@ class GratuityEngine(models.AbstractModel):
         ceiling_applied = figures["ceiling_applied"]
         capped = figures["excess_over_ceiling"]
 
+        # Reported service: a remainder that does not clear the partial-year
+        # boundary is not counted, so it must not appear in the completed months
+        # or in the total the result reports (the raw span is kept for
+        # eligibility, above).
+        remainder = total_months % 12
+        counted_remainder = remainder
+        if not pro_rata and partial_month_threshold > 0:
+            if remainder > partial_month_threshold or (
+                remainder == partial_month_threshold and boundary == "inclusive"
+            ):
+                counted_remainder = remainder
+            else:
+                counted_remainder = 0
+        completed_months = counted_remainder
+        counted_service_months = completed_years * 12 + counted_remainder
+
         versions = ctx._snapshot(company, state, ct, as_of_date)
+        rule_versions_by_code = {}
+        for row in versions:
+            rule_versions_by_code.setdefault(row["code"], []).append(row)
         return self.env["hrms.gratuity.result"].create(
             {
                 "employee_id": employee.id,
@@ -274,7 +292,7 @@ class GratuityEngine(models.AbstractModel):
                 "ineligibility_reason": reason,
                 "completed_years": completed_years,
                 "completed_months": completed_months,
-                "total_service_months": total_months,
+                "total_service_months": counted_service_months,
                 "wage_basis": round(wage_basis, 2),
                 "wage_basis_method": method,
                 "days_per_year": days_per_year,
@@ -285,7 +303,7 @@ class GratuityEngine(models.AbstractModel):
                 "capped_amount": round(capped, 2),
                 "payment_deadline": as_of_date + relativedelta(days=deadline_days),
                 "deadline_days": deadline_days,
-                "rule_versions_json": _json(versions),
+                "rule_versions_json": _json(rule_versions_by_code),
                 "detail_json": _json(
                     {
                         "periods": per_period,
@@ -300,7 +318,6 @@ class GratuityEngine(models.AbstractModel):
 
     def _default_periods(self, employee):
         """Derive service periods from contracts when none are recorded."""
-        self.ensure_one()
         start = employee.hrms_service_start or employee.join_date
         if not start:
             raise UserError(

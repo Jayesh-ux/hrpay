@@ -323,7 +323,7 @@ class RosterDemand(models.Model):
     _description = "Roster staffing demand"
     _order = "establishment_id, weekday, shift_id"
 
-    name = fields.Char(required=True)
+    name = fields.Char(compute="_compute_name", store=True)
     company_id = fields.Many2one(
         "res.company", required=True, default=lambda self: self.env.company
     )
@@ -353,6 +353,20 @@ class RosterDemand(models.Model):
             "Only one demand row per establishment, weekday and shift.",
         )
     ]
+
+    _WEEKDAYS = {
+        "0": "Monday", "1": "Tuesday", "2": "Wednesday", "3": "Thursday",
+        "4": "Friday", "5": "Saturday", "6": "Sunday",
+    }
+
+    @api.depends("establishment_id", "weekday", "shift_id")
+    def _compute_name(self):
+        for rec in self:
+            day = self._WEEKDAYS.get(rec.weekday, rec.weekday or "")
+            rec.name = (
+                f"{rec.establishment_id.name or 'Roster'} / {day or ''} / "
+                f"{rec.shift_id.name or ''}"
+            ).strip(" /") or "Roster demand"
 
     @api.constrains("required_headcount")
     def _check_headcount(self):

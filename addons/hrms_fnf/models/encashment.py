@@ -79,15 +79,8 @@ class SettlementLine(models.Model):
         details = {}
 
         # ── Salary to the last working day ──────────────────────────────
-        lines.append(
-            _line(
-                "salary_to_last_day",
-                _salary_to_last_day(case),
-                is_deduction=False,
-                rule_code=None,
-                detail={"basis": "pro-rated to the last working day"},
-            )
-        )
+        # _salary_to_last_day returns a complete _line dict.
+        lines.append(_salary_to_last_day(case))
 
         # ── Leave encashment and excess leave ───────────────────────────
         encashment, encashment_detail = _leave_encashment(case)
@@ -228,7 +221,12 @@ def _leave_encashment(case):
 
     Leave = case.env["hr.leave"].sudo()
     types = case.env["hr.leave.type"].sudo().search(
-        [("employee_type", "=", "employee")]
+        [
+            ("company_id", "in", [case.company_id.id, False]),
+            "|",
+            ("payroll_code", "!=", False),
+            ("statutory", "=", True),
+        ]
     )
     monthly_wage = float(employee.contract_id.wage or 0.0)
     days_in_month = _days_in_month(case.last_working_day)

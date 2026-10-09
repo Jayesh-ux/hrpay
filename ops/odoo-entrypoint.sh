@@ -59,11 +59,27 @@ fi
 # ── Assemble the addons path ───────────────────────────────────────────────
 addons_path="$core_addons"
 [ -d "$HRPAY_ADDONS" ] && addons_path="$addons_path,$HRPAY_ADDONS"
-[ -d "$HRPAY_OCA_ADDONS" ] && addons_path="$addons_path,$HRPAY_OCA_ADDONS"
+
+# .oca/<Repo>/<module>: Odoo scans only the directories it is handed, so each
+# cloned repo root (not .oca itself) has to be on the addons path, otherwise
+# every dependency dies with "module not available in your system".
+oca_path=""
+if [ -d "$HRPAY_OCA_ADDONS" ]; then
+  if compgen -G "$HRPAY_OCA_ADDONS/*/__manifest__.py" > /dev/null; then
+    oca_path="$HRPAY_OCA_ADDONS"
+  fi
+  for repo in "$HRPAY_OCA_ADDONS"/*/; do
+    [ -d "$repo" ] || continue
+    if compgen -G "$repo*/__manifest__.py" > /dev/null; then
+      oca_path="${oca_path:+$oca_path,}${repo%/}"
+    fi
+  done
+fi
+[ -n "$oca_path" ] && addons_path="$addons_path,$oca_path"
 
 log "core addons:    $core_addons"
 log "our addons:     $HRPAY_ADDONS"
-[ -d "$HRPAY_OCA_ADDONS" ] && log "oca addons:     $HRPAY_OCA_ADDONS"
+[ -n "$oca_path" ] && log "oca addons:     $oca_path"
 log "addons path:    $addons_path"
 
 # ── Warn about missing community dependencies, loudly but not fatally ──────
@@ -77,5 +93,24 @@ for module in hr_payroll_community hr_payroll_account_community; do
   fi
 done
 
+# ── Forward database credentials ───────────────────────────────────────────
+# The image's own entrypoint passes HOST/PORT/USER/PASSWORD as CLI args for any
+# value it does not already find in odoo.conf. We replaced that entrypoint, so
+# repeat the behaviour here: odoo.conf deliberately holds no db_password, and
+# without this postgres answers "fe_sendauth: no password supplied".
+ODOO_RC="${ODOO_RC:-/etc/odoo/odoo.conf}"
+DB_ARGS=()
+check_config() {
+  param="$1"
+  value="$2"
+  if ! grep -q -E "^[[:space:]]*${param}[[:space:]]*=" "$ODOO_RC" 2>/dev/null; then
+    DB_ARGS+=("--${param}" "${value}")
+  fi
+}
+check_config db_host "${HOST:-postgres}"
+check_config db_port "${PORT:-5432}"
+check_config db_user "${USER:-odoo}"
+check_config db_password "${PASSWORD:-odoo}"
+
 cd "${ODOO_DATA_DIR:-/var/lib/odoo}" 2>/dev/null || cd /opt/hrpay
-exec "$@" --addons-path="$addons_path"
+exec "$@" --addons-path="$addons_path" "${DB_ARGS[@]}"

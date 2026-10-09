@@ -1,0 +1,15 @@
+ Volume hrpay_odoo-filestore Creating 
+ Volume hrpay_odoo-filestore Created 
+ Container hrpay-postgres Running 
+ Image odoo:18.0 Pulling 
+ 8554ae3d7d31 Pulling fs layer 0B
+ 719f22382797 Pulling fs layer 0B
+ dee70ab7e261 Pulling fs layer 0B
+ 257256ac0e2d Pulling fs layer 0B
+ 108318c4b726 Pulling fs layer 0B
+ Image odoo:18.0 Pulled 
+ Container hrpay-postgres Waiting 
+ Container hrpay-postgres Healthy 
+ Container hrpay-odoo-run-9aede80a5041 Creating 
+ Container hrpay-odoo-run-9aede80a5041 Created 
+Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: "/opt/hrpay/ops/odoo-entrypoint.sh": stat /opt/hrpay/ops/odoo-entrypoint.sh: no such file or directory

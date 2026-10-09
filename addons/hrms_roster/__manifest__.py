@@ -10,15 +10,15 @@
     "depends": [
         "hrms_core_ext",
         "hr_contract",
-        "hr_leave",
+        "hr_holidays",
         "hr_attendance",
         "hrms_statutory",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "security/solver_security.xml",
+        "security/ir.model.access.csv",
         "views/roster_views.xml",
-        "views/solver_views.xml",
+        "views/solver_views.xml"
     ],
     "installable": True,
     "application": False,

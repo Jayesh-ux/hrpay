@@ -29,11 +29,11 @@ class PayrollRunTestCase(TransactionCase):
         cls.payroll_user = cls._user("run.payroll.test", "hrms_core_ext.group_hrms_payroll_admin")
         cls.reviewer = cls._user("run.reviewer.test", "hrms_core_ext.group_hrms_payroll_admin")
         cls.finance = cls._user("run.finance.test", "hrms_core_ext.group_hrms_finance_approver")
-        cls.structure = cls.env["hr.salary.structure"].create(
+        cls.structure = cls.env["hr.payroll.structure"].create(
             {
                 "name": "Test Structure",
+                "code": "TEST_STRUCTURE",
                 "company_id": cls.Company.id,
-                "type": "monthly",
             }
         )
 
@@ -56,7 +56,7 @@ class PayrollRunTestCase(TransactionCase):
             "hrms_establishment_id": self.dept.id,
             "join_date": date(2024, 1, 1),
             "hrms_service_start": date(2024, 1, 1),
-            "date_of_birth": date(1995, 1, 1),
+            "birthday": date(1995, 1, 1),
         }
         vals.update(kw)
         employee = self.env["hr.employee"].create(vals)

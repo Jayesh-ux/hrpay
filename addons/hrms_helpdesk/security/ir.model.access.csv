@@ -1,4 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_ticket_type_hr,helpdesk.ticket.type hr,helpdesk_mgmt.model_helpdesk_ticket_type,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
+access_ticket_type_hr,helpdesk.ticket.type hr,helpdesk_type.model_helpdesk_ticket_type,hrms_core_ext.group_hrms_payroll_admin,1,1,1,1
 access_ticket_hrms_agent,helpdesk.ticket agent,helpdesk_mgmt.model_helpdesk_ticket,group_hrms_helpdesk_agent,1,1,1,0
 access_ticket_hrms_clearance,helpdesk.ticket cleared handler,helpdesk_mgmt.model_helpdesk_ticket,group_hrms_confidential_case_handler,1,1,1,0

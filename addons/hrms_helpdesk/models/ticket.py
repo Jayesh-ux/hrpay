@@ -59,7 +59,7 @@ class Ticket(models.Model):
         related="hrms_employee_id.department_id", string="Employee department", store=True
     )
     hrms_category_id = fields.Many2one(
-        related="ticket_type_id", string="Category", store=True
+        related="type_id", string="Category", store=True
     )
 
     hrms_confidential = fields.Boolean(
@@ -114,14 +114,14 @@ class Ticket(models.Model):
     hrms_ai_review_note = fields.Text(readonly=True, copy=False)
 
     # ─── Computes ───────────────────────────────────────────────────────
-    @api.depends("ticket_type_id", "hrms_confidential")
+    @api.depends("type_id", "hrms_confidential")
     def _compute_hrms_confidential(self):
         for ticket in self:
             if ticket.hrms_confidential:
                 continue  # already locked true
-            ticket.hrms_confidential = ticket.ticket_type_id.hrms_confidential_by_default
+            ticket.hrms_confidential = ticket.type_id.hrms_confidential_by_default
 
-    @api.depends("create_date", "ticket_type_id")
+    @api.depends("create_date", "type_id")
     def _compute_statutory_deadline(self):
         """Anchor the clock to create_date and keep it fixed.
 
@@ -131,7 +131,7 @@ class Ticket(models.Model):
         """
         for ticket in self:
             ticket.hrms_deadline_locked_by = ticket.create_date is not False
-            code = ticket.ticket_type_id.hrms_statutory_code
+            code = ticket.type_id.hrms_statutory_code
             ticket.hrms_deadline_code = code
             if not code or not ticket.create_date:
                 ticket.hrms_statutory_deadline = False
@@ -174,14 +174,14 @@ class Ticket(models.Model):
                 ticket.hrms_breached = now > deadline
 
     # ─── Guards ─────────────────────────────────────────────────────────
-    @api.onchange("ticket_type_id")
+    @api.onchange("type_id")
     def _onchange_category(self):
         for ticket in self:
             if ticket.hrms_deadline_locked_by:
                 continue
-            if ticket.ticket_type_id.hrms_employee_required and not ticket.hrms_employee_id:
+            if ticket.type_id.hrms_employee_required and not ticket.hrms_employee_id:
                 ticket.hrms_escalation_note = (
-                    f"{ticket.ticket_type_id.name} requires the employee it "
+                    f"{ticket.type_id.name} requires the employee it "
                     "concerns. A statutory claim cannot be reported without one."
                 )
 

@@ -88,6 +88,3 @@ def uninstall_hook(env):
 
 
 __all__ = ["post_init_hook", "uninstall_hook"]
-
-# Odoo looks up hooks by name in the module's __init__ namespace.
-_ = api  # keep the import meaningful for tooling that inspects this module

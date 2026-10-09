@@ -16,6 +16,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/hrms_payroll_run_security.xml",
         "views/payroll_run_views.xml",
     ],
     "installable": True,

@@ -304,7 +304,7 @@ class AuditLog(models.Model):
     )
     user_id = fields.Many2one("res.users", ondelete="restrict", index=True)
     api_key_id = fields.Many2one(
-        "res.users.apikeys.description",
+        "res.users.apikeys",
         string="API key",
         ondelete="restrict",
     )

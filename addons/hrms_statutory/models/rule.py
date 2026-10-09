@@ -97,6 +97,17 @@ class StatutoryRule(models.Model):
         "rather than editing an existing rule.",
     )
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if not (vals.get("source_reference") or "").strip():
+                raise UserError(
+                    "source_reference is required. A statutory rule must record "
+                    "the Gazette notification, circular or statute section it "
+                    "comes from; values are never baked into code."
+                )
+        return super().create(vals_list)
+
     @api.depends("code", "country_code", "state_code", "contract_type")
     def _compute_scope_key(self):
         for rec in self:
@@ -201,7 +212,7 @@ class StatutoryRuleVersion(models.Model):
         "rule so the version stays self-contained.",
     )
 
-    @api.constrains("numeric_value", "text_value", "json_value", "component_type")
+    @api.constrains("numeric_value", "text_value", "json_value", "rule_id")
     def _check_value_shape(self):
         for rec in self:
             ct = rec.rule_id.component_type
@@ -248,24 +259,55 @@ class StatutoryRuleVersion(models.Model):
             new_state = target if rec in self else vals.get("state")
             if new_state not in ("validated", "active", "superseded"):
                 continue
-            validator = vals.get("validated_by") or rec.validated_by
+            if new_state == "superseded":
+                # Superseding is the automatic close-out that write() applies to
+                # the prior version once a new one is validated. It carries the
+                # validator from the version's own sign-off; it is not itself a
+                # fresh sign-off.
+                continue
+            validator = vals.get("validated_by")
             if not validator:
                 raise UserError(
                     f"Cannot set state '{new_state}' on {rec.rule_id.code}: "
                     "validated_by is required. A statutory value must be signed "
                     "off by a named payroll/tax professional."
                 )
-            if validator == rec.create_uid and rec.id:
+            validator_id = (
+                validator.id if hasattr(validator, "id") else validator
+            )
+            if rec.id and validator_id and validator_id == rec.create_uid.id:
                 raise UserError(
                     f"Cannot sign off {rec.rule_id.code}: the author of the row "
                     "cannot also be the validator. Segregation of duties applies "
                     "to statutory configuration too."
                 )
 
+    def _check_value_shape_at_create(self, vals):
+        """Reject an unset numeric component at create time.
+
+        ``fields.Float`` coerces a missing value to 0.0 on the record, so the
+        record-level ``_check_value_shape`` can no longer tell "unset" from a
+        genuine zero. The raw inboxed values still can.
+        """
+        rule = self.env["hrms.statutory.rule"].browse(vals.get("rule_id"))
+        if not rule:
+            return
+        if (
+            rule.component_type in ("threshold", "rate", "cap")
+            and "numeric_value" not in vals
+        ):
+            raise UserError(
+                f"Statutory rule {rule.code} has component_type "
+                f"'{rule.component_type}' but no numeric_value. If the intended "
+                f"value is genuinely zero, set it explicitly rather than leaving "
+                f"it blank."
+            )
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             self._check_signoff(vals)
+            self._check_value_shape_at_create(vals)
         return super().create(vals_list)
 
     def write(self, vals):
@@ -328,6 +370,10 @@ class StatutoryRuleVersion(models.Model):
             if not self.json_value:
                 return self.text_value
             return json.loads(self.json_value)
+        if ct == "deadline":
+            # A deadline can be configured as a day count (numeric) or as an
+            # expression (text); prefer the numeric form when one is set.
+            return self.numeric_value if self.numeric_value else self.text_value
         return self.text_value
 
 

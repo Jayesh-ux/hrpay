@@ -44,5 +44,20 @@
             <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         </record>
 
+        <!-- Finance must be able to see a settlement to approve it. The
+             own-employee rule above would otherwise hide every case from the
+             approver, so finance gets a record rule that reads and writes all
+             cases; it still may not create or delete one. -->
+        <record id="rule_fnf_case_finance" model="ir.rule">
+            <field name="name">F&amp;F: finance approvers see and approve settlements</field>
+            <field name="model_id" ref="model_hrms_fnf_case"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hrms_core_ext.group_hrms_finance_approver'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
     </data>
 </odoo>

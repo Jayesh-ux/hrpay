@@ -7,28 +7,34 @@ section before quoting any test result.
 
 ## 1. The single most important thing to know
 
-**Nothing in this repository has ever been executed inside Odoo.** The
-development host had no Docker, no PostgreSQL and no Odoo, and the project rule
-is that runtime testing happens on the target laptop (Gate 1A). Every Odoo test
-in this repo is *authored and statically checked, never run*.
+**Status update (2026-10-09): the Odoo suite now runs green.** The authoring
+host had no Docker, no PostgreSQL and no Odoo, and the project rule was that
+runtime testing happens on the target laptop (Gate 1A). The code was therefore
+written *authored and statically checked, never executed*. It has since been run
+on the target stack (Odoo 18 CE + PostgreSQL 16): a fresh install plus all 105
+addon tests pass with 0 failures and 0 errors, and the statutory sign-off gate
+holds — see `docs/test-runs/20261009T050617Z.md`. §3 and §4 have been updated to
+match; the rest of this document still describes the pre-run design.
 
 What that means practically:
 
-- 105 Odoo test functions exist. Zero have been executed.
+- 105 Odoo test functions exist. **All now execute and pass** (see the update
+  above and §4).
 - 190 standalone tests exist (14 solver + 45 TDS + 81 statutory + 50 F&F
   arithmetic). **These have been executed**, because they need no Odoo — see §4.
-- Some basic Odoo screens **do** exist and have never been loaded: `hrms_fnf`
-  (case list, form, line tree, filters), `hrms_payroll_run` (run list and form) and
-  the roster/solver screens in `hrms_roster`. `hrms_core_ext` and `hrms_statutory`
-  have **no views at all** — they are engine and model code. "No UI exists" is not
-  true; "no UI has ever been rendered" is.
+- Some basic Odoo screens **do** exist: `hrms_fnf` (case list, form, line tree,
+  filters), `hrms_payroll_run` (run list and form) and the roster/solver screens
+  in `hrms_roster`. `hrms_core_ext` and `hrms_statutory` have **no views at all** —
+  they are engine and model code. The install validates every view's XML, but no
+  screen has been *rendered in a browser* on this run. "No UI exists" is not true;
+  "no UI has been visually inspected" is.
 - The static checkers (`make check-static`) prove internal consistency: manifests
   resolve, XML references exist, no addon references a module that loads later,
-  and every field named in a view exists on the model. They say nothing about
-  whether Odoo accepts the code.
+  and every field named in a view exists on the model.
 
-So the first thing to do on the new machine is `make test-odoo`, and expect it
-to find problems. That is the plan working, not the plan failing.
+A green run is a **narrow** claim: it proves the tests as written pass, not that
+the statutory figures are right. Read the run report's "Not covered" section
+before quoting it.
 
 ## 2. What is built
 
@@ -65,21 +71,22 @@ and settlement netting, each moved into a pure Python module with standalone tes
 a structural guard against the arithmetic returning inline. **§4a records every defect
 that changed, with the number before and after.**
 
-## 3. What is written but has not been run
+## 3. What is written, and what the first run showed
 
-Read this list before assuming anything works.
+Read this list before assuming anything works. Items marked **executed green**
+were run on 2026-10-09; the rest are still only statically checked.
 
 | Area | State |
 |---|---|
-| All 105 Odoo tests | authored, never executed |
-| `post_init_hook` seeder | authored; the assertion that nothing resolves is untested in practice |
-| Roster solver inside Odoo | logic verified standalone; ORM path untested |
+| All 105 Odoo tests | **executed green** on the target stack (0 failures, 0 errors); see `docs/test-runs/20261009T050617Z.md` |
+| `post_init_hook` seeder | authored; `make test-odoo` confirms nothing resolves to a usable value (gate holding) |
+| Roster solver inside Odoo | logic verified standalone; ORM path now exercised by the `hrms_roster` addon tests |
 | All views | cross-referenced against models statically; never rendered. Basic screens exist in `hrms_fnf`, `hrms_payroll_run` and `hrms_roster`; `hrms_core_ext` and `hrms_statutory` have none |
-| Docker stack | never started; the image internals the entrypoint depends on are assumptions |
-| `make test-odoo` end to end | never run |
+| Docker stack | **started** (Odoo 18 CE + PostgreSQL 16); `ops/odoo-entrypoint.sh`'s addons-path derivation works |
+| `make test-odoo` end to end | **run**: fresh install + 105 tests + statutory gate, all green |
 | Encryption key rotation | implemented, never exercised |
 | TDS projection and monthly split | rewritten, 45 standalone tests pass, **developer-derived expected values only**. The Odoo path (reading config off an employee, writing back YTD) is untested. See §5. |
-| PF / ESI / PT / gratuity / F&F arithmetic | rewritten into four pure modules, **131 standalone tests pass**, expected values developer-derived. See §4a. The Odoo caller paths (config resolution, payslip queries, `create()` of the result records) are untested. |
+| PF / ESI / PT / gratuity / F&F arithmetic | rewritten into four pure modules, **131 standalone tests pass**, expected values developer-derived. See §4a. The Odoo caller paths (config resolution, payslip queries, `create()` of the result records) are now exercised by the addon suite. |
 | New config codes added 2026-10-05 | `IN.PF.EMPLOYER_RATE`, `IN.PF.EMPLOYER_EPS_RATE`, `IN.PF.EPS_MONTHLY_CAP` (renamed), `IN.PF.EPS_ANNUAL_CEILING`, `IN.ESI.CONTRIBUTION_SCHEDULE`, `IN.LEAVE.ACCRUAL_DAYS_PER_YEAR`, `IN.FNF.ENCASHMENT_WAGE_BASIS`. All skeletons, all unvalidated, six with no figure at all. |
 | `hrms.employee.hrms_pf_eps_ytd` | **new field, no writer.** The annual EPS ceiling needs EPS contributed so far this financial year. Nothing populates it, so `compute_pf` passes `None` and **PF refuses to compute** rather than assume month one and let EPS run past the ceiling all year. The field's help says so. This is deliberate: the alternative is silent over-contribution for twelve months. |
 | Statutory register alignment | all 50 codes now have a register row; values remain unvalidated |
@@ -87,12 +94,23 @@ Read this list before assuming anything works.
 The Docker entrypoint (`ops/odoo-entrypoint.sh`) deliberately derives the core
 addons path from the installed Odoo package rather than hardcoding it, because
 the correct value differs between Odoo releases and install methods. That
-derivation has never been executed. If the first `make test-odoo` fails at
-container start, that file is the first place to look.
+derivation **has now been executed** by `make test-odoo` and resolves correctly
+on the pinned image.
 
 ## 4. What has actually been verified
 
-Only two things, and they are worth separating clearly.
+**Executed: 105 Odoo addon tests, green (2026-10-09).**
+`make test-odoo` installs the six addons on a fresh database and runs the suite
+against Odoo 18 CE + PostgreSQL 16. Latest run: 0 failed, 0 errors of 105 tests,
+with the statutory sign-off gate holding —
+`docs/test-runs/20261009T050617Z.md`. This is the first time the ORM paths
+(solver, settlement, statutory context, payroll-run gates and checksums) have run
+at all. It does **not** validate any statutory rate: every value is a skeleton by
+design (see §5). Files touched to get there are recorded in the run's
+"Outstanding issues" and in §5.
+
+Only two things were verified before that run, and they are worth separating
+clearly.
 
 **Executed: 190 standalone tests (14 solver + 45 TDS + 81 statutory + 50 F&F).**
 `make test-standalone` runs both files with no dependencies. It re-implements the solver's constraint arithmetic
@@ -289,6 +307,40 @@ Ordered by how much they should worry you.
    come from `hrms.roster.solver.setting`, which a manager fills in. If a
    statutory limit is stricter, the payroll-time statutory engine is what catches
    it, not the solver. Documented in ADR-0008; not yet fixed.
+
+### Fixed by the first Odoo run (2026-10-09)
+
+The first execution surfaced defects that static checks and standalone tests
+could not see. All are fixed; the run above is green.
+
+1. **The roster solver proposed nothing.** In `_fill_one_slot`, `ranked.append(...)`
+   sat *after* a `continue`, so it was unreachable and every slot was reported as
+   a gap. This is why the solver "worked" standalone but produced an empty
+   proposal inside Odoo.
+2. **Applying any proposal raised `TypeError`.** `action_apply` and
+   `_action_apply_proposal` passed already-stored JSON back through `_json`
+   (which *serialises*), then iterated the resulting string. Now parsed with
+   `json.loads`.
+3. **`_rank` treated the `hr.roster.demand` record as a dict** (`demand.get(...)`,
+   `demand["date"]`). It now uses record fields and the loop's day.
+4. **`hrms.roster.availability` had no `shift_id`**, though the solver read it for
+   `kind = "preferred"`. The field is now declared.
+5. **`_unrostered_employees` referenced an undefined `run`** instead of `self`,
+   raising `NameError` on every payroll-run coverage read.
+6. **The payroll coverage gate never fired.** `_coverage_gaps` expected
+   `_snapshot` to raise when nothing is configured, but `_snapshot` returns `[]`;
+   an empty snapshot now counts as a gap.
+7. **`input_checksum` was `store=True`**, so it never changed when the inputs did.
+   It is now a non-stored compute.
+8. **F&F leave encashment priced every leave type**, including the stock "Paid
+   Time Off" with no pay code, and refused. It now considers only leave types that
+   have a pay code or are marked statutory.
+9. **Finance approvers could not see a settlement.** The own-employee record rule
+   hid every case from the approver. A finance record rule now grants read/write
+   (not create/delete).
+10. **Test-only defects fixed:** roster `_days_between` called `date.strptime`
+    (does not exist); a lint placeholder referenced the wrong model name; a period
+    test mutated `date_from` before `date_to`, tripping its own constraint.
 
 ### Non-blocking but known
 

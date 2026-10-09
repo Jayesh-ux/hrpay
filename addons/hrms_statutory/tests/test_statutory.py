@@ -41,12 +41,30 @@ class StatutoryRuleTestCase(TransactionCase):
         )
 
     def _rule(self, code, component_type="threshold", **scope):
+        """Reuse the catalog skeleton if the install seeder already made it.
+
+        The post-Install hook seeds every catalog code as an unsigned skeleton,
+        so a fixture that blindly creates "IN.PF.WAGE_CEILING" again trips the
+        scope_key UNIQUE constraint. Reuse keeps the sign-off gate intact: the
+        seeded rule is a skeleton, and the test still has to version *and*
+        validate it.
+        """
+        scope_domain = [
+            ("code", "=", code),
+            ("country_code", "=", scope.get("country_code", "IN")),
+        ]
+        for k in ("state_code", "contract_type"):
+            if scope.get(k):
+                scope_domain.append((k, "=", scope[k]))
+        existing = self.Rule.search(scope_domain, limit=1)
+        if existing:
+            return existing
         return self.Rule.create(
             dict(
                 {
                     "name": code,
                     "code": code,
-                    "country_code": "IN",
+                    "country_code": scope.get("country_code", "IN"),
                     "component_type": component_type,
                     "source_reference": "test fixture authority",
                 },
@@ -87,7 +105,7 @@ class TestStatutoryRuleResolution(StatutoryRuleTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.rule = cls._rule.__func__(cls, "IN.PF.WAGE_CEILING", "threshold")
+        cls.rule = cls._rule(cls, "IN.PF.WAGE_CEILING", "threshold")
 
     def test_unconfigured_rule_refuses_to_resolve(self):
         """No version at all must raise, never return a default."""
@@ -176,7 +194,15 @@ class TestStatutoryRuleResolution(StatutoryRuleTestCase):
         """A second rule at the same scope is refused; supersede instead."""
         self._rule("IN.PF.WAGE_CEILING", "threshold")
         with self.assertRaises(Exception):
-            self._rule("IN.PF.WAGE_CEILING", "threshold")
+            self.Rule.create(
+                {
+                    "name": "Duplicate scope",
+                    "code": "IN.PF.WAGE_CEILING",
+                    "country_code": "IN",
+                    "component_type": "threshold",
+                    "source_reference": "fixture",
+                }
+            )
 
     def test_missing_source_reference_is_refused(self):
         with self.assertRaises(UserError):
@@ -199,7 +225,9 @@ class TestValueShapes(StatutoryRuleTestCase):
                 {
                     "rule_id": rule.id,
                     "effective_from": date(2020, 1, 1),
-                    "numeric_value": 0.0,  # unset
+                    # numeric_value absent: an unset Float reads back False,
+                    # which is what "requires a number" must reject. An
+                    # explicit 0.0 is a genuine zero and stays accepted.
                     "state": "draft",
                     "source_reference": "fixture",
                 }
@@ -236,11 +264,16 @@ class TestValueShapes(StatutoryRuleTestCase):
 @tagged("post_install", "-at_install", "hrms_statutory")
 class TestCatalogCoverage(StatutoryRuleTestCase):
     def test_catalog_seeds_rules_without_values(self):
-        created = self.env["hrms.statutory.catalog"].seed()
-        self.assertGreater(created, 0, "catalog seed created nothing")
-        self.assertEqual(
-            self.env["hrms.statutory.catalog"].seed(), 0, "catalog seed is not idempotent"
+        catalog = self.env["hrms.statutory.catalog"]
+        catalog.seed()
+        codes = set(catalog.catalog_codes())
+        seeded = set(self.env["hrms.statutory.rule"].search([]).mapped("code"))
+        self.assertTrue(
+            codes <= seeded,
+            "catalog seed did not create a skeleton for every code",
         )
+        self.assertEqual(self.env["hrms.statutory.rule.version"].search_count([]), 0)
+        self.assertEqual(catalog.seed(), 0, "catalog seed is not idempotent")
 
     def test_coverage_report_is_not_go_live_ready_on_a_fresh_db(self):
         self.env["hrms.statutory.catalog"].seed()
@@ -273,7 +306,11 @@ class TestGratuity(StatutoryRuleTestCase):
 
     def test_gratuity_refuses_without_configured_eligibility(self):
         employee = self.env["hr.employee"].create(
-            {"name": "No Config", "join_date": date(2015, 1, 1)}
+            {
+                "name": "No Config",
+                "join_date": date(2015, 1, 1),
+                "company_id": self.Company.id,
+            }
         )
         with self.assertRaises(UserError):
             self.env["hrms.gratuity.engine"].compute(
@@ -301,7 +338,11 @@ class TestGratuity(StatutoryRuleTestCase):
     def test_under_five_years_is_not_eligible(self):
         self._full_config()
         employee = self.env["hr.employee"].create(
-            {"name": "Short Service", "join_date": date(2024, 1, 1)}
+            {
+                "name": "Short Service",
+                "join_date": date(2024, 1, 1),
+                "company_id": self.Company.id,
+            }
         )
         result = self.env["hrms.gratuity.engine"].compute(
             employee, date(2026, 10, 5), "resignation", wage_basis=30000.0
@@ -312,7 +353,11 @@ class TestGratuity(StatutoryRuleTestCase):
     def test_over_five_years_is_eligible_and_dated(self):
         self._full_config()
         employee = self.env["hr.employee"].create(
-            {"name": "Long Service", "join_date": date(2018, 1, 1)}
+            {
+                "name": "Long Service",
+                "join_date": date(2018, 1, 1),
+                "company_id": self.Company.id,
+            }
         )
         result = self.env["hrms.gratuity.engine"].compute(
             employee, date(2026, 10, 5), "resignation", wage_basis=30000.0
@@ -328,7 +373,11 @@ class TestGratuity(StatutoryRuleTestCase):
     def test_remainder_above_six_months_counts_as_a_full_year(self):
         self._full_config()
         employee = self.env["hr.employee"].create(
-            {"name": "Six Plus", "join_date": date(2019, 1, 1)}
+            {
+                "name": "Six Plus",
+                "join_date": date(2019, 1, 1),
+                "company_id": self.Company.id,
+            }
         )
         # 7y9m at 2026-10-05: remainder 9 months > 6, so 8 countable years.
         result = self.env["hrms.gratuity.engine"].compute(
@@ -348,7 +397,11 @@ class TestGratuity(StatutoryRuleTestCase):
         """
         self._full_config()
         employee = self.env["hr.employee"].create(
-            {"name": "Exactly Six", "join_date": date(2019, 4, 5)}
+            {
+                "name": "Exactly Six",
+                "join_date": date(2019, 4, 5),
+                "company_id": self.Company.id,
+            }
         )
         # As at 2026-10-05: 7 years 6 months exactly.
         result = self.env["hrms.gratuity.engine"].compute(
@@ -380,7 +433,11 @@ class TestGratuity(StatutoryRuleTestCase):
             self._version(self._rule("IN.GRATUITY.PAYMENT_DEADLINE_DAYS", "deadline"), numeric=30)
         )
         employee = self.env["hr.employee"].create(
-            {"name": "Inclusive Six", "join_date": date(2019, 4, 5)}
+            {
+                "name": "Inclusive Six",
+                "join_date": date(2019, 4, 5),
+                "company_id": self.Company.id,
+            }
         )
         result = self.env["hrms.gratuity.engine"].compute(
             employee, date(2026, 10, 5), "resignation", wage_basis=26000.0
@@ -391,7 +448,11 @@ class TestGratuity(StatutoryRuleTestCase):
         """No payslip means no wages figure, and the old CTC/12 fallback is gone."""
         self._full_config()
         employee = self.env["hr.employee"].create(
-            {"name": "No Payslip", "join_date": date(2010, 1, 1), "hrms_ctc": 900000.0}
+            {
+                "name": "No Payslip",
+                "join_date": date(2010, 1, 1), "hrms_ctc": 900000.0,
+                "company_id": self.Company.id,
+            }
         )
         with self.assertRaises(UserError) as caught:
             self.env["hrms.gratuity.engine"].compute(
@@ -414,7 +475,11 @@ class TestGratuity(StatutoryRuleTestCase):
             self._version(self._rule("IN.GRATUITY.PAYMENT_DEADLINE_DAYS", "deadline"), numeric=30)
         )
         employee = self.env["hr.employee"].create(
-            {"name": "Zero Ceiling", "join_date": date(2010, 1, 1)}
+            {
+                "name": "Zero Ceiling",
+                "join_date": date(2010, 1, 1),
+                "company_id": self.Company.id,
+            }
         )
         result = self.env["hrms.gratuity.engine"].compute(
             employee, date(2026, 10, 5), "resignation", wage_basis=26000.0
@@ -425,7 +490,11 @@ class TestGratuity(StatutoryRuleTestCase):
     def test_ceiling_is_applied_and_the_excess_reported(self):
         self._full_config()
         employee = self.env["hr.employee"].create(
-            {"name": "Very Long Service", "join_date": date(2000, 1, 1)}
+            {
+                "name": "Very Long Service",
+                "join_date": date(2000, 1, 1),
+                "company_id": self.Company.id,
+            }
         )
         result = self.env["hrms.gratuity.engine"].compute(
             employee, date(2026, 10, 5), "resignation", wage_basis=300000.0
@@ -437,7 +506,11 @@ class TestGratuity(StatutoryRuleTestCase):
     def test_result_records_the_rule_versions_used(self):
         self._full_config()
         employee = self.env["hr.employee"].create(
-            {"name": "Traced", "join_date": date(2010, 1, 1)}
+            {
+                "name": "Traced",
+                "join_date": date(2010, 1, 1),
+                "company_id": self.Company.id,
+            }
         )
         result = self.env["hrms.gratuity.engine"].compute(
             employee, date(2026, 10, 5), "resignation", wage_basis=50000.0
@@ -470,6 +543,7 @@ class TestGratuityFixedTerm(StatutoryRuleTestCase):
         employee = self.env["hr.employee"].create(
             {
                 "name": "Fixed Term",
+                "company_id": self.Company.id,
                 "join_date": date(2026, 1, 1),
                 "contract_type": "fixed_term",
                 "hrms_contract_start": date(2026, 1, 1),
@@ -508,6 +582,7 @@ class TestGratuityFixedTerm(StatutoryRuleTestCase):
         employee = self.env["hr.employee"].create(
             {
                 "name": "Terminated Early",
+                "company_id": self.Company.id,
                 "join_date": date(2026, 3, 1),
                 "contract_type": "fixed_term",
                 "hrms_contract_start": date(2026, 3, 1),

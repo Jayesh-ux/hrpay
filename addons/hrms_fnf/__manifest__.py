@@ -15,10 +15,10 @@
         "hr_payroll_account_community",
     ],
     "data": [
-        "security/ir.model.access.csv",
         "security/hrms_fnf_security.xml",
+        "security/ir.model.access.csv",
         "data/fnf_reason_codes.xml",
-        "views/fnf_views.xml",
+        "views/fnf_views.xml"
     ],
     "installable": True,
     "application": False,

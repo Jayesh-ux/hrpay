@@ -14,13 +14,14 @@
         "hr_holidays",
         "hr_attendance",
         "hr_expense",
+        "account",
         "mail",
     ],
     "external_dependencies": {"python": ["cryptography"]},
     "data": [
-        "security/ir.model.access.csv",
         "security/hrms_security.xml",
-        "data/ir_config_data.xml",
+        "security/ir.model.access.csv",
+        "data/ir_config_data.xml"
     ],
     "installable": True,
     "application": False,
