@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        One visible HRMS app.
+
+        The HRMS sections used to be scattered across the Employees app
+        (Rostering, Compliance, Statutory) and the Payroll app (Payroll Runs,
+        Final Settlements), which made them hard to find. They are gathered
+        here as sections of a single "HRMS" application so a user with the
+        right groups sees them all from one place.
+    -->
+
+    <menuitem id="menu_hrms_root"
+              name="HRMS"
+              sequence="4"
+              web_icon="hrms_theme,static/description/icon.png"/>
+
+    <record id="hrms_roster.menu_hrms_roster_root" model="ir.ui.menu">
+        <field name="parent_id" ref="menu_hrms_root"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="hrms_core_ext.menu_hrms_core_ext_root" model="ir.ui.menu">
+        <field name="parent_id" ref="menu_hrms_root"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="hrms_statutory.menu_hrms_statutory_root" model="ir.ui.menu">
+        <field name="parent_id" ref="menu_hrms_root"/>
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="hrms_payroll_run.menu_hrms_payroll_run" model="ir.ui.menu">
+        <field name="parent_id" ref="menu_hrms_root"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="hrms_fnf.menu_hrms_fnf_case" model="ir.ui.menu">
+        <field name="parent_id" ref="menu_hrms_root"/>
+        <field name="sequence">35</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,12 @@
+// ============================================================================
+// hrms_theme — accessibility variable tweaks
+// ----------------------------------------------------------------------------
+// Odoo's default muted text is rgba($o-main-text-color, .76), which renders
+// ~4.34:1 on white — just below the WCAG AA 4.5:1 threshold. This is consumed
+// by Bootstrap's $text-muted and several Odoo components, so we raise the
+// opacity here (would otherwise require overriding many individual rules).
+// No colours other than the muted grey are touched; there is no layout change.
+// ============================================================================
+
+$o-opacity-muted: 0.85;
+$o-main-color-muted: rgba($o-main-text-color, $o-opacity-muted);

@@ -1,0 +1,89 @@
+// ============================================================================
+// hrms_theme — backend tweaks (light default)
+// ----------------------------------------------------------------------------
+// HISTORY: this addon used to force a Bitrix24 dark skin AND a vertical
+// sidebar layout (navbar-as-column on >=992px). The sidebar layout broke at
+// common laptop resolutions and pushed the section menu into Odoo's "More"
+// overflow ("+") button, so both the dark palette and the layout overrides
+// were removed. Light is the default again and the standard top navbar is
+// untouched. Only small, non-layout tweaks (a few contrast fixes and slimmer
+// scrollbars) remain.
+//
+// If a dark theme is reintroduced later it must be opt-in (a body-level class
+// toggled by the user) and must not change layout.
+// ============================================================================
+
+// 1. Odoo core ships systray badges (e.g. the Discuss unread counter) as white
+//    text on $o-success (#28a745 => ~2.8:1), below WCAG AA. Odoo exposes the
+//    background through --o-navbar-badge-bg; darken it (no layout change) so
+//    the badges are readable. White on #0a7c1e is ~5.4:1.
+.o_menu_systray {
+    --o-navbar-badge-bg: #0a7c1e;
+    --o-navbar-badge-color: #fff;
+}
+
+// 2. Accessibility: contrast fixes for stock Odoo light mode.
+//    These target Odoo/Bootstrap defaults that fall below WCAG AA. They only
+//    change colours, never layout.
+//
+//    a) Muted text. The variable fix lives in primary_variables.scss, but we
+//       also pin the utility class so the result is guaranteed regardless of
+//       asset ordering. #5c6570 on white is ~5.9:1.
+.text-muted,
+.o_muted {
+    color: #5c6570 !important;
+}
+
+//    b) Bootstrap contextual badges/buttons render white on saturated colours
+//       that miss AA: success #28a745 (2.8:1) and info #17a2b8 (3.0:1).
+//       Darken the backgrounds only; white on the new values is >=5:1.
+.text-bg-success,
+.btn-success {
+    background-color: #0a7c1e !important;
+    border-color: #0a7c1e !important;
+}
+
+.text-bg-info,
+.btn-info {
+    background-color: #0d6674 !important;
+    border-color: #0d6674 !important;
+}
+
+//    c) FullCalendar (used by Time Off / Attendance / any calendar view) paints
+//       day numbers and axis labels with $o-gray-500 (#adb5bd => ~3.1:1) or as
+//       transparent text. Force a readable foreground.
+.fc .fc-daygrid-day-number,
+.fc .fc-day-number,
+.fc .o_cw_day_number,
+.fc .o-fc-week-header,
+.fc .fc-timegrid-axis-cushion,
+.fc .fc-col-header-cell-cushion {
+    color: #495057 !important;
+}
+
+// 3. Scrollbars: neutral thin bars instead of the bright default, for both
+//    light and dark OS schemes.
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #b4bcc8 transparent;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #b4bcc8;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #8c97a6;
+}
