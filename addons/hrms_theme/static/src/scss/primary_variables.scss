@@ -1,12 +1,105 @@
 // ============================================================================
-// hrms_theme — accessibility variable tweaks
+// hrms_theme — backend palette + accessibility variables
 // ----------------------------------------------------------------------------
-// Odoo's default muted text is rgba($o-main-text-color, .76), which renders
-// ~4.34:1 on white — just below the WCAG AA 4.5:1 threshold. This is consumed
-// by Bootstrap's $text-muted and several Odoo components, so we raise the
-// opacity here (would otherwise require overriding many individual rules).
-// No colours other than the muted grey are touched; there is no layout change.
+// This file is compiled as part of Odoo's `web._assets_primary_variables`
+// bundle, i.e. BEFORE the backend components are compiled. Overriding Odoo's
+// own SCSS variables here makes the whole backend (dropdowns, modals, forms,
+// calendars, chat, settings, search panels, ...) recompile with the dark navy
+// palette, instead of patching each component with fragile CSS overrides.
+//
+// We recolour Odoo's grey ramp (100 = lightest -> 900 = darkest by default) in
+// reverse so backgrounds become dark and text becomes light, and pin the few
+// semantic variables whose meaning is fixed (body/sheet/text/headings/link).
+// `$o-white` is left untouched: it is the "always light" colour used for text
+// on coloured (accent) surfaces.
 // ============================================================================
 
+// Native form controls / scrollbars follow the dark scheme.
+$o-webclient-color-scheme: dark;
+
+// --- Grey ramp (inverted) ---------------------------------------------------
+$o-gray-100: #131c33;
+$o-gray-200: #172140;
+$o-gray-300: #25304d;
+$o-gray-400: #3a4666;
+$o-gray-500: #5b678a;
+$o-gray-600: #8591b3;
+$o-gray-700: #9aa6c4;
+$o-gray-800: #c3cbe4;
+$o-gray-900: #e8ecf8;
+
+// Odoo's `$o-grays` map is built from the defaults before this file runs, so it
+// must be rebuilt too (a few components read `map-get($o-grays, ...)`).
+$o-grays: (
+    100: $o-gray-100,
+    200: $o-gray-200,
+    300: $o-gray-300,
+    400: $o-gray-400,
+    500: $o-gray-500,
+    600: $o-gray-600,
+    700: $o-gray-700,
+    800: $o-gray-800,
+    900: $o-gray-900,
+);
+
+// Bootstrap's own grey ramp/map (compiled with `$variable-prefix: ''`) is
+// separate from Odoo's and still feeds several components — e.g. the Settings
+// tabs read `map-get($grays, '100')`. Keep it in sync (mirrored values) and
+// rebuild the derived `$light`/`$dark` theme colours.
+$gray-100: #131c33;
+$gray-200: #172140;
+$gray-300: #25304d;
+$gray-400: #3a4666;
+$gray-500: #5b678a;
+$gray-600: #8591b3;
+$gray-700: #9aa6c4;
+$gray-800: #c3cbe4;
+$gray-900: #e8ecf8;
+$grays: (
+    "100": $gray-100,
+    "200": $gray-200,
+    "300": $gray-300,
+    "400": $gray-400,
+    "500": $gray-500,
+    "600": $gray-600,
+    "700": $gray-700,
+    "800": $gray-800,
+    "900": $gray-900,
+);
+// `$light`/`$dark` feed Odoo's `$theme-colors` map, which is built later with
+// `!default` semantics, so the light/dark utilities follow the new ramp too.
+$light: $gray-100;
+$dark: $gray-900;
+
+// --- Surfaces ---------------------------------------------------------------
+$o-webclient-background-color: #0b1020;
+$o-view-background-color: #131c33;
+
+// --- Text -------------------------------------------------------------------
+$o-main-text-color: #e8ecf8;
+$o-main-headings-color: #ffffff;
+
+// Bootstrap's `--emphasis-color` (drives `.text-emphasis`, table text colour,
+// etc.) is built from `$body-emphasis-color`, which defaults to black; keep it
+// light so it stays legible on the dark surfaces.
+$body-emphasis-color: #e8ecf8;
+
+// Odoo's default muted text is rgba($o-main-text-color, .76) (~4.34:1 on the
+// old light bg). With the dark palette we pin a solid muted grey that keeps
+// >= 4.5:1 on the new dark surfaces.
 $o-opacity-muted: 0.85;
-$o-main-color-muted: rgba($o-main-text-color, $o-opacity-muted);
+$o-main-color-muted: #9aa6c4;
+
+// --- Accent / links ---------------------------------------------------------
+$o-community-color: #6d4aff;
+$o-brand-primary: #6d4aff;
+$o-action: $o-brand-primary;
+$o-main-link-color: #a995ff;
+
+// --- Selection / active states ---------------------------------------------
+$o-component-active-bg: rgba(109, 74, 255, 0.22);
+$o-component-active-color: #ffffff;
+$o-component-active-border: #6d4aff;
+
+$o-list-group-active-bg: rgba(109, 74, 255, 0.22);
+$o-list-group-active-color: #ffffff;

@@ -1,8 +1,9 @@
 {
     "name": "HRMS Theme",
-    "summary": "Consolidated HRMS app menu plus a couple of small, non-layout "
-               "backend tweaks. Light is the default theme.",
-    "version": "18.0.1.1.0",
+    "summary": "Dark navy + violet backend redesign: fixed left sidebar, gradient "
+               "page headers, restyled lists/forms/kanban. Dark by default with a "
+               "light toggle. Styling and a small UI-enhancement script only.",
+    "version": "18.0.1.2.0",
     "category": "Theme/Backend",
     "license": "LGPL-3",
     "author": "hrpay",
@@ -24,7 +25,12 @@
             "hrms_theme/static/src/scss/primary_variables.scss",
         ],
         "web.assets_backend": [
+            # GSAP core is vendored locally (no CDN / runtime network dependency)
+            # so animations work offline. Loaded before theme.js, which uses the
+            # global `gsap`. License: GSAP Standard (free) - see static/lib/gsap.
+            "hrms_theme/static/lib/gsap/gsap.min.js",
             "hrms_theme/static/src/scss/hrms_theme.scss",
+            "hrms_theme/static/src/js/theme.js",
         ],
     },
     "installable": True,

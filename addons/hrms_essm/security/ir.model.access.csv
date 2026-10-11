@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_profile_request_user,hrms.profile.change.request user,model_hrms_profile_change_request,base.group_user,1,1,1,1
+access_profile_change_request_hr,hrms.profile.change.request hr,model_hrms_profile_change_request,hr.group_hr_user,1,1,1,1
+access_hrms_tax_declaration_user,hrms.tax.declaration user,model_hrms_tax_declaration,base.group_user,1,1,1,1
+access_hrms_tax_declaration_hr,hrms.tax.declaration hr,model_hrms_tax_declaration,hr.group_hr_user,1,1,1,1
+access_hrms_employee_document_user,hrms.employee.document user,model_hrms_employee_document,base.group_user,1,1,1,1
+access_hrms_employee_document_hr,hrms.employee.document hr,model_hrms_employee_document,hr.group_hr_user,1,1,1,1
+access_hr_payslip_employee_read,hr.payslip employee read,hr_payroll_community.model_hr_payslip,base.group_user,1,0,0,0

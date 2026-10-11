@@ -235,7 +235,7 @@ class HrEmployee(models.Model):
         spec = self._encrypted_fields.get(field_name)
         if not spec:
             raise UserError(f"{field_name} is not an encrypted field on hr.employee")
-        if not self.user_has_groups(spec.get("group", "base.group_user")):
+        if not self.env.user.has_group(spec.get("group", "base.group_user")):
             raise AccessError(
                 f"{spec['label']} is restricted to "
                 f"{spec.get('group')} and above."
@@ -260,7 +260,7 @@ class HrEmployee(models.Model):
 
     def action_view_aadhaar(self):
         self.ensure_one()
-        if not self.user_has_groups("hr.group_hr_manager"):
+        if not self.env.user.has_group("hr.group_hr_manager"):
             raise AccessError("Aadhaar is restricted to HR Managers.")
         self.env["hrms.audit.log"].log(
             "hr.employee", self.id, "read_sensitive",
@@ -268,6 +268,30 @@ class HrEmployee(models.Model):
             note="Aadhaar viewed by %s" % self.env.user.name,
         )
         return {"type": "ir.actions.act_window", "res_model": self._name, "res_id": self.id, "view_mode": "form", "target": "new"}
+
+    def action_reveal_secret(self):
+        """Reveal one encrypted field from the form, audited.
+
+        The field name arrives via ``hrms_reveal_field`` in the button context so
+        one action serves every entry in ``_encrypted_fields``. Access is checked
+        and the read is recorded inside ``_hrms_reveal``; nothing is disclosed if
+        the user lacks the field's group.
+        """
+        self.ensure_one()
+        field_name = self.env.context.get("hrms_reveal_field")
+        if field_name not in self._encrypted_fields:
+            raise UserError("hrms_reveal_field must name an encrypted hr.employee field.")
+        value = self._hrms_reveal(field_name, reason="Revealed from the employee form")
+        return {
+            "type": "ir.actions.client",
+            "tag": "display_notification",
+            "params": {
+                "type": "warning",
+                "title": self._encrypted_fields[field_name]["label"],
+                "message": "%s: %s" % (self.name, value),
+                "sticky": True,
+            },
+        }
 
     # ─── Masked display values ──────────────────────────────────────────
     # Safe to render in a list or a report: last four characters only, so a

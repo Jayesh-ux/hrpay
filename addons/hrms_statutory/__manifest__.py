@@ -16,7 +16,8 @@
     ],
     "data": [
         "security/hrms_statutory_security.xml",
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+        "views/statutory_views.xml"
     ],
     "installable": True,
     "application": False,

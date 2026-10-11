@@ -183,6 +183,27 @@ class TestStatutoryRuleResolution(StatutoryRuleTestCase):
         with self.assertRaises(UserError):
             version.write({"state": "validated"})
 
+    def test_form_signoff_action_validates_with_a_named_validator(self):
+        """The form button must be a thin wrapper over the same gate."""
+        version = self._version(self.rule, numeric=15000)
+        version.action_validate()
+        self.assertEqual(version.state, "validated")
+        self.assertTrue(version.validated_at)
+
+    def test_form_signoff_action_refuses_without_a_validator(self):
+        version = self.Version.create(
+            {
+                "rule_id": self.rule.id,
+                "effective_from": date(2020, 1, 1),
+                "numeric_value": 15000,
+                "state": "draft",
+                "source_reference": "authored fixture",
+                "validated_by": False,
+            }
+        )
+        with self.assertRaises(UserError):
+            version.action_validate()
+
     def test_state_specific_version_wins_over_national(self):
         mh = self._rule("IN.PF.WAGE_CEILING", "threshold", state_code="MH")
         self._activate(self._version(self.rule, numeric=15000))

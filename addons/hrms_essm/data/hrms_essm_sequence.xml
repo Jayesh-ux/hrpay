@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_hrms_profile_change_request" model="ir.sequence">
+            <field name="name">Profile change request</field>
+            <field name="code">hrms.profile.change.request</field>
+            <field name="prefix">PCR/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        <record id="seq_hrms_tax_declaration" model="ir.sequence">
+            <field name="name">Tax declaration</field>
+            <field name="code">hrms.tax.declaration</field>
+            <field name="prefix">TAX/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+    </data>
+</odoo>

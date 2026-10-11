@@ -21,7 +21,8 @@
     "data": [
         "security/hrms_security.xml",
         "security/ir.model.access.csv",
-        "data/ir_config_data.xml"
+        "data/ir_config_data.xml",
+        "views/core_ext_views.xml"
     ],
     "installable": True,
     "application": False,

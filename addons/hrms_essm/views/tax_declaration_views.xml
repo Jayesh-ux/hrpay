@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hrms_tax_declaration_list" model="ir.ui.view">
+        <field name="name">hrms.tax.declaration.list</field>
+        <field name="model">hrms.tax.declaration</field>
+        <field name="arch" type="xml">
+            <list string="My tax declarations" create="false" delete="false">
+                <field name="name"/>
+                <field name="financial_year"/>
+                <field name="regime"/>
+                <field name="amount" widget="monetary"/>
+                <field name="currency_id" column_invisible="1"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'approved'"
+                       decoration-info="state == 'submitted'"
+                       decoration-danger="state == 'rejected'"/>
+                <field name="applied_to_payroll" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hrms_tax_declaration_form" model="ir.ui.view">
+        <field name="name">hrms.tax.declaration.form</field>
+        <field name="model">hrms.tax.declaration</field>
+        <field name="arch" type="xml">
+            <form string="Tax declaration">
+                <header>
+                    <button name="action_submit" string="Submit" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-primary" invisible="state != 'submitted'"
+                            groups="hr.group_hr_manager,hr.group_hr_user"/>
+                    <button name="action_reject" string="Refuse" type="object"
+                            invisible="state not in ('submitted', 'approved')"
+                            groups="hr.group_hr_manager,hr.group_hr_user"/>
+                    <button name="action_apply_to_payroll_input"
+                            string="Apply to payroll input" type="object"
+                            invisible="state != 'approved' or applied_to_payroll"
+                            groups="hr.group_hr_user"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,approved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="financial_year" readonly="state != 'draft'"/>
+                            <field name="regime" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="amount" widget="monetary"
+                                   readonly="state != 'draft'"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="applied_to_payroll"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="note" nolabel="1"/>
+                    </group>
+                    <field name="attachment_ids" widget="many2many_binary"/>
+                    <group string="Decision" invisible="state in ('draft', 'submitted')">
+                        <field name="approver_id"/>
+                        <field name="decision_date"/>
+                        <field name="approver_note"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hrms_tax_declaration_search" model="ir.ui.view">
+        <field name="name">hrms.tax.declaration.search</field>
+        <field name="model">hrms.tax.declaration</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="financial_year"/>
+                <filter name="submitted" string="To approve"
+                        domain="[('state', '=', 'submitted')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hrms_tax_declaration_my" model="ir.actions.act_window">
+        <field name="name">My Tax Declarations</field>
+        <field name="res_model">hrms.tax.declaration</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_hrms_tax_declaration_approve" model="ir.actions.act_window">
+        <field name="name">Declarations to Approve</field>
+        <field name="res_model">hrms.tax.declaration</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'submitted')]</field>
+    </record>
+
+</odoo>

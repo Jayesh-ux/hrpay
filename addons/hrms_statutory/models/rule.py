@@ -310,6 +310,24 @@ class StatutoryRuleVersion(models.Model):
             self._check_value_shape_at_create(vals)
         return super().create(vals_list)
 
+    def action_validate(self):
+        """Sign a draft version off from the form.
+
+        ``_check_signoff`` requires ``validated_by`` to travel in the same
+        ``write`` as the state change, so the button passes it explicitly. The
+        segregation-of-duties check inside ``_check_signoff`` still applies: the
+        author of the row cannot also be the validator.
+        """
+        for rec in self:
+            if not rec.validated_by:
+                raise UserError(
+                    f"{rec.rule_id.code}: choose the validator (Validated by) "
+                    "before signing off. A statutory value must be signed off by "
+                    "a named payroll/tax professional."
+                )
+            rec.write({"state": "validated", "validated_by": rec.validated_by.id})
+        return True
+
     def write(self, vals):
         self._check_signoff(vals)
         immutable = {"numeric_value", "text_value", "json_value", "effective_from"}

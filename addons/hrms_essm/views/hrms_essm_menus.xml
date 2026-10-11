@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        "My HR" — the employee self-service application.
+
+        Every internal user sees their own screens. The Team group is only shown
+        to HR users (hr.group_hr_user and above). The self-service screens query
+        the existing hrms_* / hr.* / hr.payslip backends; they add no parallel
+        business logic.
+    -->
+
+    <menuitem id="menu_hrms_essm_root"
+              name="My HR"
+              sequence="5"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_hrms_essm_profile"
+              name="My Profile"
+              parent="menu_hrms_essm_root"
+              action="action_essm_my_profile_server"
+              sequence="10"/>
+
+    <menuitem id="menu_hrms_essm_requests"
+              name="My Change Requests"
+              parent="menu_hrms_essm_root"
+              action="action_hrms_profile_change_request_my"
+              sequence="20"/>
+
+    <menuitem id="menu_hrms_essm_payslips"
+              name="My Payslips"
+              parent="menu_hrms_essm_root"
+              action="action_essm_my_payslips"
+              sequence="30"/>
+
+    <menuitem id="menu_hrms_essm_leaves"
+              name="My Time Off"
+              parent="menu_hrms_essm_root"
+              action="action_essm_my_leaves"
+              sequence="40"/>
+
+    <menuitem id="menu_hrms_essm_allocations"
+              name="My Allocations"
+              parent="menu_hrms_essm_root"
+              action="action_essm_my_allocations"
+              sequence="45"/>
+
+    <menuitem id="menu_hrms_essm_expenses"
+              name="My Expenses"
+              parent="menu_hrms_essm_root"
+              action="action_essm_my_expenses"
+              sequence="50"/>
+
+    <menuitem id="menu_hrms_essm_documents"
+              name="My Documents"
+              parent="menu_hrms_essm_root"
+              action="action_essm_my_documents"
+              sequence="60"/>
+
+    <menuitem id="menu_hrms_essm_tax"
+              name="My Tax Declarations"
+              parent="menu_hrms_essm_root"
+              action="action_hrms_tax_declaration_my"
+              sequence="70"/>
+
+    <!-- ── Team / approver screens ───────────────────────────────────── -->
+    <menuitem id="menu_hrms_essm_team"
+              name="Team"
+              parent="menu_hrms_essm_root"
+              groups="hr.group_hr_user"
+              sequence="100"/>
+
+    <menuitem id="menu_hrms_essm_team_requests"
+              name="Change Requests to Approve"
+              parent="menu_hrms_essm_team"
+              action="action_hrms_profile_change_request_approve"
+              groups="hr.group_hr_user"
+              sequence="10"/>
+
+    <menuitem id="menu_hrms_essm_team_leave"
+              name="Time Off to Approve"
+              parent="menu_hrms_essm_team"
+              action="action_essm_team_leave_approve"
+              groups="hr.group_hr_user"
+              sequence="20"/>
+
+    <menuitem id="menu_hrms_essm_team_expense"
+              name="Expenses to Approve"
+              parent="menu_hrms_essm_team"
+              action="action_essm_team_expense_approve"
+              groups="hr.group_hr_user"
+              sequence="30"/>
+
+    <menuitem id="menu_hrms_essm_team_tax"
+              name="Declarations to Approve"
+              parent="menu_hrms_essm_team"
+              action="action_hrms_tax_declaration_approve"
+              groups="hr.group_hr_user"
+              sequence="40"/>
+
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ── Record rules ─────────────────────────────────────────────
+             Self-service policy:
+
+             • Native models (hr.employee, hr.payslip, hr.leave, hr.expense)
+               keep their own Odoo / OpenHRMS access rules. ESSM only shows
+               the caller their OWN records, and enforces that with the
+               per-action domains in the view files (e.g.
+             'employee_id.user_id = uid'). Adding a second, group-bound
+             rule on these models would collide with Odoo's global
+             multi-company rule: Odoo AND-s the global rule with the OR of
+             the caller's group rules, so a base.group_user rule would strip
+             HR managers of access to other employees. So we add none here.
+
+             • ESSM's OWN models (profile change requests, tax declarations,
+             employee documents) have no native rules. These get two rules:
+             an "own records" rule for base.group_user and a "see everything
+             and approve" rule for hr.group_hr_user. Because the model has no
+             global rule, the two are OR-combined exactly as intended: a plain
+             employee sees only their own rows, HR sees all.
+        -->
+
+        <record id="rule_essm_own_request" model="ir.rule">
+            <field name="name">ESSM: own profile change requests</field>
+            <field name="model_id" ref="model_hrms_profile_change_request"/>
+            <field name="domain_force">['|', ('requested_by', '=', user.id), ('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="rule_essm_own_declaration" model="ir.rule">
+            <field name="name">ESSM: own tax declarations</field>
+            <field name="model_id" ref="model_hrms_tax_declaration"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="rule_essm_own_document" model="ir.rule">
+            <field name="name">ESSM: own documents</field>
+            <field name="model_id" ref="model_hrms_employee_document"/>
+            <field name="domain_force">[('employee_id.user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- HR counterparts: without these, an HR user (who is also in
+             base.group_user) would only see their own rows on these models,
+             because OR-combining own-rules yields nothing else. -->
+        <record id="rule_hr_all_request" model="ir.rule">
+            <field name="name">ESSM: HR sees all profile change requests</field>
+            <field name="model_id" ref="model_hrms_profile_change_request"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+        </record>
+
+        <record id="rule_hr_all_declaration" model="ir.rule">
+            <field name="name">ESSM: HR sees all tax declarations</field>
+            <field name="model_id" ref="model_hrms_tax_declaration"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+        </record>
+
+        <record id="rule_hr_all_document" model="ir.rule">
+            <field name="name">ESSM: HR sees all employee documents</field>
+            <field name="model_id" ref="model_hrms_employee_document"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('hr.group_hr_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+        Read-only "My Profile".
+
+        This is built on hr.employee.public — the model Odoo exposes to every
+        employee for viewing people. It deliberately omits the private fields
+        (private_email/private_phone, PAN, Aadhaar, bank) that are restricted
+        to HR, so an employee can open their own card without a field-access
+        error. hr.employee.public shares its ids with hr.employee, so the same
+        record id is used.
+    -->
+    <record id="view_essm_employee_my_profile_form" model="ir.ui.view">
+        <field name="name">hrms.essm.hr.employee.public.form</field>
+        <field name="model">hr.employee.public</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false" delete="false">
+                <sheet>
+                    <field name="image_128" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group string="Position">
+                            <field name="job_id"/>
+                            <field name="department_id"/>
+                            <field name="parent_id"/>
+                            <field name="company_id"/>
+                        </group>
+                        <group string="Work contact">
+                            <field name="work_email"/>
+                            <field name="work_phone"/>
+                            <field name="mobile_phone"/>
+                            <field name="work_location_id"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert">
+                        Changes to these details are made through a change request
+                        and approved by your manager or HR. Identifiers such as PAN,
+                        Aadhaar and bank details are handled by HR directly.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_essm_my_profile" model="ir.actions.act_window">
+        <field name="name">My Profile</field>
+        <field name="res_model">hr.employee.public</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_essm_employee_my_profile_form"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Your profile is not linked yet
+            </p>
+            <p>
+                Ask HR to link your user account to your employee record.
+            </p>
+        </field>
+    </record>
+
+    <!--
+        A window action alone opens /new when the caller is HR (who may create
+        employees). This server action resolves the caller's own employee and
+        pins the form to that record, so every user — HR or not — lands on
+        their own profile read-only.
+    -->
+    <record id="action_essm_my_profile_server" model="ir.actions.server">
+        <field name="name">My Profile</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(4, ref('base.group_user'))]"/>
+        <field name="code">
+emp = env.user.employee_id or env['hr.employee'].sudo().search([('user_id', '=', env.uid)], limit=1)
+action = env['ir.actions.act_window']._for_xml_id('hrms_essm.action_essm_my_profile')
+if emp:
+    action['res_id'] = emp.id
+    action['view_mode'] = 'form'
+    action['views'] = [(env.ref('hrms_essm.view_essm_employee_my_profile_form').id, 'form')]
+        </field>
+    </record>
+
+</odoo>

@@ -1,89 +1,1775 @@
 // ============================================================================
-// hrms_theme — backend tweaks (light default)
+// hrms_theme — backend theme (dark charcoal + violet) — single source of truth
 // ----------------------------------------------------------------------------
-// HISTORY: this addon used to force a Bitrix24 dark skin AND a vertical
-// sidebar layout (navbar-as-column on >=992px). The sidebar layout broke at
-// common laptop resolutions and pushed the section menu into Odoo's "More"
-// overflow ("+") button, so both the dark palette and the layout overrides
-// were removed. Light is the default again and the standard top navbar is
-// untouched. Only small, non-layout tweaks (a few contrast fixes and slimmer
-// scrollbars) remain.
+// This file is loaded last in `web.assets_backend`, so it overrides the compiled
+// Odoo/Bootstrap styles. One dark palette on :root drives every surface; Odoo's
+// own SCSS greys are compiled dark in primary_variables.scss, so a light variant
+// is intentionally not offered.
 //
-// If a dark theme is reintroduced later it must be opt-in (a body-level class
-// toggled by the user) and must not change layout.
+// Layout: a fixed left navigation (`.hrms-sidebar`, rendered by theme.js) with
+// the navbar, page header and content offset to its right. No Python, model or
+// view logic is touched — styling plus a small JS enhancement only.
+//
+// Organised so each component is defined exactly once (no layered re-skins):
+//   1 tokens · 2 base canvas · 3 top chrome · 4 buttons · 5 forms/cards ·
+//   6 tables · 7 kanban · 8 overlays · 9 badges · 10 alerts · 11 panels/misc ·
+//   12 Odoo surface overrides · 13 sidebar · 14 mobile menu · 15 empty states ·
+//   16 focus · 17 glass fallback + reduced motion
 // ============================================================================
 
-// 1. Odoo core ships systray badges (e.g. the Discuss unread counter) as white
-//    text on $o-success (#28a745 => ~2.8:1), below WCAG AA. Odoo exposes the
-//    background through --o-navbar-badge-bg; darken it (no layout change) so
-//    the badges are readable. White on #0a7c1e is ~5.4:1.
-.o_menu_systray {
-    --o-navbar-badge-bg: #0a7c1e;
-    --o-navbar-badge-color: #fff;
+// ---------------------------------------------------------------------------
+// 1. Design tokens (docs/DESIGN.md)
+// ---------------------------------------------------------------------------
+// Tokens live on <html> so they are never clobbered by Odoo re-rendering the
+// <body> class list.
+:root {
+    // One coherent charcoal-navy family for the workspace and surfaces.
+    --hrms-bg: #0e1117;
+    --hrms-bg-soft: #12161e;
+    --hrms-sidebar: #090b10;
+    --hrms-surface: #171c25;
+    --hrms-raised: #1e242f;
+    --hrms-hover: #262d3a;
+    --hrms-border: #2b323d;
+    --hrms-border-strong: #3c4552;
+    --hrms-text: #e8ecf4;
+    --hrms-muted: #9aa5b4;
+    --hrms-subtle: #7f8a99;
+    --hrms-heading: #ffffff;
+
+    // Navigation — the same hue family one shade darker than the workspace, with
+    // white labels and the app accent reserved for the active item, so the
+    // sidebar reads as part of the same product as the workspace.
+    --hrms-sidebar-text: #f3f5f9;
+    --hrms-sidebar-muted: #8892a3;
+    --hrms-sidebar-divider: rgba(255, 255, 255, .08);
+    --hrms-sidebar-hover: rgba(255, 255, 255, .06);
+    --hrms-sidebar-active: rgba(109, 74, 255, .20);
+    --hrms-sidebar-indicator: var(--hrms-accent);
+
+    // Frosted "liquid glass" chrome: the navbar, page header, dropdowns, dialogs
+    // and floating panels. Lower alpha + a strong backdrop-filter is what makes
+    // the frost visible; `--hrms-glass-strong` is the near-opaque fallback.
+    --hrms-glass: rgba(22, 27, 38, .54);
+    --hrms-glass-strong: rgba(16, 20, 28, .92);
+    --hrms-glass-border: rgba(255, 255, 255, .14);
+    --hrms-glass-highlight: rgba(255, 255, 255, .22);
+    --hrms-glass-blur: 28px;
+    --hrms-glass-saturate: 155%;
+    // A soft top sheen sells the "pane of glass" read on every frosted surface.
+    --hrms-glass-sheen: linear-gradient(180deg, rgba(255, 255, 255, .10), rgba(255, 255, 255, 0) 46%);
+    // The two navigation panels sit directly over the ambient blooms, so they are
+    // the most translucent surfaces on screen - colour clearly shows through.
+    --hrms-glass-rail: rgba(12, 15, 23, .42);
+    --hrms-glass-sidebar: rgba(17, 22, 31, .50);
+    // Content cards (form sheet, list container, kanban cards). Translucent
+    // enough to frost, opaque enough to keep dense text crisp.
+    --hrms-glass-card: rgba(24, 29, 40, .62);
+
+    --hrms-accent: #6d4aff;
+    --hrms-accent-soft: rgba(109, 74, 255, .18);
+    --hrms-accent-ink: #a995ff;
+    --hrms-accent-solid: #6d4aff;
+    // Vivid but tasteful gradient for primary actions and active emphasis.
+    --hrms-accent-grad: linear-gradient(135deg, #6d4aff 0%, #a855f7 52%, #22d3ee 128%);
+
+    // Controlled multicolor accent set. Used only as small focal points (icon
+    // tiles, section dots, markers) on the neutral dark foundation - never as
+    // large background areas, so surfaces never become blue/colour dominated.
+    --hrms-c-purple: #8b5cf6;
+    --hrms-c-cyan: #22d3ee;
+    --hrms-c-teal: #2dd4bf;
+    --hrms-c-green: #34d399;
+    --hrms-c-lime: #4ade80;
+    --hrms-c-amber: #fbbf24;
+    --hrms-c-orange: #fb923c;
+    --hrms-c-red: #f87171;
+    --hrms-c-pink: #f472b6;
+
+    --hrms-success: #4ecb8d;
+    --hrms-warning: #f5b544;
+    --hrms-danger: #f26b7a;
+    --hrms-info: #4cc3ff;
+    --hrms-pill-ink: #0b1020;
+    --hrms-success-ink: #6fdcae;
+    --hrms-warning-ink: #f5b544;
+    --hrms-danger-ink: #f68a96;
+    --hrms-info-ink: #6fd0ff;
+    --hrms-primary-ink: #a995ff;
+
+    --hrms-shadow: 0 18px 44px rgba(0, 0, 0, .48), 0 2px 8px rgba(0, 0, 0, .32);
+    --hrms-shadow-sm: 0 8px 22px rgba(0, 0, 0, .34), 0 1px 3px rgba(0, 0, 0, .28);
+    // Lifted-card elevation: a hairline inner highlight plus two soft, long-throw
+    // shadows — restrained depth, no glow.
+    --hrms-card-shadow: 0 1px 0 var(--hrms-glass-highlight) inset,
+                        0 12px 32px rgba(0, 0, 0, .42),
+                        0 2px 6px rgba(0, 0, 0, .30);
+    --hrms-card-shadow-hover: 0 1px 0 var(--hrms-glass-highlight) inset,
+                              0 20px 48px rgba(0, 0, 0, .52),
+                              0 4px 12px rgba(0, 0, 0, .36);
+    --hrms-radius: 12px;
+    --hrms-radius-lg: 16px;
+    --hrms-radius-sm: 8px;
+    --hrms-apprail-w: 76px;
+    --hrms-sidebar-w: 264px;
+    --hrms-navbar-h: 52px;
+    // Bootstrap derives --table-color / --nav-tabs-*-color / --navbar-* from
+    // --emphasis-color(-rgb); its Sass default is black and did not pick up our
+    // override, so pin it here.
+    --emphasis-color: #e8ecf4;
+    --emphasis-color-rgb: 232, 236, 244;
 }
 
-// 2. Accessibility: contrast fixes for stock Odoo light mode.
-//    These target Odoo/Bootstrap defaults that fall below WCAG AA. They only
-//    change colours, never layout.
-//
-//    a) Muted text. The variable fix lives in primary_variables.scss, but we
-//       also pin the utility class so the result is guaranteed regardless of
-//       asset ordering. #5c6570 on white is ~5.9:1.
-.text-muted,
-.o_muted {
-    color: #5c6570 !important;
+// ---------------------------------------------------------------------------
+// 2. Base canvas, typography, scrollbars
+// ---------------------------------------------------------------------------
+// A very subtle violet/cool tint behind the solid app surfaces makes the
+// translucent chrome read as glass. Low alpha, so text on solid content is
+// unaffected.
+body.o_web_client,
+.o_web_client > .o_action_manager {
+    background-color: var(--hrms-bg);
+    // Dark charcoal foundation with clearly visible multicolour ambient
+    // reflections. The two left-edge blooms sit directly behind the frosted
+    // navigation panels so their translucency is obvious; the rest wash the
+    // workspace corners. Violet/teal lead, so blue never dominates.
+    background-image:
+        radial-gradient(42% 48% at 0% 26%, color-mix(in srgb, var(--hrms-c-purple) 34%, transparent), transparent 70%),
+        radial-gradient(40% 46% at 0% 84%, color-mix(in srgb, var(--hrms-c-teal) 26%, transparent), transparent 68%),
+        radial-gradient(58% 54% at 84% -12%, color-mix(in srgb, var(--hrms-c-purple) 24%, transparent), transparent 64%),
+        radial-gradient(52% 48% at 108% 94%, color-mix(in srgb, var(--hrms-c-orange) 20%, transparent), transparent 62%),
+        radial-gradient(50% 44% at 44% -16%, color-mix(in srgb, var(--hrms-c-cyan) 16%, transparent), transparent 62%),
+        radial-gradient(46% 42% at 72% 118%, color-mix(in srgb, var(--hrms-c-pink) 16%, transparent), transparent 64%),
+        linear-gradient(180deg, #10141f 0%, #0a0d14 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: var(--hrms-text);
 }
 
-//    b) Bootstrap contextual badges/buttons render white on saturated colours
-//       that miss AA: success #28a745 (2.8:1) and info #17a2b8 (3.0:1).
-//       Darken the backgrounds only; white on the new values is >=5:1.
-.text-bg-success,
-.btn-success {
-    background-color: #0a7c1e !important;
-    border-color: #0a7c1e !important;
-}
-
-.text-bg-info,
-.btn-info {
-    background-color: #0d6674 !important;
-    border-color: #0d6674 !important;
-}
-
-//    c) FullCalendar (used by Time Off / Attendance / any calendar view) paints
-//       day numbers and axis labels with $o-gray-500 (#adb5bd => ~3.1:1) or as
-//       transparent text. Force a readable foreground.
-.fc .fc-daygrid-day-number,
-.fc .fc-day-number,
-.fc .o_cw_day_number,
-.fc .o-fc-week-header,
-.fc .fc-timegrid-axis-cushion,
-.fc .fc-col-header-cell-cushion {
-    color: #495057 !important;
-}
-
-// 3. Scrollbars: neutral thin bars instead of the bright default, for both
-//    light and dark OS schemes.
-* {
-    scrollbar-width: thin;
-    scrollbar-color: #b4bcc8 transparent;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-
-::-webkit-scrollbar-track {
+.o_action_manager .o_content {
     background: transparent;
 }
 
+// Odoo paints every backend link with the accent; the sidebar and a few chrome
+// links opt out below (see §13 / §3).
+.o_web_client a:not(.btn):not(.dropdown-item):not(.nav-link):not(.page-link) {
+    color: var(--hrms-accent-ink);
+}
+
+.o_web_client a:not(.btn):not(.dropdown-item):not(.nav-link):not(.page-link):hover {
+    color: #fff;
+}
+
+::selection {
+    background: var(--hrms-accent);
+    color: #fff;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--hrms-border-strong) transparent;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+
 ::-webkit-scrollbar-thumb {
-    background-color: #b4bcc8;
+    background-color: var(--hrms-border-strong);
     border-radius: 6px;
     border: 2px solid transparent;
     background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #8c97a6;
+    background-color: var(--hrms-subtle);
+}
+
+// ---------------------------------------------------------------------------
+// 3. TOP CHROME — navbar + page header + search
+// ---------------------------------------------------------------------------
+// The navbar and the page header (Odoo's control panel) share one frosted
+// treatment so the whole top chrome reads as a single surface. On >= md the
+// native section strip is hidden: the real navigation lives in the sidebar
+// (see §13) rendered by theme.js.
+.o_main_navbar {
+    height: var(--hrms-navbar-h);
+    min-height: var(--hrms-navbar-h);
+    background-color: var(--hrms-glass);
+    background-image: var(--hrms-glass-sheen);
+    -webkit-backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+    backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+    border-bottom: 1px solid var(--hrms-glass-border);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, 0 10px 30px rgba(0, 0, 0, .38);
+    color: var(--hrms-text);
+}
+
+// The app brand is replaced by the real menu breadcrumb (see §18 / theme.js).
+@media (min-width: 768px) {
+    .o_main_navbar .o_menu_brand {
+        display: none !important;
+    }
+}
+
+.o_main_navbar .o_menu_brand {
+    color: var(--hrms-heading);
+    font-weight: 600;
+}
+
+.o_main_navbar .o_navbar_apps_menu .dropdown-toggle,
+.o_main_navbar .o_navbar_apps_menu button,
+.o_main_navbar .o_menu_systray .dropdown-toggle,
+.o_main_navbar .o_menu_systray > button,
+.o_main_navbar .o_menu_systray > a {
+    color: var(--hrms-muted);
+}
+
+.o_main_navbar .o_menu_systray .dropdown-toggle,
+.o_main_navbar .o_menu_systray > button,
+.o_main_navbar .o_menu_systray > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: var(--hrms-radius-sm);
+    transition: background-color .14s ease, color .14s ease;
+}
+
+.o_main_navbar .o_navbar_apps_menu > .dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 8px;
+    border-radius: var(--hrms-radius-sm);
+    color: var(--hrms-muted);
+    background: transparent;
+    border-color: transparent;
+}
+
+.o_main_navbar .o_menu_systray {
+    gap: 2px;
+}
+
+.o_main_navbar .o_navbar_apps_menu > .dropdown-toggle:hover,
+.o_main_navbar .o_navbar_apps_menu button:hover,
+.o_main_navbar .o_menu_systray .dropdown-toggle:hover,
+.o_main_navbar .o_menu_systray > button:hover,
+.o_main_navbar .o_menu_systray > a:hover {
+    background: var(--hrms-hover);
+    color: var(--hrms-text);
+}
+
+.o_main_navbar .o_navbar_breadcrumbs {
+    color: var(--hrms-muted);
+    font-size: 13px;
+}
+
+// Page header (control panel) — same frosted chrome as the navbar.
+.o_control_panel {
+    background-color: var(--hrms-glass) !important;
+    background-image: var(--hrms-glass-sheen) !important;
+    -webkit-backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+    backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+    color: var(--hrms-text) !important;
+    border: none;
+    border-bottom: 1px solid var(--hrms-glass-border);
+    border-radius: 0;
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, 0 12px 32px rgba(0, 0, 0, .34);
+    padding: 12px 20px 10px;
+}
+
+.o_control_panel .o_breadcrumb,
+.o_control_panel .o_last_breadcrumb_item,
+.o_control_panel .o_last_breadcrumb_item.active,
+.o_control_panel .o_control_panel_breadcrumbs,
+.o_control_panel .o_control_panel_breadcrumbs .btn,
+.o_control_panel .o_cp_action_menus *,
+.o_control_panel .fa,
+.o_control_panel .oi {
+    color: var(--hrms-text) !important;
+}
+
+.o_control_panel .breadcrumb,
+.o_control_panel .breadcrumb-item,
+.o_control_panel .breadcrumb-item a,
+.o_control_panel .o_breadcrumb a {
+    color: var(--hrms-muted) !important;
+}
+
+.o_control_panel .o_breadcrumb,
+.o_control_panel .o_last_breadcrumb_item,
+.o_control_panel .o_last_breadcrumb_item.active {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.o_control_panel .o_breadcrumb .btn,
+.o_control_panel .o_control_panel_breadcrumbs_actions .btn {
+    color: var(--hrms-muted) !important;
+    background: transparent;
+    border-color: transparent;
+}
+
+.o_control_panel .o_breadcrumb .btn:hover,
+.o_control_panel .o_control_panel_breadcrumbs_actions .btn:hover {
+    color: var(--hrms-text) !important;
+    background: var(--hrms-hover);
+}
+
+// Primary actions in the header read as solid accent pills.
+.o_control_panel .o_list_button_add.btn-primary,
+.o_control_panel .o-kanban-button-new.btn-primary,
+.o_control_panel .btn-primary,
+.o_control_panel .o_control_panel_breadcrumbs .btn.btn-primary,
+.o_control_panel .o_control_panel_breadcrumbs .o_form_button_save.btn-primary,
+.o_control_panel .o_form_statusbar .btn.btn-primary {
+    background-color: var(--hrms-accent-solid) !important;
+    border-color: var(--hrms-accent-solid) !important;
+    color: #fff !important;
+}
+
+.o_control_panel .o_list_button_add.btn-primary:hover,
+.o_control_panel .o-kanban-button-new.btn-primary:hover,
+.o_control_panel .btn-primary:hover,
+.o_control_panel .o_control_panel_breadcrumbs .btn.btn-primary:hover,
+.o_control_panel .o_form_statusbar .btn.btn-primary:hover {
+    background-color: color-mix(in srgb, var(--hrms-accent-solid) 84%, #fff) !important;
+    border-color: var(--hrms-accent-solid) !important;
+    color: #fff !important;
+}
+
+// Search field: a slightly opaque glass chip on the chrome.
+.o_control_panel .o_searchview,
+.o_control_panel .o_cp_searchview .o_searchview {
+    background: var(--hrms-glass-strong);
+    border: 1px solid var(--hrms-border);
+    border-radius: var(--hrms-radius);
+    color: var(--hrms-text);
+}
+
+.o_control_panel .o_searchview:focus-within {
+    border-color: var(--hrms-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--hrms-accent) 26%, transparent);
+}
+
+.o_control_panel .o_searchview .o_searchview_input,
+.o_control_panel .o_searchview input {
+    color: var(--hrms-text);
+    background: transparent;
+}
+
+.o_control_panel .o_searchview .o_searchview_input::placeholder,
+.o_control_panel .o_searchview input::placeholder {
+    color: var(--hrms-subtle);
+}
+
+.o_control_panel .o_searchview .o_searchview_facet {
+    background: color-mix(in srgb, var(--hrms-accent) 24%, var(--hrms-surface));
+    color: var(--hrms-text);
+    border: 1px solid color-mix(in srgb, var(--hrms-accent) 45%, transparent);
+}
+
+.o_control_panel .o_searchview .o_searchview_facet .o_facet_values,
+.o_control_panel .o_searchview .o_searchview_facet .o_facet_remove,
+.o_control_panel .o_searchview .o_searchview_icon {
+    color: var(--hrms-text) !important;
+}
+
+.o_control_panel .o_cp_switch_buttons .btn {
+    color: var(--hrms-muted);
+    background: transparent;
+    border-color: transparent;
+}
+
+.o_control_panel .o_cp_switch_buttons .btn:hover {
+    background: var(--hrms-hover);
+    color: var(--hrms-text);
+}
+
+.o_control_panel .o_cp_switch_buttons .btn.active {
+    background: var(--hrms-accent-soft);
+    color: var(--hrms-accent-ink);
+}
+
+.o_control_panel .o_cp_pager,
+.o_control_panel .o_pager {
+    color: var(--hrms-muted);
+}
+
+.o_control_panel .o_pager button,
+.o_control_panel .o_cp_pager button {
+    color: var(--hrms-muted);
+}
+
+.o_control_panel .o_pager button:hover,
+.o_control_panel .o_cp_pager button:hover {
+    color: var(--hrms-text);
+}
+
+// ---------------------------------------------------------------------------
+// 4. Buttons
+// ---------------------------------------------------------------------------
+.btn {
+    border-radius: var(--hrms-radius-sm);
+}
+
+.btn-primary {
+    background-color: var(--hrms-accent-solid);
+    background-image: var(--hrms-accent-grad);
+    border: 0;
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(109, 74, 255, .34), 0 1px 0 rgba(255, 255, 255, .18) inset;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--hrms-accent-solid);
+    background-image: var(--hrms-accent-grad);
+    filter: brightness(1.08) saturate(1.05);
+    color: #fff;
+    box-shadow: 0 9px 24px rgba(109, 74, 255, .44), 0 1px 0 rgba(255, 255, 255, .24) inset;
+}
+
+.btn-secondary {
+    background-color: var(--hrms-raised);
+    border-color: var(--hrms-border-strong);
+    color: var(--hrms-text);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: var(--hrms-hover);
+    border-color: var(--hrms-border-strong);
+    color: var(--hrms-text);
+}
+
+.btn-link {
+    color: var(--hrms-accent-ink);
+}
+
+// ---------------------------------------------------------------------------
+// 5. Forms, statusbar, stat buttons
+// ---------------------------------------------------------------------------
+.o_form_view {
+    background: transparent;
+}
+
+.o_form_view .o_group_name,
+.o_form_view label.o_form_label {
+    color: var(--hrms-muted);
+}
+
+.o_form_view .o_group_name {
+    font-weight: 600;
+}
+
+.o_form_view .o_field_widget,
+.o_form_view .o_form_uri,
+.o_form_view .o_form_label {
+    color: var(--hrms-text);
+}
+
+.o_form_view .oe_title h1,
+.o_form_view .oe_title h1 *,
+.o_form_view h1,
+.o_form_view h2,
+.o_form_view h3 {
+    color: var(--hrms-text) !important;
+}
+
+.o_form_view .o_horizontal_separator {
+    color: var(--hrms-text);
+    border-bottom-color: var(--hrms-border);
+}
+
+// Inputs & fields
+.o_form_view .o_field_widget input,
+.o_form_view .o_field_widget textarea {
+    color: var(--hrms-text);
+}
+
+.o_form_view .form-control,
+.o_form_view .form-select {
+    background-color: var(--hrms-bg-soft);
+    border-color: var(--hrms-border-strong);
+    color: var(--hrms-text);
+}
+
+.o_form_view .o_field_widget:focus,
+.o_form_view .form-control:focus,
+.o_form_view .form-select:focus {
+    border-color: var(--hrms-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--hrms-accent) 26%, transparent);
+}
+
+// Notebook
+.o_form_view .o_notebook .nav-tabs {
+    border-bottom: 1px solid var(--hrms-border);
+}
+
+.o_form_view .o_notebook .nav-tabs .nav-link {
+    color: var(--hrms-muted);
+    background: transparent;
+    border-color: transparent;
+}
+
+.o_form_view .o_notebook .nav-tabs .nav-link.active,
+.o_form_view .o_notebook .nav-tabs .nav-link:hover {
+    color: var(--hrms-text);
+    background: var(--hrms-surface);
+    border-color: var(--hrms-border) var(--hrms-border) transparent;
+}
+
+// Statusbar
+.o_form_view .o_form_statusbar {
+    background: var(--hrms-surface);
+    border-bottom: 1px solid var(--hrms-border);
+}
+
+.o_form_view .o_statusbar_status .o_arrow_button {
+    background: var(--hrms-bg-soft);
+    color: var(--hrms-muted);
+    border-color: var(--hrms-border);
+}
+
+.o_form_view .o_statusbar_status .o_arrow_button.o_arrow_button_current,
+.o_form_view .o_statusbar_status .o_arrow_button.active {
+    background: var(--hrms-accent);
+    color: #fff;
+    border-color: var(--hrms-accent);
+}
+
+// Stat buttons (KPI tiles) — thin accent top border, icon tile, value.
+.oe_stat_button {
+    background: var(--hrms-glass-card);
+    background-image: var(--hrms-glass-sheen);
+    -webkit-backdrop-filter: blur(18px) saturate(var(--hrms-glass-saturate));
+    backdrop-filter: blur(18px) saturate(var(--hrms-glass-saturate));
+    border: 1px solid var(--hrms-glass-border);
+    border-top: 3px solid var(--hrms-accent);
+    border-radius: var(--hrms-radius);
+    color: var(--hrms-text);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, var(--hrms-card-shadow);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.oe_stat_button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, var(--hrms-card-shadow-hover);
+    border-color: var(--hrms-glass-highlight);
+}
+
+.oe_stat_button .o_stat_value,
+.oe_stat_button .o_stat_text,
+.oe_stat_button .o_field_widget,
+.oe_stat_button span {
+    color: var(--hrms-text) !important;
+}
+
+.oe_stat_button .o_stat_icon {
+    color: var(--hrms-accent-ink);
+}
+
+// ---------------------------------------------------------------------------
+// 5b. Form sheet + cards (lifted surfaces). Tables/forms stay solid.
+// ---------------------------------------------------------------------------
+// Content cards: frosted glass floating over the ambient, kept opaque enough
+// that dense HR data stays crisp.
+.o_form_view .o_form_sheet {
+    background: var(--hrms-glass-card);
+    background-image: var(--hrms-glass-sheen);
+    -webkit-backdrop-filter: blur(20px) saturate(var(--hrms-glass-saturate));
+    backdrop-filter: blur(20px) saturate(var(--hrms-glass-saturate));
+    border: 1px solid var(--hrms-glass-border);
+    border-radius: var(--hrms-radius-lg);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, var(--hrms-card-shadow);
+}
+
+// The innermost dense surfaces (table cells, field groups, notebook) never frost
+// so values stay perfectly crisp — the card around them carries the glass.
+.o_list_view .o_list_table,
+.o_form_view .o_group,
+.o_form_view .o_notebook {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+// ---------------------------------------------------------------------------
+// 6. List views / tables
+// ---------------------------------------------------------------------------
+.o_list_view {
+    background: transparent;
+}
+
+// The list reads as a single frosted glass card; rows stay dark enough that
+// dense columns remain legible.
+.o_list_renderer,
+.o_list_view .o_list_renderer {
+    background: var(--hrms-glass-card);
+    background-image: var(--hrms-glass-sheen);
+    -webkit-backdrop-filter: blur(20px) saturate(var(--hrms-glass-saturate));
+    backdrop-filter: blur(20px) saturate(var(--hrms-glass-saturate));
+    border: 1px solid var(--hrms-glass-border);
+    border-radius: var(--hrms-radius-lg);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, var(--hrms-card-shadow);
+    overflow: hidden;
+    color: var(--hrms-text);
+}
+
+.table {
+    background: transparent;
+    color: var(--hrms-text);
+    border-radius: var(--hrms-radius);
+}
+
+.o_list_view .o_list_table {
+    --table-color: var(--hrms-text);
+    --table-bg: transparent;
+    --table-border-color: var(--hrms-border);
+    color: var(--hrms-text);
+    background: transparent;
+}
+
+.o_list_view .o_list_table thead th {
+    background: var(--hrms-raised);
+    color: var(--hrms-subtle);
+    border-color: var(--hrms-border);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: none;
+}
+
+.o_list_view .o_list_table tbody tr {
+    background: transparent;
+    color: var(--hrms-text);
+}
+
+.o_list_view .o_list_table tbody td {
+    border-color: var(--hrms-border);
+    color: var(--hrms-text);
+    font-size: 13px;
+}
+
+.o_list_view .o_list_table tbody tr:hover td {
+    background: rgba(255, 255, 255, .05);
+}
+
+.o_list_view .o_list_table.table-striped tbody tr:nth-of-type(odd) {
+    background: rgba(255, 255, 255, .03);
+}
+
+.o_list_view .o_list_table tbody tr.o_data_row.o_row_selected td,
+.o_list_view .o_list_table tr.o_selected_row td {
+    background: color-mix(in srgb, var(--hrms-accent) 26%, transparent);
+}
+
+.o_list_view .o_group_header,
+.o_list_view .o_group_header * {
+    background: var(--hrms-raised) !important;
+    color: var(--hrms-text) !important;
+}
+
+.o_list_view tfoot,
+.o_list_view .o_list_footer {
+    background: var(--hrms-raised);
+    color: var(--hrms-text);
+    border-top: 1px solid var(--hrms-border);
+}
+
+.o_list_view .o_list_table .o_list_record_selector .form-check-input {
+    background-color: var(--hrms-bg-soft);
+    border-color: var(--hrms-border-strong);
+}
+
+.o_list_view .o_optional_columns_dropdown_toggle,
+.o_list_view .o_list_button_add {
+    color: inherit;
+}
+
+.o_list_table tbody tr.o_data_row {
+    cursor: pointer;
+}
+
+// ---------------------------------------------------------------------------
+// 7. Kanban
+// ---------------------------------------------------------------------------
+.o_kanban_view,
+.o_kanban_view .o_kanban_renderer {
+    background: transparent;
+}
+
+.o_kanban_view .o_kanban_record {
+    background: var(--hrms-glass-card);
+    background-image: var(--hrms-glass-sheen);
+    -webkit-backdrop-filter: blur(20px) saturate(var(--hrms-glass-saturate));
+    backdrop-filter: blur(20px) saturate(var(--hrms-glass-saturate));
+    border: 1px solid var(--hrms-glass-border);
+    border-radius: var(--hrms-radius);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, var(--hrms-card-shadow);
+    color: var(--hrms-text);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.o_kanban_view .o_kanban_record:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, var(--hrms-card-shadow-hover);
+    border-color: color-mix(in srgb, var(--hrms-accent) 55%, var(--hrms-glass-border));
+}
+
+.o_kanban_view .o_kanban_record .o_kanban_record_title,
+.o_kanban_view .o_kanban_record .o_kanban_record_subtitle,
+.o_kanban_view .o_kanban_record * {
+    color: var(--hrms-text);
+}
+
+.o_kanban_renderer {
+    --KanbanGroup-background: rgba(255, 255, 255, .04) !important;
+}
+
+.o_kanban_group {
+    background-color: rgba(255, 255, 255, .04) !important;
+}
+
+// ---------------------------------------------------------------------------
+// 8. Dropdowns, popovers, modals, app switcher (frosted)
+// ---------------------------------------------------------------------------
+.dropdown-menu,
+.dropdown-menu.o-dropdown--menu,
+.o-dropdown--menu,
+.o-dropdown-menu,
+.popover,
+.modal-content {
+    background-color: var(--hrms-glass) !important;
+    -webkit-backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+    backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+    border: 1px solid var(--hrms-glass-border) !important;
+    border-radius: var(--hrms-radius);
+    box-shadow: 0 1px 0 var(--hrms-glass-highlight) inset, var(--hrms-shadow) !important;
+    color: var(--hrms-text);
+}
+
+.dropdown-menu .dropdown-item,
+.dropdown-menu .dropdown-header {
+    color: var(--hrms-muted);
+}
+
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item.active {
+    background: var(--hrms-hover);
+    color: var(--hrms-text);
+}
+
+.dropdown-menu .dropdown-divider {
+    border-color: var(--hrms-border);
+}
+
+.popover .popover-body,
+.popover .popover-header {
+    background: transparent;
+    color: var(--hrms-text);
+    border-color: var(--hrms-border);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--hrms-border);
+    color: var(--hrms-text);
+}
+
+.modal-title,
+.modal-body,
+.modal-body * {
+    color: var(--hrms-text);
+}
+
+// ---------------------------------------------------------------------------
+// 9. Badges / status pills
+// ---------------------------------------------------------------------------
+.badge {
+    border-radius: 999px;
+    font-weight: 600;
+    padding: .35em .7em;
+}
+
+.badge.text-bg-success,
+.o_web_client .text-bg-success {
+    background-color: var(--hrms-success) !important;
+    color: var(--hrms-pill-ink) !important;
+}
+
+.badge.text-bg-warning,
+.o_web_client .text-bg-warning {
+    background-color: var(--hrms-warning) !important;
+    color: var(--hrms-pill-ink) !important;
+}
+
+.badge.text-bg-danger,
+.o_web_client .text-bg-danger {
+    background-color: var(--hrms-danger) !important;
+    color: var(--hrms-pill-ink) !important;
+}
+
+.badge.text-bg-info,
+.o_web_client .text-bg-info {
+    background-color: var(--hrms-info) !important;
+    color: var(--hrms-pill-ink) !important;
+}
+
+.o_web_client .text-bg-100,
+.o_web_client .text-bg-200,
+.o_web_client .text-bg-300,
+.o_web_client .text-bg-400,
+.o_web_client .text-bg-500 {
+    color: var(--hrms-text) !important;
+}
+
+.o_web_client .badge:not([class*="text-bg"]) {
+    background: var(--hrms-bg-soft) !important;
+    color: var(--hrms-text) !important;
+    border: 1px solid var(--hrms-border);
+}
+
+.o_web_client .text-danger {
+    color: var(--hrms-danger-ink) !important;
+}
+
+.o_web_client .text-success {
+    color: var(--hrms-success-ink) !important;
+}
+
+.o_web_client .text-warning {
+    color: var(--hrms-warning-ink) !important;
+}
+
+.o_web_client .text-info {
+    color: var(--hrms-info-ink) !important;
+}
+
+.o_web_client .text-primary {
+    color: var(--hrms-primary-ink) !important;
+}
+
+// ---------------------------------------------------------------------------
+// 10. Alerts
+// ---------------------------------------------------------------------------
+.o_form_view .alert,
+.alert {
+    border: 1px solid var(--hrms-border);
+    border-radius: var(--hrms-radius);
+    background: var(--hrms-raised);
+    color: var(--hrms-text);
+}
+
+.alert-info {
+    background: color-mix(in srgb, var(--hrms-info) 16%, var(--hrms-raised));
+}
+
+.alert-success {
+    background: color-mix(in srgb, var(--hrms-success) 16%, var(--hrms-raised));
+}
+
+.alert-warning {
+    background: color-mix(in srgb, var(--hrms-warning) 16%, var(--hrms-raised));
+}
+
+.alert-danger {
+    background: color-mix(in srgb, var(--hrms-danger) 16%, var(--hrms-raised));
+}
+
+// ---------------------------------------------------------------------------
+// 11. Search panel, pager, pagination, chatter, calendar, misc
+// ---------------------------------------------------------------------------
+.o_search_panel {
+    background: var(--hrms-surface);
+    border-right: 1px solid var(--hrms-border);
+    color: var(--hrms-text);
+}
+
+.o_search_panel .o_search_panel_section_header,
+.o_search_panel .o_search_panel_category,
+.o_search_panel .o_search_panel_filter {
+    color: var(--hrms-muted);
+}
+
+.o_search_panel .o_search_panel_label_title,
+.o_search_panel .o_search_panel_label {
+    color: var(--hrms-text);
+}
+
+.o_search_panel .o_search_panel_item:hover,
+.o_search_panel .o_search_panel_category_value.active > a {
+    color: var(--hrms-text);
+}
+
+.pagination .page-link {
+    background: var(--hrms-surface);
+    border-color: var(--hrms-border);
+    color: var(--hrms-text);
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--hrms-accent);
+    border-color: var(--hrms-accent);
+    color: #fff;
+}
+
+.o_pager,
+.o_pager * {
+    color: var(--hrms-text) !important;
+}
+
+.o_cp_pager .o_pager_counter,
+.o_cp_pager .btn {
+    color: var(--hrms-text);
+}
+
+.progress {
+    background: var(--hrms-bg-soft);
+}
+
+.progress-bar {
+    background-color: var(--hrms-accent);
+}
+
+.o-mail-Chatter,
+.o-mail-Chatter *,
+.o-mail-Thread,
+.o-mail-Message {
+    color: var(--hrms-text);
+}
+
+.o-mail-Chatter .o-mail-Chatter-topbar,
+.o-mail-Chatter .o-mail-Chatter-content,
+.o-mail-Thread {
+    background: var(--hrms-surface);
+}
+
+.o-mail-Discuss,
+.o-mail-DiscussSidebar {
+    background-color: var(--hrms-bg-soft) !important;
+}
+
+.o-mail-DiscussSidebar {
+    border-right: 1px solid var(--hrms-border);
+}
+
+// FullCalendar (Time Off / Attendance)
+.fc {
+    color: var(--hrms-muted);
+}
+
+.fc .fc-daygrid-day-number,
+.fc .fc-day-number,
+.fc .o_cw_day_number,
+.fc .o-fc-week-header,
+.fc .fc-timegrid-axis-cushion,
+.fc .fc-col-header-cell-cushion,
+.fc .fc-toolbar-title,
+.fc .fc-daygrid-day-top {
+    color: var(--hrms-muted) !important;
+}
+
+.fc .fc-day-today {
+    background: color-mix(in srgb, var(--hrms-accent) 16%, transparent) !important;
+}
+
+.fc .o_calendar_event,
+.fc-event {
+    border-radius: 6px;
+}
+
+.o_spreadsheet_dashboard_action .dashboard-loading-status {
+    background-color: var(--hrms-surface);
+    color: var(--hrms-text) !important;
+}
+
+.o_spreadsheet_dashboard_action .dashboard-loading-status.error {
+    color: var(--hrms-danger-ink) !important;
+}
+
+// ---------------------------------------------------------------------------
+// 12. Odoo utility/component surfaces that hard-code light backgrounds
+// ---------------------------------------------------------------------------
+.bg-view,
+.text-bg-view {
+    background-color: var(--hrms-surface) !important;
+}
+
+.bg-100 { background-color: var(--hrms-surface) !important; }
+.bg-200 { background-color: var(--hrms-raised) !important; }
+.bg-300 { background-color: var(--hrms-bg-soft) !important; }
+
+.text-danger,
+.text-danger-emphasis { color: var(--hrms-danger-ink) !important; }
+
+.text-success,
+.text-success-emphasis { color: var(--hrms-success-ink) !important; }
+
+.text-warning,
+.text-warning-emphasis { color: var(--hrms-warning-ink) !important; }
+
+.text-info,
+.text-info-emphasis { color: var(--hrms-info-ink) !important; }
+
+.text-primary,
+.text-primary-emphasis { color: var(--hrms-primary-ink) !important; }
+
+// ---------------------------------------------------------------------------
+// 13. LEFT NAVIGATION — two persistent panels
+// ---------------------------------------------------------------------------
+// Panel 1 (`.hrms-apprail`) lists the installed applications; Panel 2
+// (`.hrms-sidebar`) shows the current app's full menu tree. Both are rendered
+// by theme.js from Odoo's own menu service. Hidden below md, where Odoo's
+// native burger / side drawer takes over (see §14).
+.hrms-apprail,
+.hrms-sidebar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    // Content clears both fixed panels. Collapsing Panel 2 (the rail's menu
+    // toggle) reflows the workspace back to just the application rail.
+    header.o_navbar,
+    .o_web_client > .o_action_manager {
+        margin-left: calc(var(--hrms-apprail-w) + var(--hrms-sidebar-w));
+        transition: margin-left .18s ease;
+    }
+
+    html.hrms-nav-collapsed header.o_navbar,
+    html.hrms-nav-collapsed .o_web_client > .o_action_manager {
+        margin-left: var(--hrms-apprail-w);
+    }
+
+    // Odoo's native section strip and the desktop apps dropdown are replaced by
+    // the two panels, so the duplicate controls are hidden on desktop only (the
+    // mobile drawer / burger still uses them - see §14).
+    .o_menu_sections {
+        display: none !important;
+    }
+
+    .o_main_navbar .o_navbar_apps_menu {
+        display: none !important;
+    }
+
+    // ---- Panel 1: application rail ----
+    .hrms-apprail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1032;
+        display: flex;
+        flex-direction: column;
+        width: var(--hrms-apprail-w);
+        background-color: var(--hrms-glass-rail);
+        background-image: var(--hrms-glass-sheen);
+        -webkit-backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+        backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+        border-right: 1px solid var(--hrms-glass-border);
+        box-shadow: 1px 0 0 var(--hrms-glass-highlight) inset, 16px 0 44px rgba(0, 0, 0, .42);
+    }
+
+    .hrms-apprail__head {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--hrms-navbar-h);
+        border-bottom: 1px solid var(--hrms-sidebar-divider);
+    }
+
+    .hrms-apprail__menu {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: var(--hrms-radius-sm);
+        background: transparent;
+        color: var(--hrms-sidebar-muted);
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color .14s ease, color .14s ease;
+    }
+
+    .hrms-apprail__menu:hover,
+    .hrms-apprail__menu:focus-visible {
+        background: var(--hrms-sidebar-hover);
+        color: var(--hrms-sidebar-text);
+    }
+
+    // The rail scrolls on its own when there are more apps than fit.
+    .hrms-apprail__list {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--hrms-border-strong) transparent;
+        padding: 10px 8px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .hrms-apprail__list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .hrms-apprail__list::-webkit-scrollbar-thumb {
+        background: var(--hrms-border-strong);
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+
+    .hrms-apprail__app {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+        padding: 8px 3px;
+        border: 0;
+        border-radius: var(--hrms-radius-sm);
+        background: transparent;
+        color: var(--hrms-sidebar-text);
+        cursor: pointer;
+        transition: background-color .14s ease, color .14s ease;
+    }
+
+    .hrms-apprail__app:hover,
+    .hrms-apprail__app:focus-visible {
+        background: var(--hrms-sidebar-hover);
+    }
+
+    .hrms-apprail__iconwrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+    }
+
+    // Real app artwork: a neutral glass tile with a fine colored ring.
+    .hrms-apprail__icon {
+        width: 32px;
+        height: 32px;
+        padding: 3px;
+        border-radius: 10px;
+        object-fit: contain;
+        background: rgba(255, 255, 255, .07);
+        box-shadow: 0 0 0 1px var(--hrms-glass-border),
+            0 0 0 3px color-mix(in srgb, var(--hrms-app-color, #6d4aff) 40%, transparent);
+    }
+
+    // Apps without custom artwork get a coordinated colored tile with the
+    // initial, so every entry is recognizable and distinctly colored.
+    .hrms-apprail__icon--mono {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        background: var(--hrms-app-color, var(--hrms-accent));
+        background-image: linear-gradient(160deg, rgba(255, 255, 255, .30), rgba(255, 255, 255, 0) 58%);
+        border-color: transparent;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, .38), 0 1px 0 rgba(255, 255, 255, .30) inset;
+    }
+
+    .hrms-apprail__label {
+        max-width: 100%;
+        font-size: 10.5px;
+        line-height: 1.15;
+        font-weight: 500;
+        color: var(--hrms-sidebar-muted);
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // Active app: a subtle glass surface, an app-colored edge indicator with a
+    // soft glow, and a highlighted tile - restrained, not a loud fill.
+    .hrms-apprail__app.is-active {
+        background: rgba(255, 255, 255, .08);
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .10) inset;
+    }
+
+    .hrms-apprail__app.is-active .hrms-apprail__iconwrap {
+        filter: drop-shadow(0 0 7px color-mix(in srgb, var(--hrms-app-color, #6d4aff) 60%, transparent));
+    }
+
+    .hrms-apprail__app.is-active::before {
+        content: "";
+        position: absolute;
+        left: -4px;
+        top: 8px;
+        bottom: 8px;
+        width: 3px;
+        border-radius: 0 3px 3px 0;
+        background: var(--hrms-app-color, var(--hrms-sidebar-indicator));
+        box-shadow: 0 0 10px color-mix(in srgb, var(--hrms-app-color, #6d4aff) 70%, transparent);
+    }
+
+    .hrms-apprail__app.is-active .hrms-apprail__label {
+        color: var(--hrms-sidebar-text);
+        font-weight: 600;
+    }
+
+    // ---- Panel 2: current app navigation ----
+    // Slightly lighter than the near-black rail so the two read as distinct but
+    // related surfaces of one application.
+    .hrms-sidebar {
+        position: fixed;
+        top: 0;
+        left: var(--hrms-apprail-w);
+        bottom: 0;
+        z-index: 1031;
+        display: flex;
+        flex-direction: column;
+        width: var(--hrms-sidebar-w);
+        background-color: var(--hrms-glass-sidebar);
+        background-image: var(--hrms-glass-sheen);
+        -webkit-backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+        backdrop-filter: blur(var(--hrms-glass-blur)) saturate(var(--hrms-glass-saturate));
+        border-right: 1px solid var(--hrms-glass-border);
+        box-shadow: 1px 0 0 var(--hrms-glass-highlight) inset, 18px 0 48px rgba(0, 0, 0, .40);
+    }
+
+    html.hrms-nav-collapsed .hrms-sidebar {
+        display: none;
+    }
+
+    .hrms-sidebar__head {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: var(--hrms-navbar-h);
+        padding: 0 10px 0 14px;
+        border-bottom: 1px solid var(--hrms-sidebar-divider);
+    }
+
+    .hrms-sidebar__app-icon {
+        flex: 0 0 32px;
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        object-fit: contain;
+        background: rgba(255, 255, 255, .10);
+        color: var(--hrms-sidebar-text);
+        border: 1px solid var(--hrms-sidebar-divider);
+        font-size: 14px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hrms-sidebar__app-name {
+        flex: 1 1 auto;
+        min-width: 0;
+        color: var(--hrms-sidebar-text);
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.2;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .hrms-sidebar__collapse {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: var(--hrms-radius-sm);
+        background: transparent;
+        color: var(--hrms-sidebar-muted);
+        font-size: 13px;
+        cursor: pointer;
+        transition: background-color .14s ease, color .14s ease;
+    }
+
+    .hrms-sidebar__collapse:hover,
+    .hrms-sidebar__collapse:focus-visible {
+        background: var(--hrms-sidebar-hover);
+        color: var(--hrms-sidebar-text);
+    }
+
+    // The scrolling region: `flex: 1 1 auto` + its own overflow keeps every menu
+    // item reachable without moving the workspace, and the styled, always-there
+    // scrollbar makes the overflow discoverable. `overscroll-behavior: contain`
+    // stops the scroll chaining to the page behind.
+    .hrms-sidebar__nav {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overflow-x: hidden;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
+        scrollbar-color: var(--hrms-border-strong) transparent;
+        padding: 12px 10px 30px;
+    }
+
+    .hrms-sidebar__nav::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .hrms-sidebar__nav::-webkit-scrollbar-thumb {
+        background: var(--hrms-border-strong);
+        border-radius: 8px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+    }
+
+    .hrms-sidebar__nav::-webkit-scrollbar-thumb:hover {
+        background: var(--hrms-sidebar-muted);
+    }
+
+    .hrms-nav-group {
+        margin-bottom: 16px;
+    }
+
+    .hrms-nav-group__title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+        margin: 0 0 4px;
+        padding: 5px 10px;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        color: var(--hrms-sidebar-muted);
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .hrms-nav-group__title:hover {
+        color: var(--hrms-sidebar-text);
+    }
+
+    .hrms-nav-group__title .fa {
+        margin-left: auto;
+        font-size: 11px;
+        opacity: .75;
+    }
+
+    // A coordinated colored square identifies each section (and its items below).
+    .hrms-nav-group__dot {
+        flex: 0 0 auto;
+        width: 8px;
+        height: 8px;
+        border-radius: 3px;
+        background: var(--hrms-group-color, var(--hrms-accent));
+        box-shadow: 0 0 8px color-mix(in srgb, var(--hrms-group-color, #6d4aff) 60%, transparent);
+    }
+
+    .hrms-nav-group__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .hrms-nav-item__link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 10px 8px calc(10px + var(--hrms-depth, 0) * 15px);
+        margin: 1px 0;
+        border-radius: var(--hrms-radius-sm);
+        color: var(--hrms-sidebar-text);
+        font-size: 13.5px;
+        font-weight: 500;
+        line-height: 1.3;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color .14s ease, color .14s ease;
+    }
+
+    .hrms-nav-item__link:hover {
+        background: var(--hrms-sidebar-hover);
+        color: #fff;
+    }
+
+    .hrms-nav-item__link--static {
+        cursor: default;
+    }
+
+    .hrms-nav-item__link--solo {
+        color: var(--hrms-sidebar-text);
+        font-weight: 600;
+    }
+
+    .hrms-nav-item__marker {
+        flex: 0 0 6px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--hrms-group-color, #8b5cf6) 78%, transparent);
+        transition: background-color .14s ease, box-shadow .14s ease;
+    }
+
+    .hrms-nav-item__link:hover .hrms-nav-item__marker {
+        background: var(--hrms-group-color, var(--hrms-sidebar-text));
+        box-shadow: 0 0 8px color-mix(in srgb, var(--hrms-group-color, #8b5cf6) 70%, transparent);
+    }
+
+    .hrms-nav-item__text {
+        flex: 1 1 auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    // Active page: a soft accent-tinted pill with an accent leading indicator,
+    // tying the navigation to the app accent used across the workspace.
+    .hrms-nav-item.is-active > .hrms-nav-item__link,
+    .hrms-nav-item__link--solo.is-active {
+        position: relative;
+        background: linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--hrms-group-color, #6d4aff) 24%, transparent),
+            var(--hrms-sidebar-active)
+        );
+        color: #ffffff;
+        font-weight: 600;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, .10) inset,
+            0 0 0 1px color-mix(in srgb, var(--hrms-group-color, #6d4aff) 30%, transparent);
+    }
+
+    .hrms-nav-item.is-active > .hrms-nav-item__link::before,
+    .hrms-nav-item__link--solo.is-active::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 6px;
+        bottom: 6px;
+        width: 3px;
+        border-radius: 0 3px 3px 0;
+        background: var(--hrms-group-color, var(--hrms-sidebar-indicator));
+        box-shadow: 0 0 10px color-mix(in srgb, var(--hrms-group-color, #6d4aff) 70%, transparent);
+    }
+
+    .hrms-nav-item.is-active > .hrms-nav-item__link .hrms-nav-item__marker,
+    .hrms-nav-item__link--solo.is-active .hrms-nav-item__marker {
+        background: var(--hrms-group-color, var(--hrms-sidebar-indicator));
+        box-shadow: 0 0 9px color-mix(in srgb, var(--hrms-group-color, #6d4aff) 75%, transparent);
+    }
+}
+
+// Defensive token fallbacks (see also the link-color override at the end of this
+// section): Odoo's global `.o_web_client a:not(.btn):not(.dropdown-item)...`
+// rule has a high specificity and would tint the navigation links with the
+// accent, so the sidebar colours are pinned with !important.
+.hrms-apprail {
+    background-color: var(--hrms-glass-rail, #090b10) !important;
+}
+
+.hrms-sidebar {
+    background-color: var(--hrms-glass-sidebar, #12161e) !important;
+}
+
+.hrms-apprail .hrms-apprail__app,
+.hrms-apprail .hrms-apprail__label {
+    color: var(--hrms-sidebar-text, #f3f5f9);
+}
+
+.hrms-sidebar .hrms-nav-item__link,
+.hrms-sidebar .hrms-nav-item__text {
+    color: var(--hrms-sidebar-text, #f3f5f9) !important;
+}
+
+.hrms-sidebar .hrms-nav-item.is-active > .hrms-nav-item__link,
+.hrms-sidebar .hrms-nav-item__link--solo.is-active {
+    color: #ffffff !important;
+}
+
+.hrms-sidebar .hrms-nav-group__title {
+    color: var(--hrms-sidebar-muted, #8892a3);
+}
+
+.hrms-sidebar .hrms-sidebar__app-name {
+    color: var(--hrms-sidebar-text, #f3f5f9);
+}
+
+// ---------------------------------------------------------------------------
+// 14. Mobile navigation — Odoo's native app-menu sidebar / burger (dark)
+// ---------------------------------------------------------------------------
+// Odoo paints these from the `$o-burger-*` SCSS variables, which do not follow
+// the theme, so they came out white-on-white. Re-skinned to the sidebar palette.
+.o_app_menu_sidebar,
+.o_burger_menu {
+    background-color: var(--hrms-sidebar) !important;
+    color: var(--hrms-text) !important;
+
+    .o_sidebar_topbar {
+        background-color: var(--hrms-sidebar) !important;
+        color: var(--hrms-text) !important;
+        box-shadow: inset 0 -1px 0 var(--hrms-border) !important;
+    }
+
+    .o_sidebar_topbar .o_sidebar_close,
+    .o_sidebar_topbar .dropdown-toggle {
+        color: var(--hrms-sidebar-muted) !important;
+    }
+
+    .o_sidebar_topbar .o_sidebar_close:hover,
+    .o_sidebar_topbar .dropdown-toggle:hover {
+        color: var(--hrms-text) !important;
+    }
+
+    .o_sidebar_topbar .btn-primary {
+        background-color: var(--hrms-accent-solid) !important;
+        border-color: var(--hrms-accent-solid) !important;
+        color: #fff !important;
+    }
+
+    .o_burger_menu_content,
+    .o_burger_menu_content.o_burger_menu_app {
+        background-color: var(--hrms-sidebar) !important;
+        color: var(--hrms-text) !important;
+    }
+
+    .o_burger_menu_content li,
+    .o_burger_menu_content button,
+    .o_burger_menu_content .dropdown-item {
+        color: var(--hrms-muted) !important;
+    }
+
+    .o_burger_menu_content li:hover,
+    .o_burger_menu_content button:hover,
+    .o_burger_menu_content .dropdown-item:hover {
+        color: var(--hrms-text) !important;
+        background-color: var(--hrms-hover) !important;
+        border-radius: var(--hrms-radius-sm);
+    }
+
+    .o_burger_menu_content .fw-bolder,
+    .o_burger_menu_content .text-900,
+    .o_burger_menu_content .o_app {
+        color: var(--hrms-text) !important;
+    }
+
+    .o_burger_menu_content .o_app.bg-primary-subtle,
+    .o_burger_menu_content li.bg-primary-subtle {
+        background-color: color-mix(in srgb, var(--hrms-accent) 22%, transparent) !important;
+        border-radius: var(--hrms-radius-sm);
+    }
+
+    .o_burger_menu_content .dropdown-menu_group,
+    .o_burger_menu_content .dropdown-header {
+        color: var(--hrms-subtle) !important;
+    }
+
+    .o_app_icon {
+        border-radius: 6px;
+    }
+
+    .o_burger_menu_content::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .o_burger_menu_content::-webkit-scrollbar-thumb {
+        background: var(--hrms-border-strong);
+        border-radius: 4px;
+    }
+
+    .o_burger_menu_content::-webkit-scrollbar-track {
+        background: transparent;
+    }
+}
+
+.modal-backdrop {
+    background-color: #04060d !important;
+}
+
+.modal-backdrop.show {
+    opacity: .62;
+}
+
+// ---------------------------------------------------------------------------
+// 15. Empty states — themed illustration + surface
+// ---------------------------------------------------------------------------
+.o_view_nocontent,
+.o_nocontent_container {
+    color: var(--hrms-muted) !important;
+}
+
+.o_view_nocontent .o_nocontent_help .o_view_nocontent_smiling_face::before,
+.o_view_nocontent .o_nocontent_help .o_view_nocontent_neutral_face::before,
+.o_view_nocontent .o_view_nocontent_smiling_face::before,
+.o_view_nocontent .o_view_nocontent_neutral_face::before {
+    content: "" !important;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%236d4aff'/><stop offset='1' stop-color='%2322d3ee'/></linearGradient></defs><rect x='14' y='18' width='92' height='84' rx='18' fill='%23191e28' stroke='%232b323d' stroke-width='3'/><circle cx='30' cy='37' r='4' fill='%238b5cf6'/><circle cx='42' cy='37' r='4' fill='%2322d3ee'/><circle cx='54' cy='37' r='4' fill='%2334d399'/><rect x='30' y='51' width='60' height='7' rx='3.5' fill='%233c4552'/><rect x='30' y='64' width='44' height='7' rx='3.5' fill='%233c4552'/><path d='M30 86h14l6 9h14l6-9h14' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>")
+        center / contain no-repeat !important;
+    opacity: .92 !important;
+    color: transparent !important;
+}
+
+.o_view_nocontent p,
+.o_view_nocontent .text-muted,
+.o_view_nocontent .o_view_nocontent_text {
+    color: var(--hrms-muted) !important;
+}
+
+.o_view_nocontent .o_view_nocontent_title,
+.o_view_nocontent strong {
+    color: var(--hrms-text) !important;
+}
+
+// ---------------------------------------------------------------------------
+// 16. Focus visibility
+// ---------------------------------------------------------------------------
+:focus-visible {
+    outline: 2px solid var(--hrms-accent);
+    outline-offset: 1px;
+}
+
+// ---------------------------------------------------------------------------
+// 17. Glass fallback + reduced motion
+// ---------------------------------------------------------------------------
+// Where backdrop-filter is unavailable the chrome falls back to the near-opaque
+// glass colour so text stays readable.
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .o_main_navbar,
+    .o_control_panel,
+    .dropdown-menu,
+    .dropdown-menu.o-dropdown--menu,
+    .o-dropdown--menu,
+    .popover,
+    .modal-content,
+    .o_control_panel .o_searchview {
+        background-color: var(--hrms-glass-strong) !important;
+    }
+
+    // Without backdrop-filter the translucent nav panels and cards would show the
+    // raw ambient gradients through them, so fall back to opaque foundations.
+    .hrms-apprail {
+        background-color: var(--hrms-sidebar) !important;
+    }
+
+    .hrms-sidebar {
+        background-color: var(--hrms-bg-soft) !important;
+    }
+
+    .o_list_renderer,
+    .o_form_view .o_form_sheet,
+    .oe_stat_button,
+    .o_kanban_view .o_kanban_record {
+        background-color: var(--hrms-surface) !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .o_web_client *,
+    .o_web_client *::before,
+    .o_web_client *::after {
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .oe_stat_button:hover,
+    .o_kanban_view .o_kanban_record:hover {
+        transform: none !important;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// 18. Navigation breadcrumb (rendered by theme.js from Odoo's menu metadata)
+// ---------------------------------------------------------------------------
+// Occupies the navbar's left area (the native app brand is hidden on desktop)
+// and shows the real path - app › section › current page - derived from the
+// menu service, not a static string.
+.hrms-breadcrumb {
+    position: fixed;
+    top: 0;
+    left: calc(var(--hrms-apprail-w) + var(--hrms-sidebar-w));
+    height: var(--hrms-navbar-h);
+    max-width: calc(100vw - var(--hrms-apprail-w) - var(--hrms-sidebar-w) - 300px);
+    display: flex;
+    align-items: center;
+    padding: 0 18px;
+    z-index: 1031;
+    pointer-events: none;
+    transition: left .18s ease;
+}
+
+html.hrms-nav-collapsed .hrms-breadcrumb {
+    left: var(--hrms-apprail-w);
+}
+
+.hrms-breadcrumb__list {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.hrms-breadcrumb__item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.hrms-breadcrumb__link,
+.hrms-breadcrumb__current {
+    display: inline-block;
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.hrms-breadcrumb__link {
+    pointer-events: auto;
+    color: var(--hrms-muted) !important;
+    text-decoration: none;
+    border-radius: 6px;
+    padding: 3px 6px;
+    transition: background-color .14s ease, color .14s ease;
+}
+
+.hrms-breadcrumb__link:hover,
+.hrms-breadcrumb__link:focus-visible {
+    color: var(--hrms-text) !important;
+    background: var(--hrms-hover);
+}
+
+.hrms-breadcrumb__current {
+    color: var(--hrms-heading) !important;
+    font-weight: 600;
+    padding: 3px 2px;
+}
+
+.hrms-breadcrumb__sep {
+    color: var(--hrms-subtle);
+    font-size: 11px;
+    pointer-events: none;
+}
+
+@media (max-width: 767.98px) {
+    .hrms-breadcrumb {
+        display: none;
+    }
 }

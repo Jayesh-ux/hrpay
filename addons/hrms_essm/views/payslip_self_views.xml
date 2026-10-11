@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_essm_hr_payslip_list" model="ir.ui.view">
+        <field name="name">hrms.essm.hr.payslip.list</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <list string="My payslips" create="false" delete="false" edit="false">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="hrms_essm_net" widget="monetary" string="Net pay"/>
+                <field name="struct_id" optional="hide"/>
+                <field name="state" optional="hide"/>
+                <field name="hrms_essm_gate" widget="badge"
+                       decoration-success="hrms_essm_gate == 'final'"
+                       decoration-warning="hrms_essm_gate == 'provisional'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_essm_hr_payslip_form" model="ir.ui.view">
+        <field name="name">hrms.essm.hr.payslip.form</field>
+        <field name="model">hr.payslip</field>
+        <field name="arch" type="xml">
+            <form string="Payslip" create="false" delete="false" edit="false">
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="hrms_essm_gate != 'provisional'">
+                        This payslip is <strong>provisional</strong>. It has not
+                        passed the payroll sign-off gate and the statutory figures
+                        are not yet validated. Do not treat it as final.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="struct_id"/>
+                            <field name="state"/>
+                            <field name="hrms_essm_gate" widget="badge"
+                                   decoration-success="hrms_essm_gate == 'final'"
+                                   decoration-warning="hrms_essm_gate == 'provisional'"/>
+                        </group>
+                        <group>
+                            <field name="hrms_essm_net" widget="monetary"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Payslip lines" name="lines">
+                            <field name="line_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="total"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_essm_my_payslips" model="ir.actions.act_window">
+        <field name="name">My Payslips</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_essm_hr_payslip_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_essm_hr_payslip_form')})]"/>
+    </record>
+
+</odoo>

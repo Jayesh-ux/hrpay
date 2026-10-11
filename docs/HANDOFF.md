@@ -7,27 +7,41 @@ section before quoting any test result.
 
 ## 1. The single most important thing to know
 
-**Status update (2026-10-09): the Odoo suite now runs green.** The authoring
-host had no Docker, no PostgreSQL and no Odoo, and the project rule was that
-runtime testing happens on the target laptop (Gate 1A). The code was therefore
-written *authored and statically checked, never executed*. It has since been run
-on the target stack (Odoo 18 CE + PostgreSQL 16): a fresh install plus all 105
-addon tests pass with 0 failures and 0 errors, and the statutory sign-off gate
-holds — see `docs/test-runs/20261009T050617Z.md`. §3 and §4 have been updated to
-match; the rest of this document still describes the pre-run design.
+**Test status (2026-10-09): install and test baseline green. NOT
+payroll-validated.** The authoring host had no Docker, no PostgreSQL and no
+Odoo, so the code was written *authored and statically checked, never executed*.
+It has since run on the target stack (Odoo 18 CE + PostgreSQL 16):
+
+- Odoo suite (`make test-odoo`): 105 tests, 0 failed, 0 errors, on a fresh
+  install and a tests-only rerun. Evidence: `docs/test-runs/20261009T050617Z.md`.
+- Standalone suites: 190 pass (solver 14, TDS 45, statutory 81, F&F 50).
+- Static checks: 0 errors.
+
+Limits of this evidence:
+
+- Expected values are developer-derived, not from a payroll professional.
+- Solver standalone tests exercise a mirror of `solver.py`, not the production
+  module, until the logic is extracted.
+- Gate 1A (structural and numeric) has not been run. No statutory value is
+  configured or signed off, so payroll correctly refuses to compute.
+- TDS runs on a fallback with four unwritten input fields.
+
+§3 and §4 have been updated to match; the rest of this document still describes
+the pre-run design.
 
 What that means practically:
 
-- 105 Odoo test functions exist. **All now execute and pass** (see the update
-  above and §4).
+- 109 Odoo test functions exist. **All now execute and pass** (see the update
+  above and §4). [Updated later to 114 after adding regression tests.]
 - 190 standalone tests exist (14 solver + 45 TDS + 81 statutory + 50 F&F
   arithmetic). **These have been executed**, because they need no Odoo — see §4.
 - Some basic Odoo screens **do** exist: `hrms_fnf` (case list, form, line tree,
   filters), `hrms_payroll_run` (run list and form) and the roster/solver screens
-  in `hrms_roster`. `hrms_core_ext` and `hrms_statutory` have **no views at all** —
-  they are engine and model code. The install validates every view's XML, but no
-  screen has been *rendered in a browser* on this run. "No UI exists" is not true;
-  "no UI has been visually inspected" is.
+  in `hrms_roster`. `hrms_core_ext` and `hrms_statutory` originally had **no views
+  at all**; views/menus were added later (statutory rules/versions/legal basis;
+  period locks/audit log/sync log/employee HR-Security page). The install validates
+  every view's XML, but no screen has been *rendered in a browser* on this run.
+  "No UI has been visually inspected" remains true.
 - The static checkers (`make check-static`) prove internal consistency: manifests
   resolve, XML references exist, no addon references a module that loads later,
   and every field named in a view exists on the model.
@@ -341,6 +355,173 @@ could not see. All are fixed; the run above is green.
 10. **Test-only defects fixed:** roster `_days_between` called `date.strptime`
     (does not exist); a lint placeholder referenced the wrong model name; a period
     test mutated `date_from` before `date_to`, tripping its own constraint.
+
+### UI theme & accessibility pass (2026-10-09)
+
+The addon **`hrms_theme`** gives the backend a Bitrix24-style **dark** skin
+(dark-by-default canvas, flat rounded cards, a left-hand navigation column on
+wide screens) and folds the HRMS sections into a single visible **HRMS** app.
+It also themes the frontend auth screens (login, sign-up, reset-password) via
+`web.assets_frontend`. Odoo 18 core has no dark mode, so the theme inverts the
+gray scale and re-derives every webclient semantic variable.
+
+Text contrast was verified objectively with a headless-Chrome DevTools-Protocol
+audit that computes the WCAG ratio of every visible text element (alpha-composited).
+Findings and fixes:
+
+- Buttons that carry white text use the "Bitrix blue" `#0b66c3` (~5.7:1 on white).
+  The signature cyan `#2fc6f6` is reserved for links/accents/borders on the dark
+  canvas, where it reads at ~7.3:1.
+- Muted label/tab/breadcrumb text uses `#93a0b4`, which clears AA on both the
+  `#171d28` canvas and the `#202836` cards.
+- The `.card-body` of the auth card carries Odoo's translucent white background;
+  it is forced transparent so the dark card shows through.
+- The systray unread badge background is `#1e7e34` (white text passes AA).
+- The app-switcher sidebar (`.o_app_menu_sidebar` / `.o_burger_menu`) and the
+  Bootstrap gray utilities (`.text-100`–`.text-900`, `.bg-*`) originally kept
+  light-mode values: core derives `$o-grays`, `$o-text-colors-custom`,
+  `$o-bg-colors-custom`, `$o-burger-*`, `$o-kanban-background` and the BS
+  `$gray-*` aliases **before** the theme's variable file loads, so they captured
+  the old light grays. All of these are now re-derived in `primary_variables.scss`
+  so menu section headers (`.text-900`) and app-menu surfaces render light-on-dark.
+
+Result: **0 contrast failures** on the login, sign-up, backend landing, app
+dashboard, settings, payroll-run list, statutory-rule list, audit-log list,
+employee kanban and employee form views — and on the interactive overlays: the
+app menu / burger sidebar (`o_menu_toggle`, also opened from inside an app) and
+the systray user-menu dropdown. Reproduce with
+`C:\Users\hsing\AppData\Local\Temp\opencode\contrast.mjs`.
+
+A full sweep of **every menu/action in the database** (166 pages: all app list/
+form/kanban/calendar/dashboard views plus each app's menu sidebar) also reports
+**0 contrast failures**. That crawl surfaced and fixed a second wave of
+light-mode leftovers, all now handled in `hrms_theme.scss` ("Contrast sweep"
+block): plain `.badge`s (which inherit a near-black colour), the `.text-bg-*`
+badge/button variants (success/info/warning/danger darkened so white text clears
+AA), `.text-primary` links, stat-button values, the search-panel and mobile-
+dashboard surfaces, and the FullCalendar day/week/axis text. Run the crawl with
+`contrast.mjs crawl <urls.txt> <out.json>` (one browser session, all pages).
+
+### Detailed left navigation + contrast sweep completion (2026-10-10)
+
+`hrms_theme` now renders a **detailed, collapsible left navigation** — a
+`main_components` OWL client component in `theme.js` built from Odoo's own
+`menu` service tree — replacing Odoo's top-level `.o_menu_sections` row on
+screens ≥768px. It highlights the active action (router-reactive), expands every
+group by default, and is hidden below 768px where Odoo's native menu is used.
+
+A final full crawl (`contrast.mjs crawl`) of all **166** menu/action pages
+reports **0 WCAG AA failures**. The last sweep of `hrms_theme.scss` fixed:
+
+- `.bg-view` / `.bg-100..300` / kanban columns / Discuss chrome re-pinned to the
+  dark surfaces (Odoo compiles these from SCSS greys that do not follow the
+  theme);
+- the control-panel banner now carries a solid `#2a1a6e` `background-color`
+  fallback behind the gradient, so the white breadcrumb text is measured (and
+  renders) against the banner rather than white;
+- `.btn-primary` fill pinned to `--hrms-accent-solid` (#5b35e0), incl.
+  `:disabled`; `.btn-info` gets dark ink; semantic `.text-*` utilities and
+  `text-bg-*` pills use the theme-aware `--hrms-*-ink` tokens; `.text-danger`
+  list-row decoration no longer leaks onto badges; the spreadsheet-dashboard
+  error box is legible.
+
+**Light theme removed.** Odoo's greys are compiled dark in
+`primary_variables.scss`, so a CSS-only light toggle could not re-colour Odoo's
+own compiled surfaces (126/166 pages failed the light-palette audit). Rather
+than ship a broken palette, the systray light/dark toggle was **removed** from
+`theme.js`; the theme is dark-only and a stale `hrms_theme` localStorage value
+is ignored.
+
+### Custom app shell redesign (2026-10-10)
+
+The prior work only re-coloured stock Odoo (SCSS-variable overrides + light CSS
+tweaks); it left Odoo's own layout in place. `docs/DESIGN.md` §1 deferred the
+real redesign to a separate frontend that was never built. This pass implements
+that design **in place** (UI only — no backend/logic/permission changes):
+
+- **Grouped left sidebar** (`.hrms-sidebar*` in `theme.js` + `hrms_theme.scss`):
+  a fixed 264px app shell built from the `menu` service tree, with an app header
+  (icon or initials + app name + "Switch app"), collapsible groups
+  (`.hrms-nav-group`), depth-indented items, an accent left-bar + tinted active
+  state, sentence-case group titles (no all-caps micro-labels), and a grid link
+  to `/odoo` that replaces Odoo's app switcher. Hidden below 768px where Odoo's
+  native menu is used.
+- **Flat top bar**: `.o_main_navbar` re-surfaced as `--hrms-bg` with a hairline
+  border; the default app-switcher / brand / `.o_menu_sections` row is hidden on
+  desktop; systray items are restyled as quiet 36px rounded chips.
+- **Modern page header**: `.o_control_panel` converted from the purple gradient
+  banner to a calm surface header (title ~20px, muted breadcrumb, accent-solid
+  primary buttons); search/filter controls moved onto `--hrms-raised` pills.
+- **Motion**: GSAP now also staggers sidebar groups/items and the first 24
+  list/kanban rows (respects `prefers-reduced-motion`).
+
+Verified on a fresh asset build (`web.assets_version = 9`): full 166-page
+`contrast.mjs crawl` → **0 WCAG AA failures**; layout probe at 1440×900 →
+no horizontal overflow, content/navbar offset == sidebar width (264px), correct
+active-item highlighting, 3–5 groups per app. Screenshots:
+`redesign_{home,employees,employee_form,payslips,directory}.png`.
+
+### Employee self-service — the `hrms_essm` addon (2026-10-10)
+
+A new backend application, **"My HR"** (`hrms_essm`), gives every internal user
+their own screens and gives HR the approval queues. It adds **no parallel
+business logic**: the self-service views read the existing `hr.*` /
+`hr_payroll_community` / `hrms_core_ext` backends. This is UI + a thin workflow
+layer, **not** authorisation to use unvalidated payroll output — the statutory
+sign-off gate stays closed.
+
+Screens (`hrms_essm_menus.xml`): My Profile, My Change Requests, My Payslips,
+My Time Off, My Allocations, My Expenses, My Documents, My Tax Declarations, plus
+a **Team** group (gated on `hr.group_hr_user`) for the four approval queues. All
+actions pin `[('employee_id.user_id', '=', uid)]` (or `requested_by`, for change
+requests) so the view — not just the record rule — enforces "my own".
+
+Models (`models/`): `hrms.profile.change.request`, `hrms.tax.declaration`,
+`hrms.employee.document`, plus read-only computed summaries on `hr.employee`
+(`employee_ext.py`) and the payslip **sign-off status** gate
+(`payslip_ext.py`: final only when `state == 'done'`, otherwise
+"Provisional — not sign-off validated").
+
+Access model (the part that took the most care):
+
+- **Native models keep Odoo's own rules.** ESSM does *not* add record rules to
+  `hr.employee`, `hr.payslip`, `hr.leave` or `hr.expense`. Adding a
+  `base.group_user` own-record rule there looks right but is wrong: a
+  group-bound rule is OR-combined with the user's other group rules and then
+  AND-ed with the global multi-company rule, so it silently **caps HR users too**
+  (an HR manager ended up able to read only their own employee). The "my own"
+  filter for these screens lives in the **action domains**.
+- **New ESSM models get two rules each** (`security/hrms_essm_security.xml`):
+  own-records bound to `base.group_user`, and full access bound to
+  `hr.group_hr_user`. Because these models have no global rule, the OR-combine
+  is exactly "employee sees own / HR sees all".
+- Employees are granted **read** on `hr.payslip` (`ir.model.access.csv`) so My
+  Payslips works; the OCA "own payslips only" rule then scopes it.
+- **My Profile is built on `hr.employee.public`**, not `hr.employee`: non-HR
+  users cannot open the `hr.employee` form at all (Odoo routes them to the
+  public list) and the private fields (`private_email/phone`) are Officer-only,
+  so an `hr.employee` form raised a field-access error. The public model exposes
+  exactly the safe fields. The menu uses a **server action**
+  (`action_essm_my_profile_server`) to pin the caller's own record — a bare
+  window action opened `/new` for HR. Note: an Odoo server action **without**
+  `groups_id` requires *write* access to its model (`ir_actions.py`), so this
+  one carries `groups_id = base.group_user`.
+
+Verified against a live DB (1 employee, admin is HR), via JSON-RPC and headless
+Chrome, with two throwaway users (one HR-prone, one plain `base.group_user`) that
+were **deleted afterwards**:
+
+- Every screen opens for both HR and a plain employee with **0 console errors**;
+  the employee sees no Team menus and can read only their own change requests.
+- Profile change workflow: create → submit → **self-approval refused (SoD)** →
+  HR approves → safe field applied; sensitive (PAN) request goes to `approved`
+  with the value masked, then `action_mark_applied` by HR. All green.
+
+Not covered by this pass: no payslip rows exist, so the **sign-off gate was not
+exercised end-to-end** (the column and the final/provisional logic are in place
+only); empty lists show Odoo's stock sample placeholder rows; and ESSM does not
+further restrict native `hr.employee` reads (employees can read the public
+profile of colleagues, exactly as Odoo intends — sensitive fields stay blocked).
 
 ### Non-blocking but known
 

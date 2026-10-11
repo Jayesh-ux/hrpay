@@ -324,6 +324,16 @@
         <field name="name">Roster periods</field>
         <field name="res_model">hr.roster.period</field>
         <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first roster period
+            </p>
+            <p>
+                A roster period is the planning window you publish: pick a date
+                range and an establishment, then build its demand and assignments.
+                No shifts are scheduled until a period exists.
+            </p>
+        </field>
     </record>
 
     <menuitem id="menu_hrms_roster_period"

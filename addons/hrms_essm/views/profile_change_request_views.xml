@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hrms_profile_change_request_list" model="ir.ui.view">
+        <field name="name">hrms.profile.change.request.list</field>
+        <field name="model">hrms.profile.change.request</field>
+        <field name="arch" type="xml">
+            <list string="My change requests" create="false" delete="false">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="field_name"/>
+                <field name="old_value" optional="hide"/>
+                <field name="new_value" optional="hide"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'applied'"
+                       decoration-info="state == 'submitted'"
+                       decoration-warning="state == 'approved'"
+                       decoration-danger="state == 'rejected'"/>
+                <field name="request_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hrms_profile_change_request_form" model="ir.ui.view">
+        <field name="name">hrms.profile.change.request.form</field>
+        <field name="model">hrms.profile.change.request</field>
+        <field name="arch" type="xml">
+            <form string="Profile change request">
+                <header>
+                    <button name="action_submit" string="Submit" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-primary" invisible="state != 'submitted'"
+                            groups="hr.group_hr_manager,hr.group_hr_user"/>
+                    <button name="action_reject" string="Refuse" type="object"
+                            invisible="state not in ('submitted', 'approved')"
+                            groups="hr.group_hr_manager,hr.group_hr_user"/>
+                    <button name="action_mark_applied" string="Mark Applied" type="object"
+                            invisible="state != 'approved' or not is_sensitive"
+                            groups="hr.group_hr_user"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,submitted,approved,applied"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="requested_by"/>
+                            <field name="field_name"
+                                   readonly="state != 'draft'"/>
+                            <field name="is_sensitive" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="old_value"/>
+                            <field name="new_value"
+                                   readonly="state != 'draft'"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info" role="alert"
+                         invisible="not is_sensitive">
+                        This identifier is handled by HR. Do not enter the full
+                        number here; describe what needs to change and HR will
+                        capture it through the audited employee form.
+                    </div>
+                    <group string="Reason">
+                        <field name="reason" nolabel="1"
+                               readonly="state != 'draft'"/>
+                    </group>
+                    <group string="Decision" invisible="state in ('draft', 'submitted')">
+                        <field name="approver_id"/>
+                        <field name="decision_date"/>
+                        <field name="approver_note"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hrms_profile_change_request_search" model="ir.ui.view">
+        <field name="name">hrms.profile.change.request.search</field>
+        <field name="model">hrms.profile.change.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="employee_id"/>
+                <field name="field_name"/>
+                <filter name="open" string="Open"
+                        domain="[('state', 'in', ('draft', 'submitted', 'approved'))]"/>
+                <filter name="mine" string="Raised by me"
+                        domain="[('requested_by', '=', uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="Status"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hrms_profile_change_request_my" model="ir.actions.act_window">
+        <field name="name">My Change Requests</field>
+        <field name="res_model">hrms.profile.change.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('requested_by', '=', uid)]</field>
+        <field name="context">{'default_employee_id': False}</field>
+    </record>
+
+    <record id="action_hrms_profile_change_request_approve" model="ir.actions.act_window">
+        <field name="name">Change Requests to Approve</field>
+        <field name="res_model">hrms.profile.change.request</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', '=', 'submitted')]</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+      Statutory configuration UI.
+
+      The sign-off gate is enforced in the model, never in the view, so these
+      screens only make the gate visible: a version is Draft until a validator is
+      named and the Sign off button is pressed. The button follows the same
+      segregation-of-duties rule as the model (the author cannot be the
+      validator) because it goes through the same _check_signoff path.
+    -->
+
+    <!-- ── Statutory rule (definition) ─────────────────────────────────── -->
+
+    <record id="view_hrms_statutory_rule_list" model="ir.ui.view">
+        <field name="name">hrms.statutory.rule.list</field>
+        <field name="model">hrms.statutory.rule</field>
+        <field name="arch" type="xml">
+            <list string="Statutory rules" decoration-muted="not active">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="component_type" widget="badge"/>
+                <field name="country_code"/>
+                <field name="state_code" optional="show"/>
+                <field name="contract_type" optional="hide"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hrms_statutory_rule_form" model="ir.ui.view">
+        <field name="name">hrms.statutory.rule.form</field>
+        <field name="model">hrms.statutory.rule</field>
+        <field name="arch" type="xml">
+            <form string="Statutory rule">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_versions" type="object"
+                                class="oe_stat_button" icon="fa-list"
+                                string="Versions"/>
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="versions">
+                        This rule has no version yet. No value is live until a
+                        version is created and signed off by a named professional
+                        against a source reference.
+                    </div>
+                    <group>
+                        <group string="Identity">
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="component_type"/>
+                            <field name="active"/>
+                        </group>
+                        <group string="Scope">
+                            <field name="country_code"/>
+                            <field name="state_code"/>
+                            <field name="contract_type"/>
+                            <field name="applies_to_establishment"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Source" name="source">
+                            <group>
+                                <field name="source_reference"/>
+                                <field name="source_url"/>
+                                <field name="notes"/>
+                            </group>
+                        </page>
+                        <page string="Versions" name="versions">
+                            <field name="versions" readonly="1">
+                                <list decoration-muted="state == 'superseded'">
+                                    <field name="version"/>
+                                    <field name="effective_from"/>
+                                    <field name="effective_to"/>
+                                    <field name="state" widget="badge"
+                                           decoration-success="state in ('validated', 'active')"
+                                           decoration-muted="state == 'superseded'"/>
+                                    <field name="numeric_value"/>
+                                    <field name="text_value"/>
+                                    <field name="unit"/>
+                                    <field name="validated_by"/>
+                                </list>
+                            </field>
+                            <div class="text-muted mt-2">
+                                Versions are immutable once signed off. To change a
+                                rate, create a new version with a later effective
+                                date; history stays reproducible.
+                            </div>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hrms_statutory_rule_search" model="ir.ui.view">
+        <field name="name">hrms.statutory.rule.search</field>
+        <field name="model">hrms.statutory.rule</field>
+        <field name="arch" type="xml">
+            <search string="Statutory rules">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="component_type"/>
+                <field name="country_code"/>
+                <field name="state_code"/>
+                <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="filter_inactive" string="Archived" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_component" string="Component type"
+                            context="{'group_by': 'component_type'}"/>
+                    <filter name="group_country" string="Country"
+                            context="{'group_by': 'country_code'}"/>
+                    <filter name="group_state" string="State"
+                            context="{'group_by': 'state_code'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hrms_statutory_rule" model="ir.actions.act_window">
+        <field name="name">Statutory Rules</field>
+        <field name="res_model">hrms.statutory.rule</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hrms_statutory_rule_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No statutory rules</p>
+            <p>Rules are seeded as value-less skeletons. Create a version and get
+               it signed off before any payroll can run.</p>
+        </field>
+    </record>
+
+    <record id="view_hrms_statutory_rule_version_list" model="ir.ui.view">
+        <field name="name">hrms.statutory.rule.version.list</field>
+        <field name="model">hrms.statutory.rule.version</field>
+        <field name="arch" type="xml">
+            <list string="Statutory rule versions"
+                  decoration-muted="state == 'superseded'">
+                <field name="rule_id"/>
+                <field name="version"/>
+                <field name="effective_from"/>
+                <field name="effective_to"/>
+                <field name="state" widget="badge"
+                       decoration-success="state in ('validated', 'active')"
+                       decoration-warning="state == 'draft'"
+                       decoration-muted="state == 'superseded'"/>
+                <field name="numeric_value"/>
+                <field name="text_value"/>
+                <field name="unit"/>
+                <field name="validated_by"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hrms_statutory_rule_version_form" model="ir.ui.view">
+        <field name="name">hrms.statutory.rule.version.form</field>
+        <field name="model">hrms.statutory.rule.version</field>
+        <field name="arch" type="xml">
+            <form string="Statutory rule version">
+                <header>
+                    <button name="action_validate" string="Sign off" type="object"
+                            class="btn-primary" invisible="state != 'draft'"
+                            groups="hrms_core_ext.group_hrms_statutory_admin"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,validated,superseded"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Rule">
+                            <field name="rule_id"/>
+                            <field name="version"/>
+                        </group>
+                        <group string="Effective">
+                            <field name="effective_from"/>
+                            <field name="effective_to"/>
+                            <field name="unit"/>
+                        </group>
+                    </group>
+                    <group string="Value">
+                        <field name="numeric_value" readonly="state != 'draft'"/>
+                        <field name="text_value" readonly="state != 'draft'"/>
+                        <field name="json_value" readonly="state != 'draft'"/>
+                    </group>
+                    <group string="Sign-off">
+                        <field name="validated_by"
+                               help="Must be a named professional, never the author of the row."/>
+                        <field name="validated_at"/>
+                        <field name="validation_note"/>
+                        <field name="source_reference"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hrms_statutory_rule_version_search" model="ir.ui.view">
+        <field name="name">hrms.statutory.rule.version.search</field>
+        <field name="model">hrms.statutory.rule.version</field>
+        <field name="arch" type="xml">
+            <search string="Statutory rule versions">
+                <field name="rule_id"/>
+                <field name="state"/>
+                <field name="effective_from"/>
+                <field name="validated_by"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="State"
+                            context="{'group_by': 'state'}"/>
+                    <filter name="group_rule" string="Rule"
+                            context="{'group_by': 'rule_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hrms_statutory_rule_version" model="ir.actions.act_window">
+        <field name="name">Statutory Rule Versions</field>
+        <field name="res_model">hrms.statutory.rule.version</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hrms_statutory_rule_version_search"/>
+    </record>
+
+    <record id="view_hrms_legal_basis_list" model="ir.ui.view">
+        <field name="name">hrms.legal.basis.list</field>
+        <field name="model">hrms.legal.basis</field>
+        <field name="arch" type="xml">
+            <list string="Legal basis"
+                  decoration-muted="state == 'draft'">
+                <field name="name"/>
+                <field name="state" widget="badge"
+                       decoration-success="state == 'confirmed'"
+                       decoration-warning="state == 'draft'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="state_code"/>
+                <field name="contract_type"/>
+                <field name="regime"/>
+                <field name="effective_from"/>
+                <field name="effective_to"/>
+                <field name="reviewed_by"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hrms_legal_basis_form" model="ir.ui.view">
+        <field name="name">hrms.legal.basis.form</field>
+        <field name="model">hrms.legal.basis</field>
+        <field name="arch" type="xml">
+            <form string="Legal basis">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object"
+                            class="btn-primary" invisible="state != 'draft'"
+                            groups="hrms_core_ext.group_hrms_statutory_admin"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,confirmed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Applicability">
+                            <field name="name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="state_code"/>
+                            <field name="contract_type"/>
+                            <field name="regime"/>
+                        </group>
+                        <group string="Period">
+                            <field name="effective_from"/>
+                            <field name="effective_to"/>
+                        </group>
+                    </group>
+                    <group string="Authority">
+                        <field name="authority"/>
+                        <field name="notification_ref"
+                               help="Gazette reference, or 'not yet notified' for a transitional basis."/>
+                        <field name="source_reference"/>
+                    </group>
+                    <group string="Review">
+                        <field name="reviewed_by"/>
+                        <field name="reviewed_at"/>
+                        <field name="notes"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_hrms_legal_basis_search" model="ir.ui.view">
+        <field name="name">hrms.legal.basis.search</field>
+        <field name="model">hrms.legal.basis</field>
+        <field name="arch" type="xml">
+            <search string="Legal basis">
+                <field name="name"/>
+                <field name="state_code"/>
+                <field name="company_id"/>
+                <field name="state"/>
+                <filter name="filter_confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="filter_draft" string="Draft" domain="[('state', '=', 'draft')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state_code" string="State"
+                            context="{'group_by': 'state_code'}"/>
+                    <filter name="group_contract" string="Contract type"
+                            context="{'group_by': 'contract_type'}"/>
+                    <filter name="group_state" string="Status"
+                            context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_hrms_legal_basis" model="ir.actions.act_window">
+        <field name="name">Legal Basis</field>
+        <field name="res_model">hrms.legal.basis</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_hrms_legal_basis_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No legal basis recorded</p>
+            <p>Record the law that applies to each establishment. Applicable law
+               is resolved per establishment and never inferred.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hrms_statutory_root"
+              name="Statutory"
+              parent="hr.menu_hr_root"
+              sequence="92"
+              groups="hrms_core_ext.group_hrms_statutory_admin,hrms_core_ext.group_hrms_statutory_validator,hrms_core_ext.group_hrms_auditor,hrms_core_ext.group_hrms_payroll_admin"/>
+
+    <menuitem id="menu_hrms_statutory_rule"
+              name="Statutory Rules"
+              parent="menu_hrms_statutory_root"
+              action="action_hrms_statutory_rule"
+              sequence="10"
+              groups="hrms_core_ext.group_hrms_statutory_admin,hrms_core_ext.group_hrms_payroll_admin,hrms_core_ext.group_hrms_auditor"/>
+
+    <menuitem id="menu_hrms_statutory_rule_version"
+              name="Rule Versions"
+              parent="menu_hrms_statutory_root"
+              action="action_hrms_statutory_rule_version"
+              sequence="20"
+              groups="hrms_core_ext.group_hrms_statutory_admin,hrms_core_ext.group_hrms_auditor"/>
+
+    <menuitem id="menu_hrms_legal_basis"
+              name="Legal Basis"
+              parent="menu_hrms_statutory_root"
+              action="action_hrms_legal_basis"
+              sequence="30"
+              groups="hrms_core_ext.group_hrms_statutory_admin,hrms_core_ext.group_hrms_auditor,hr.group_hr_user"/>
+
+</odoo>

@@ -38,10 +38,24 @@ _logger = logging.getLogger(__name__)
 _ENC_PREFIX = "enc"
 
 
-def _field_key() -> tuple:
-    """Return (key_bytes, key_version) from ir.config_parameter."""
+def _field_key(env=None) -> tuple:
+    """Return (key_bytes, key_version).
+
+    Sources, in order: the ``hrms.field_encryption_key`` ir.config_parameter
+    (set from the environment at deployment), the Odoo config file, then the
+    ``FIELD_ENCRYPTION_KEY`` environment variable.
+    """
+    param_b64 = ""
+    if env is not None:
+        param_b64 = (
+            env["ir.config_parameter"]
+            .sudo()
+            .get_param("hrms.field_encryption_key", "")
+            or ""
+        ).strip()
     key_b64 = (
-        tools.config.get("hrms.field_encryption_key")
+        param_b64
+        or tools.config.get("hrms.field_encryption_key")
         or _env("FIELD_ENCRYPTION_KEY")
         or ""
     ).strip()
@@ -52,7 +66,8 @@ def _field_key() -> tuple:
         raise UserError(
             "hrms: field encryption key is not configured. "
             "Set ir.config_parameter 'hrms.field_encryption_key' "
-            "(base64 32 bytes) or env FIELD_ENCRYPTION_KEY. "
+            "(base64 32 bytes), Odoo config 'hrms.field_encryption_key', "
+            "or env FIELD_ENCRYPTION_KEY. "
             "Generate: python3 -c \"import base64,os;"
             "print(base64.b64encode(os.urandom(32)).decode())\""
         )
@@ -76,7 +91,7 @@ def _aad(model: str, field_name: str, record_id) -> bytes:
     return f"{model}|{field_name}|{record_id or 0}".encode()
 
 
-def encrypt_value(plaintext, model: str, field_name: str, record_id=None) -> str:
+def encrypt_value(plaintext, model: str, field_name: str, record_id=None, env=None) -> str:
     """Encrypt a string for storage. Empty/None values pass through untouched."""
     if plaintext in (None, False, ""):
         return plaintext
@@ -85,7 +100,7 @@ def encrypt_value(plaintext, model: str, field_name: str, record_id=None) -> str
         return text  # already encrypted, do not double-encrypt
     from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 
-    key, version = _field_key()
+    key, version = _field_key(env)
     nonce = os.urandom(12)
     blob = AESGCM(key).encrypt(nonce, text.encode(), _aad(model, field_name, record_id))
     return ":".join(
@@ -93,7 +108,7 @@ def encrypt_value(plaintext, model: str, field_name: str, record_id=None) -> str
     )
 
 
-def decrypt_value(stored, model: str, field_name: str, record_id=None):
+def decrypt_value(stored, model: str, field_name: str, record_id=None, env=None):
     """Decrypt a stored value. Plaintext (legacy) values pass through untouched."""
     if stored in (None, False, "") or not str(stored).startswith(f"{_ENC_PREFIX}:v"):
         return stored
@@ -112,7 +127,7 @@ def decrypt_value(stored, model: str, field_name: str, record_id=None):
 
     # Try the current key first, then any previous versions, so a rotation does
     # not lock out existing rows.
-    current_key, current_version = _field_key()
+    current_key, current_version = _field_key(env)
     candidates = [(current_version, current_key)]
     prev = (
         tools.config.get("hrms.field_encryption_key_previous")
@@ -132,7 +147,8 @@ def decrypt_value(stored, model: str, field_name: str, record_id=None):
         if stored_version not in (candidate_version, "0"):
             continue
         try:
-            return AESGCM(key).decrypt(nonce, blob, _aad(model, field_name, record_id))
+            plaintext = AESGCM(key).decrypt(nonce, blob, _aad(model, field_name, record_id))
+            return plaintext.decode()
         except InvalidTag:
             # Wrong key, or the value was moved between rows.
             continue
@@ -192,7 +208,7 @@ class EncryptedChar(models.AbstractModel):
         enc = f"{field_name}_enc"
         if not hasattr(record, enc):
             return value
-        return encrypt_value(value, record._name, field_name, record.id or 0)
+        return encrypt_value(value, record._name, field_name, record.id or 0, env=record.env)
 
     @api.model
     def _enc_read(self, field_name, record):
@@ -200,7 +216,7 @@ class EncryptedChar(models.AbstractModel):
         raw = getattr(record, enc, None)
         if raw in (None, ""):
             return raw
-        return decrypt_value(raw, record._name, field_name, record.id or 0)
+        return decrypt_value(raw, record._name, field_name, record.id or 0, env=record.env)
 
     @api.model
     def _enc_masked(self, field_name, record):
